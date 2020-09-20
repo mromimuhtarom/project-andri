@@ -17,8 +17,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'username', 'fullname', 'password', 'role_id', 'telp', 'addressy'
     ];
+    protected $table = 'user';
+    protected $primary_key = 'user_id';
 
     /**
      * The attributes that should be hidden for arrays.
@@ -34,7 +36,10 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function getAuthPassword()
+    {
+
+        return $this->password;
+
+    }
 }

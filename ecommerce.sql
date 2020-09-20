@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 16 Sep 2020 pada 01.25
+-- Waktu pembuatan: 21 Sep 2020 pada 00.54
 -- Versi server: 10.1.38-MariaDB
 -- Versi PHP: 7.3.2
 
@@ -44,13 +44,129 @@ INSERT INTO `config` (`id`, `name`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `menu`
+--
+
+CREATE TABLE `menu` (
+  `menu_id` int(5) NOT NULL,
+  `name` varchar(40) NOT NULL,
+  `parent_id` smallint(5) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `route` varchar(150) NOT NULL,
+  `icon` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `menu`
+--
+
+INSERT INTO `menu` (`menu_id`, `name`, `parent_id`, `status`, `route`, `icon`) VALUES
+(1, 'Dashboard', 0, 1, 'dashboard', 'fas fa-tachometer-alt'),
+(2, 'Product', 0, 1, 'product', 'fas fa-tachometer-alt');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `menu_access`
+--
+
+CREATE TABLE `menu_access` (
+  `role_id` smallint(6) NOT NULL,
+  `menu_id` smallint(6) NOT NULL,
+  `type` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `menu_access`
+--
+
+INSERT INTO `menu_access` (`role_id`, `menu_id`, `type`) VALUES
+(1, 1, 2),
+(1, 2, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `order`
+--
+
+CREATE TABLE `order` (
+  `id` int(5) NOT NULL,
+  `user_id` int(5) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `product_id` char(5) NOT NULL,
+  `qty` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `payment_type`
+--
+
+CREATE TABLE `payment_type` (
+  `payment_id` int(5) NOT NULL,
+  `payment_name` varchar(255) NOT NULL,
+  `account_number` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `price_group`
+--
+
+CREATE TABLE `price_group` (
+  `price_group_id` int(5) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `price` decimal(16,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `product`
+--
+
+CREATE TABLE `product` (
+  `product_id` char(5) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `weight` int(10) NOT NULL,
+  `price_group_id` tinyint(5) NOT NULL,
+  `price` decimal(16,2) NOT NULL,
+  `user_id` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `proof_payment`
+--
+
+CREATE TABLE `proof_payment` (
+  `order_id` int(5) NOT NULL,
+  `user_id` int(5) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `payment_id` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `role`
 --
 
 CREATE TABLE `role` (
-  `id_role` int(5) NOT NULL,
-  `nama_role` varchar(255) NOT NULL
+  `role_id` int(5) NOT NULL,
+  `role_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `role`
+--
+
+INSERT INTO `role` (`role_id`, `role_name`) VALUES
+(1, 'distributor');
 
 -- --------------------------------------------------------
 
@@ -59,13 +175,33 @@ CREATE TABLE `role` (
 --
 
 CREATE TABLE `user` (
-  `id_user` int(5) NOT NULL,
+  `user_id` int(5) NOT NULL,
   `username` varchar(25) NOT NULL,
   `password` varchar(255) NOT NULL,
   `fullname` varchar(255) NOT NULL,
-  `id_role` int(5) NOT NULL,
-  `no_telp` varchar(15) NOT NULL,
-  `alamat` text NOT NULL
+  `role_id` int(5) NOT NULL,
+  `telp` varchar(15) NOT NULL,
+  `address` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `user`
+--
+
+INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`, `telp`, `address`) VALUES
+(1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 1, '0866666666', 'testing');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `variation`
+--
+
+CREATE TABLE `variation` (
+  `variation_id` int(5) NOT NULL,
+  `product_id` int(5) NOT NULL,
+  `variation_name` int(255) NOT NULL,
+  `qty` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -79,16 +215,64 @@ ALTER TABLE `config`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `menu`
+--
+ALTER TABLE `menu`
+  ADD PRIMARY KEY (`menu_id`);
+
+--
+-- Indeks untuk tabel `menu_access`
+--
+ALTER TABLE `menu_access`
+  ADD PRIMARY KEY (`role_id`,`menu_id`);
+
+--
+-- Indeks untuk tabel `order`
+--
+ALTER TABLE `order`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `payment_type`
+--
+ALTER TABLE `payment_type`
+  ADD PRIMARY KEY (`payment_id`);
+
+--
+-- Indeks untuk tabel `price_group`
+--
+ALTER TABLE `price_group`
+  ADD PRIMARY KEY (`price_group_id`);
+
+--
+-- Indeks untuk tabel `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`product_id`);
+
+--
+-- Indeks untuk tabel `proof_payment`
+--
+ALTER TABLE `proof_payment`
+  ADD PRIMARY KEY (`order_id`);
+
+--
 -- Indeks untuk tabel `role`
 --
 ALTER TABLE `role`
-  ADD PRIMARY KEY (`id_role`);
+  ADD PRIMARY KEY (`role_id`);
 
 --
 -- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id_user`);
+  ADD PRIMARY KEY (`user_id`);
+
+--
+-- Indeks untuk tabel `variation`
+--
+ALTER TABLE `variation`
+  ADD PRIMARY KEY (`variation_id`);
 
 --
 -- AUTO_INCREMENT untuk tabel yang dibuang
@@ -101,16 +285,52 @@ ALTER TABLE `config`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT untuk tabel `menu`
+--
+ALTER TABLE `menu`
+  MODIFY `menu_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT untuk tabel `order`
+--
+ALTER TABLE `order`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `payment_type`
+--
+ALTER TABLE `payment_type`
+  MODIFY `payment_id` int(5) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `price_group`
+--
+ALTER TABLE `price_group`
+  MODIFY `price_group_id` int(5) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `proof_payment`
+--
+ALTER TABLE `proof_payment`
+  MODIFY `order_id` int(5) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT untuk tabel `role`
 --
 ALTER TABLE `role`
-  MODIFY `id_role` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `role_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT untuk tabel `variation`
+--
+ALTER TABLE `variation`
+  MODIFY `variation_id` int(5) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

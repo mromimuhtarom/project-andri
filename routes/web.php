@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'LoginController@login')->name('login');
+Route::post('/login', 'LoginController@processlogin')->name('processlogin');
+Route::get('/logout', 'LoginController@logout')->name('logout');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+Route::get('/product', 'ProductController@index')->name('product');
