@@ -105,4 +105,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "bLengthChange": false
+            });
+        });
+    </script>
 @endsection
