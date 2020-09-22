@@ -39,11 +39,7 @@
     @else
         <a class="nav-link" href="{{ route($mnu->route) }}">
             <div class="sb-nav-link-icon"><i class="{{ $mnu->icon }}"></i></div>
-<<<<<<< HEAD
-            {{ $mnu->name }}
-=======
             {{ $mnu->name}}
->>>>>>> 34a64b46b0b3e6b62de804bbc56fb0bef8e1d944
         </a>
     @endif
     
