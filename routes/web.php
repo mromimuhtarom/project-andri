@@ -18,3 +18,4 @@ Route::post('/login', 'LoginController@processlogin')->name('processlogin');
 Route::get('/logout', 'LoginController@logout')->name('logout');
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Route::get('/product', 'ProductController@index')->name('product');
+Route::get('/order', 'OrderController@index')->name('order');
