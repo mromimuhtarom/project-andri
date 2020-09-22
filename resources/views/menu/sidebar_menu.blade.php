@@ -39,7 +39,7 @@
     @else
         <a class="nav-link" href="{{ route($mnu->route) }}">
             <div class="sb-nav-link-icon"><i class="{{ $mnu->icon }}"></i></div>
-            Dashboard
+            {{ $mnu->name }}
         </a>
     @endif
     
