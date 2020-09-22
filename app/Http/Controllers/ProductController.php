@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Session;
+use App\Models\Pricegroup;
 
 class ProductController extends Controller
 {
@@ -17,8 +18,9 @@ class ProductController extends Controller
     {
         $user_id = Session::get('user_id');
         $product = Product::where('user_id', '=', $user_id)->get();
+        $pricegroup = Pricegroup::where('user_id', '=', $user_id)->get();
 
-        return view('pages.product', compact('product'));
+        return view('pages.product', compact('product', 'pricegroup'));
     }
 
     /**
