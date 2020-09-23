@@ -21,3 +21,5 @@ Route::get('/product-view', 'ProductController@index')->name('product');
 Route::get('/order-view', 'OrderController@index')->name('order');
 Route::get('/historyorder-view', 'HistoryOrderController@index')->name('historyorder');
 Route::get('/paymentsetting-view', 'PaymentSettingController@index')->name('paymentsetting');
+Route::get('/grouphargabarang-view', 'GroupHargaController@index')->name('gouphargabarangpengaturan');
+
