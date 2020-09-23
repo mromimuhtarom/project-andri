@@ -14,9 +14,8 @@
                     <td width="30%">
                         <select class="form-control" name="" id="">
                             <option value="">Pilih Status</option>
-                            <option value="0">Menunggu</option>
-                            <option value="1">Terima</option>
-                            <option value="2">Mengirimkan</option>
+                            <option value="3">Tolak</option>
+                            <option value="4">Selesai</option>
                         </select>
                     </td>
                     <td width="20%">
@@ -48,27 +47,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($order as $od)
-                            <tr>
-                                <td>{{ $od->fullname }}</td>
-                                <td>{{ $od->product_name }}</td>
-                                <td>{{ $od->product_id }}</td>
-                                <td>{{ $od->qty }}</td>
-                                <td>{{ $od->total_price }}</td>
-                                <td></td>
-                                <td>{{ $od->strStatus() }}</td>
-                                <td>
-                                    @if ($od->status == 0)
-                                        <button type="button" class="btn btn-success">Terima</button>
-                                        <button type="button" class="btn btn-danger">Tolak</button>
-                                    @elseif($od->status == 1)
-                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
-                                            Mengirimkan
-                                        </button>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

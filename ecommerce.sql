@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Sep 2020 pada 00.54
--- Versi server: 10.1.38-MariaDB
--- Versi PHP: 7.3.2
+-- Waktu pembuatan: 23 Sep 2020 pada 10.25
+-- Versi server: 10.4.14-MariaDB
+-- Versi PHP: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -62,7 +61,12 @@ CREATE TABLE `menu` (
 
 INSERT INTO `menu` (`menu_id`, `name`, `parent_id`, `status`, `route`, `icon`) VALUES
 (1, 'Dashboard', 0, 1, 'dashboard', 'fas fa-tachometer-alt'),
-(2, 'Product', 0, 1, 'product', 'fas fa-tachometer-alt');
+(2, 'Product', 0, 1, 'product', 'fas fa-tachometer-alt'),
+(3, 'Pesanan', 0, 1, '', 'fas fa-tachometer-alt'),
+(4, 'Pesanan Pelanggan', 3, 1, 'order', 'fas fa-tachometer-alt'),
+(5, 'Sejarah Pesanan', 3, 1, 'historyorder', 'fas fa-tachometer-alt'),
+(6, 'Pengaturan', 0, 1, '', 'fas fa-tachometer-alt'),
+(7, 'Pengaturan Pembayaran', 6, 1, 'paymentsetting', 'fas fa-tachometer-alt');
 
 -- --------------------------------------------------------
 
@@ -87,27 +91,14 @@ INSERT INTO `menu_access` (`role_id`, `menu_id`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `order`
---
-
-CREATE TABLE `order` (
-  `id` int(5) NOT NULL,
-  `user_id` int(5) NOT NULL,
-  `status` tinyint(4) NOT NULL,
-  `product_id` char(5) NOT NULL,
-  `qty` int(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Struktur dari tabel `payment_type`
 --
 
 CREATE TABLE `payment_type` (
   `payment_id` int(5) NOT NULL,
   `payment_name` varchar(255) NOT NULL,
-  `account_number` int(5) NOT NULL
+  `account_number` int(5) NOT NULL,
+  `user_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -119,7 +110,8 @@ CREATE TABLE `payment_type` (
 CREATE TABLE `price_group` (
   `price_group_id` int(5) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `price` decimal(16,2) NOT NULL
+  `price` decimal(16,2) NOT NULL,
+  `user_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -167,6 +159,23 @@ CREATE TABLE `role` (
 
 INSERT INTO `role` (`role_id`, `role_name`) VALUES
 (1, 'distributor');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `store_order`
+--
+
+CREATE TABLE `store_order` (
+  `id` int(5) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `user_id` int(5) NOT NULL,
+  `qty` int(10) NOT NULL,
+  `total_price` decimal(16,2) NOT NULL,
+  `note` text NOT NULL,
+  `seller_user_id` int(5) NOT NULL,
+  `status` tinyint(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -227,12 +236,6 @@ ALTER TABLE `menu_access`
   ADD PRIMARY KEY (`role_id`,`menu_id`);
 
 --
--- Indeks untuk tabel `order`
---
-ALTER TABLE `order`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indeks untuk tabel `payment_type`
 --
 ALTER TABLE `payment_type`
@@ -263,6 +266,12 @@ ALTER TABLE `role`
   ADD PRIMARY KEY (`role_id`);
 
 --
+-- Indeks untuk tabel `store_order`
+--
+ALTER TABLE `store_order`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
@@ -288,13 +297,7 @@ ALTER TABLE `config`
 -- AUTO_INCREMENT untuk tabel `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT untuk tabel `order`
---
-ALTER TABLE `order`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `menu_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `payment_type`
@@ -319,6 +322,12 @@ ALTER TABLE `proof_payment`
 --
 ALTER TABLE `role`
   MODIFY `role_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT untuk tabel `store_order`
+--
+ALTER TABLE `store_order`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
