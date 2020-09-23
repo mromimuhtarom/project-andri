@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 23 Sep 2020 pada 10.25
--- Versi server: 10.4.14-MariaDB
--- Versi PHP: 7.4.10
+-- Waktu pembuatan: 23 Sep 2020 pada 18.21
+-- Versi server: 10.1.38-MariaDB
+-- Versi PHP: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -61,12 +62,13 @@ CREATE TABLE `menu` (
 
 INSERT INTO `menu` (`menu_id`, `name`, `parent_id`, `status`, `route`, `icon`) VALUES
 (1, 'Dashboard', 0, 1, 'dashboard', 'fas fa-tachometer-alt'),
-(2, 'Product', 0, 1, 'product', 'fas fa-tachometer-alt'),
+(2, 'Produk', 0, 1, 'product', 'fas fa-tachometer-alt'),
 (3, 'Pesanan', 0, 1, '', 'fas fa-tachometer-alt'),
 (4, 'Pesanan Pelanggan', 3, 1, 'order', 'fas fa-tachometer-alt'),
 (5, 'Sejarah Pesanan', 3, 1, 'historyorder', 'fas fa-tachometer-alt'),
 (6, 'Pengaturan', 0, 1, '', 'fas fa-tachometer-alt'),
-(7, 'Pengaturan Pembayaran', 6, 1, 'paymentsetting', 'fas fa-tachometer-alt');
+(7, 'Pengaturan Pembayaran', 6, 1, 'paymentsetting', 'fas fa-tachometer-alt'),
+(8, 'Pengaturan Grup Harga Barang', 6, 1, 'gouphargabarangpengaturan', 'fas fa-tachometer-alt');
 
 -- --------------------------------------------------------
 
@@ -174,6 +176,9 @@ CREATE TABLE `store_order` (
   `total_price` decimal(16,2) NOT NULL,
   `note` text NOT NULL,
   `seller_user_id` int(5) NOT NULL,
+  `variation_id` int(5) NOT NULL,
+  `variation_name` varchar(255) NOT NULL,
+  `variation_detail_name` varchar(255) NOT NULL,
   `status` tinyint(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -209,8 +214,21 @@ INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`, `t
 CREATE TABLE `variation` (
   `variation_id` int(5) NOT NULL,
   `product_id` int(5) NOT NULL,
-  `variation_name` int(255) NOT NULL,
-  `qty` int(5) NOT NULL
+  `variation_name` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `variation_detail`
+--
+
+CREATE TABLE `variation_detail` (
+  `id` int(5) NOT NULL,
+  `variation_id` int(5) NOT NULL,
+  `name_detail_variation` varchar(255) NOT NULL,
+  `qty` int(5) NOT NULL,
+  `price` decimal(16,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -284,6 +302,12 @@ ALTER TABLE `variation`
   ADD PRIMARY KEY (`variation_id`);
 
 --
+-- Indeks untuk tabel `variation_detail`
+--
+ALTER TABLE `variation_detail`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
@@ -297,7 +321,7 @@ ALTER TABLE `config`
 -- AUTO_INCREMENT untuk tabel `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `menu_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `payment_type`
@@ -340,6 +364,12 @@ ALTER TABLE `user`
 --
 ALTER TABLE `variation`
   MODIFY `variation_id` int(5) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `variation_detail`
+--
+ALTER TABLE `variation_detail`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
