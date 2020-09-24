@@ -90,13 +90,13 @@
                             <input type="text" class="form-control" name="" id="" placeholder="Kode Produk"><br>
                             <input type="number" class="form-control" name="" id="" placeholder="Berat Barang"><br>
                             <input type="number" class="form-control" name="" id="" placeholder="Stok Barang"><br>
-                            <select class="form-control" name="" id="">
+                            <select class="form-control" name="" data-price="fdg" id="test">
                                 <option value="">Pilih Group Harga</option>
                                 @foreach ($pricegroup as $pg)
-                                <option value="{{$pg->price_group_id}}">{{ $pg->name }} ({{ $pg->price}})</option>
+                                <option value="{{$pg->price_group_id}}" data-price="{{$pg->price}}">{{ $pg->name }} ({{ $pg->price}})</option>
                                 @endforeach
                             </select><br>
-                            <input type="text" class="form-control" name="" id="" placeholder="Harga"><br>
+                            <input type="text" class="form-control" name="" id="harga" placeholder="Harga"><br>
                             
                             <span>Variasi</span>
                             <table width="100%">
@@ -127,6 +127,9 @@
                                         var idrmvplh = $(this).attr('id');
                                         $('.'+idrmvplh).remove();
                                     }) 
+                                    $('#test').change(function(){
+                                        var a = $(this).find(':selected').data('price');
+                                    });
     
                                 }); 
                             </script>

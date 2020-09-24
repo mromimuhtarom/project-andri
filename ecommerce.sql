@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 23 Sep 2020 pada 18.21
--- Versi server: 10.1.38-MariaDB
--- Versi PHP: 7.3.2
+-- Waktu pembuatan: 24 Sep 2020 pada 10.56
+-- Versi server: 10.4.14-MariaDB
+-- Versi PHP: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -115,6 +114,13 @@ CREATE TABLE `price_group` (
   `price` decimal(16,2) NOT NULL,
   `user_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `price_group`
+--
+
+INSERT INTO `price_group` (`price_group_id`, `name`, `price`, `user_id`) VALUES
+(1, 'tfg', '45000.00', 1);
 
 -- --------------------------------------------------------
 
@@ -333,7 +339,7 @@ ALTER TABLE `payment_type`
 -- AUTO_INCREMENT untuk tabel `price_group`
 --
 ALTER TABLE `price_group`
-  MODIFY `price_group_id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `price_group_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `proof_payment`

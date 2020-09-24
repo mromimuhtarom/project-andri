@@ -19,7 +19,6 @@ class ProductController extends Controller
         $user_id = Session::get('user_id');
         $product = Product::where('user_id', '=', $user_id)->get();
         $pricegroup = Pricegroup::where('user_id', '=', $user_id)->get();
-
         return view('pages.product', compact('product', 'pricegroup'));
     }
 
