@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 24 Sep 2020 pada 10.56
+-- Waktu pembuatan: 25 Sep 2020 pada 10.44
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.4.10
 
@@ -134,7 +134,8 @@ CREATE TABLE `product` (
   `weight` int(10) NOT NULL,
   `price_group_id` tinyint(5) NOT NULL,
   `price` decimal(16,2) NOT NULL,
-  `user_id` int(5) NOT NULL
+  `user_id` int(5) NOT NULL,
+  `picture` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -219,8 +220,8 @@ INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`, `t
 
 CREATE TABLE `variation` (
   `variation_id` int(5) NOT NULL,
-  `product_id` int(5) NOT NULL,
-  `variation_name` int(255) NOT NULL
+  `product_id` char(5) NOT NULL,
+  `variation_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -232,7 +233,7 @@ CREATE TABLE `variation` (
 CREATE TABLE `variation_detail` (
   `id` int(5) NOT NULL,
   `variation_id` int(5) NOT NULL,
-  `name_detail_variation` varchar(255) NOT NULL,
+  `name_detail_variation` varchar(255) DEFAULT NULL,
   `qty` int(5) NOT NULL,
   `price` decimal(16,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -369,13 +370,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `variation`
 --
 ALTER TABLE `variation`
-  MODIFY `variation_id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `variation_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT untuk tabel `variation_detail`
 --
 ALTER TABLE `variation_detail`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
