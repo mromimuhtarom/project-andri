@@ -18,6 +18,7 @@ Route::post('/login', 'LoginController@processlogin')->name('processlogin');
 Route::get('/logout', 'LoginController@logout')->name('logout');
 Route::get('/dashboard-view', 'DashboardController@index')->name('dashboard');
 Route::get('/product-view', 'ProductController@index')->name('product');
+Route::post('/product-create', 'ProductController@store')->name('productcreate');
 Route::get('/order-view', 'OrderController@index')->name('order');
 Route::get('/historyorder-view', 'HistoryOrderController@index')->name('historyorder');
 Route::get('/paymentsetting-view', 'PaymentSettingController@index')->name('paymentsetting');

@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Session;
+use App\Models\Variation;
+use App\Models\Variationdetail;
 use App\Models\Pricegroup;
+use Validator;
 
 class ProductController extends Controller
 {
@@ -40,7 +43,76 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product_code           = $request->product_code;
+        $product_name           = $request->product_name;
+        $product_weight         = $request->product_weight;
+        $product_stok_general   = $request->stock_general;
+        $price_group            = $request->price_group;
+        $price_general          = $request->price_general;
+        $variation_name         = $request->variation_name;
+        $user_id                = Session::get('user_id');
+        $file                   = $request->file('file');
+        $ekstensi_diperbolehkan = array('png', 'jpg', 'JPEG', 'PNG');
+        $nama                   = $_FILES['file']['name'];
+        $x                      = explode('.', $nama);
+        $ekstensi               = strtolower(end($x));
+        $ukuran                 = $_FILES['file']['size'];
+        $nama_file_unik         = $product_code.'.'.$ekstensi; 
+        $validator = Validator::make($request->all(),[
+            'file'             => 'required',
+            'product_code'     => 'required',
+            'product_name'     => 'required',
+            'product_weight'   => 'required|integer',
+            ''
+        ]);
+        
+        if ($validator->fails()) {
+            alert()->error('ErrorAlert',$validator->errors()->first());
+            return back();
+        } 
+
+        if(in_array($ekstensi, $ekstensi_diperbolehkan) === true): 
+            list($width, $height)   = getimagesize($file);    
+            if($ukuran < 1048576):
+                    $file->move(public_path('image_user/product/'), $nama_file_unik);
+                    Product::create([
+                        'product_id'     => $product_code,
+                        'product_name'   => $product_name,
+                        'weight'         => $product_weight,
+                        'price_group_id' => $price_group,
+                        'price'          => $price_general,
+                        'user_id'        => $user_id,
+                        'picture'        => $nama_file_unik
+                    ]); 
+                    if($variation_name != NULL):
+                        $variation = Variation::create([
+                            'product_id'     => $product_code,
+                            'variation_name' => $variation_name
+                        ]);
+                        $a = 0;
+                        foreach($request->pilihan as $key => $value):
+                            Variationdetail::create([
+                                'variation_id'  => $variation->id,
+                                'name_detail_variation' => $value,
+                                'qty'           =>  $request->variation_stok[$a],
+                                'price'         => $request->Harga[$a]
+                            ]);
+                            $a++;
+                        endforeach;
+
+                    endif;
+
+                    return back()->with('success', 'input data telah berhasil');
+
+            else:
+                alert()->error('ErrorAlert', 'Ukuran file harus di bawah 1mb');
+                return back();
+            endif;
+        else: 
+            alert()->error('ErrorAlert', 'Ekstensi file harus png atau jpg');
+            return back();
+        endif;
+
     }
 
     /**

@@ -73,7 +73,7 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="th.php">
+                <form method="POST" action="{{ route('productcreate') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                             <table width="100%">
@@ -82,45 +82,59 @@
                                         <div style="border-radius:10px;border:1px solid black;background-color:#cccccc;width:200px;height:100px;position: relative;display: inline-block;">
                                             <img src="/image/product/uploadimg.png" alt="" id="imginsert" max-width="100px" height="98px">
                                         </div><br>                                    
-                                        <input type="file" name="" id="btnimginsert" onchange="readURL(this);">
+                                        <input type="file" name="file" id="btnimginsert" onchange="readURL(this);">
                                     </td>
                                 </tr>
                             </table><br>
-                            <input type="text" class="form-control" name="" id="" placeholder="Nama Barang"><br>
-                            <input type="text" class="form-control" name="" id="" placeholder="Kode Produk"><br>
-                            <input type="number" class="form-control" name="" id="" placeholder="Berat Barang"><br>
-                            <input type="number" class="form-control" name="" id="" placeholder="Stok Barang"><br>
-                            <select class="form-control" name="" data-price="fdg" id="test">
+                            <div class="breadcrumb">
+                            Catatan : <br>
+                            - Untuk Group Harga Boleh di kosongin atau pun di isi<br>
+                            - Untuk Variasi dan pilihan boleh di kosongin atau<br>
+                            - Pilihan akan muncul jika variasi di isi <br>
+                            - ketika sudah di isi nama variasi, maka wajib mengisi pilihan<br>
+                            - ketika sudah di isi pilihan maka nama variasi tidak boleh kosong
+                            </div>
+                            *
+                            <input type="text" class="form-control" name="product_name" id="" placeholder="Nama Barang"><br>
+                            *
+                            <input type="text" class="form-control" name="product_code" id="" placeholder="Kode Produk"><br>
+                            *
+                            <input type="number" class="form-control" name="product_weight" id="" placeholder="Berat Barang"><br>
+                            *
+                            <input type="number" class="form-control" name="stock_general" id="" placeholder="Stok Barang"><br>
+                            <select class="form-control" name="price_group" id="test">
                                 <option value="">Pilih Group Harga</option>
                                 @foreach ($pricegroup as $pg)
                                 <option value="{{$pg->price_group_id}}" data-price="{{$pg->price}}">{{ $pg->name }} ({{ $pg->price}})</option>
                                 @endforeach
                             </select><br>
-                            <input type="text" class="form-control" name="" id="harga" placeholder="Harga"><br>
-                            
+                            *
+                            <input type="text" class="form-control" name="price_general" id="harga" placeholder="Harga"><br>
+
                             <span>Variasi</span>
                             <table width="100%">
                                 <thead>
                                     <tr>
                                         <td colspan="4">
-                                            <input type="text" class="form-control" name="variation_name" placeholder="Nama Variasi" id="">
+                                            <input type="text" class="form-control" name="variation_name" placeholder="Nama Variasi" id="variation_name">
                                         </td>
                                     </tr>
                                 </thead>
                                 <tbody id="textboxDiv">
                                     <tr>
-                                        <td><input class="form-control" type="text" name="variation_stok" id="" placeholder="Stok" required></td>
-                                        <td><input class="form-control" type="text" name="pilihan" id="" placeholder="Nama pilihan" required></td>
-                                        <td><input class="form-control" type="text" name="Harga" id="" placeholder="Harga" required></td>
+                                        <td><input class="form-control" type="text" name="variation_stok[]" id="" placeholder="Stok"></td>
+                                        <td><input class="form-control" type="text" name="pilihan[]" id="" placeholder="Nama pilihan"></td>
+                                        <td><input class="form-control" type="text" name="Harga[]" id="" placeholder="Harga"></td>
                                         <td><a href="#" class="btn btn-secondary" id="Add">Tambah</a></td>
                                     </tr>
                                 </tbody>
-                            </table>
+                            </table><br>
                             <script>
                                 $(document).ready(function() {  
                                     var i = 0;
+                                    $('#textboxDiv').hide();  
                                     $("#Add").on("click", function() {  
-                                        $("#textboxDiv").append('<tr class="variasipilihan'+i+'"><td><input class="form-control variasipilihan'+i+'" type="text" name="variation_stok" placeholder="Stok" required></td><td><input class="form-control variasipilihan'+i+'" type="text" name="pilihan" id="" placeholder="Nama Pilihan" required></td><td><input class="form-control variasipilihan'+i+'" type="text" name="Harga" id="" placeholder="Harga" required></td><td><a href="#" class="removepilihan btn btn-danger" id="variasipilihan'+i+'">Remove</a></td></tr>');  
+                                        $("#textboxDiv").append('<tr class="variasipilihan'+i+'"><td><input class="form-control variasipilihan'+i+'" type="text" name="variation_stok[]" placeholder="Stok" required></td><td><input class="form-control variasipilihan'+i+'" type="text" name="pilihan[]" id="" placeholder="Nama Pilihan" required></td><td><input class="form-control variasipilihan'+i+'" type="text" name="Harga[]" id="" placeholder="Harga" required></td><td><a href="#" class="removepilihan btn btn-danger" id="variasipilihan'+i+'">Remove</a></td></tr>');  
                                         i++;
                                     });
                                     $("#textboxDiv").on("click", ".removepilihan", function() {
@@ -129,6 +143,18 @@
                                     }) 
                                     $('#test').change(function(){
                                         var a = $(this).find(':selected').data('price');
+                                    });
+                                    
+                                    $("#variation_name").keyup(function(e) {
+                                        e.preventDefault();
+                                        var valvariationlength = $(this).val().length;
+
+                                        if(valvariationlength < 1)
+                                        {
+                                            $('#textboxDiv').hide();                                         
+                                        } else {
+                                            $('#textboxDiv').show();
+                                        }
                                     });
     
                                 }); 
