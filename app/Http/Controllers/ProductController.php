@@ -60,16 +60,28 @@ class ProductController extends Controller
         $nama_file_unik         = $product_code.'.'.$ekstensi; 
         $validator = Validator::make($request->all(),[
             'file'             => 'required',
-            'product_code'     => 'required',
+            'product_code'     => 'required|unique:product,product_id',
             'product_name'     => 'required',
-            'product_weight'   => 'required|integer',
-            ''
+            'product_weight'   => 'required|integer'
         ]);
         
         if ($validator->fails()) {
             alert()->error('ErrorAlert',$validator->errors()->first());
             return back();
         } 
+
+        // -- Ketika variasi kosong maka dihidupkan validasi harga dan stock barang yg general --//
+        if($variation_name == NULL): 
+            $validator_general = Validator::make($request->all(),[
+                'price_general'     => 'required',
+                'stock_general'     => 'required'
+            ]);
+            
+            if ($validator_general->fails()) {
+                alert()->error('ErrorAlert', $validator_general->errors()->first());
+                return back();
+            } 
+        endif;
 
         if(in_array($ekstensi, $ekstensi_diperbolehkan) === true): 
             list($width, $height)   = getimagesize($file);    
@@ -112,6 +124,11 @@ class ProductController extends Controller
             alert()->error('ErrorAlert', 'Ekstensi file harus png atau jpg');
             return back();
         endif;
+
+    }
+
+    public function updateimage(Request $request)
+    {
 
     }
 

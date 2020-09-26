@@ -16,11 +16,16 @@ class Product extends Model
 
     public function pricegroup()
     {
-        return $this->belongsTo('App\Models\Pricegroup', 'foreign_key', 'price_group_id');
+        return $this->hasOne(Pricegroup::class, 'price_group_id', 'price_group_id');
     }
 
     public function variation()
     {
-            return $this->hasMany('App\Models\Variation', 'foreign_key', 'product_id');
+            return $this->hasOne('App\Models\Variation', 'product_id', 'product_id');
+    }
+
+    public function variation_detail()
+    {
+        return $this->variation->hasMany('App\Models\Variationdetail', 'variation_id', 'variation_id');
     }
 }
