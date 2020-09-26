@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 25 Sep 2020 pada 10.44
+-- Waktu pembuatan: 26 Sep 2020 pada 06.55
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.4.10
 
@@ -138,6 +138,13 @@ CREATE TABLE `product` (
   `picture` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `product`
+--
+
+INSERT INTO `product` (`product_id`, `product_name`, `weight`, `price_group_id`, `price`, `user_id`, `picture`) VALUES
+('bh001', 'Plang', 135, 1, '45000.00', 1, 'bh001.png');
+
 -- --------------------------------------------------------
 
 --
@@ -224,6 +231,13 @@ CREATE TABLE `variation` (
   `variation_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `variation`
+--
+
+INSERT INTO `variation` (`variation_id`, `product_id`, `variation_name`) VALUES
+(18, 'bh001', 'sdfs');
+
 -- --------------------------------------------------------
 
 --
@@ -237,6 +251,14 @@ CREATE TABLE `variation_detail` (
   `qty` int(5) NOT NULL,
   `price` decimal(16,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `variation_detail`
+--
+
+INSERT INTO `variation_detail` (`id`, `variation_id`, `name_detail_variation`, `qty`, `price`) VALUES
+(4, 18, 'sdfs', 25, '45000.00'),
+(5, 18, 'dfgdf', 25, '43543.00');
 
 --
 -- Indexes for dumped tables
@@ -370,13 +392,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `variation`
 --
 ALTER TABLE `variation`
-  MODIFY `variation_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `variation_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT untuk tabel `variation_detail`
 --
 ALTER TABLE `variation_detail`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
