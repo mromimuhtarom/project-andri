@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 26 Sep 2020 pada 06.55
--- Versi server: 10.4.14-MariaDB
--- Versi PHP: 7.4.10
+-- Waktu pembuatan: 27 Sep 2020 pada 19.34
+-- Versi server: 10.1.38-MariaDB
+-- Versi PHP: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -20,6 +21,26 @@ SET time_zone = "+00:00";
 --
 -- Database: `ecommerce`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `category`
+--
+
+CREATE TABLE `category` (
+  `category_id` int(5) NOT NULL,
+  `category_name` varchar(255) NOT NULL,
+  `parent_id` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `category`
+--
+
+INSERT INTO `category` (`category_id`, `category_name`, `parent_id`) VALUES
+(1, 'Pakaian', 0),
+(2, 'Baju Pria', 1);
 
 -- --------------------------------------------------------
 
@@ -61,12 +82,12 @@ CREATE TABLE `menu` (
 
 INSERT INTO `menu` (`menu_id`, `name`, `parent_id`, `status`, `route`, `icon`) VALUES
 (1, 'Dashboard', 0, 1, 'dashboard', 'fas fa-tachometer-alt'),
-(2, 'Produk', 0, 1, 'product', 'fas fa-tachometer-alt'),
-(3, 'Pesanan', 0, 1, '', 'fas fa-tachometer-alt'),
-(4, 'Pesanan Pelanggan', 3, 1, 'order', 'fas fa-tachometer-alt'),
-(5, 'Sejarah Pesanan', 3, 1, 'historyorder', 'fas fa-tachometer-alt'),
-(6, 'Pengaturan', 0, 1, '', 'fas fa-tachometer-alt'),
-(7, 'Pengaturan Pembayaran', 6, 1, 'paymentsetting', 'fas fa-tachometer-alt'),
+(2, 'Produk', 0, 1, 'product', 'fab fa-product-hunt'),
+(3, 'Pesanan', 0, 1, '', 'fas fa-shopping-cart'),
+(4, 'Pesanan Pelanggan', 3, 1, 'order', 'fas fa-shopping-cart'),
+(5, 'Sejarah Pesanan', 3, 1, 'historyorder', 'fas fa-history'),
+(6, 'Pengaturan', 0, 1, '', 'fas fa-cog'),
+(7, 'Pengaturan Pembayaran', 6, 1, 'paymentsetting', 'fas fa-hammer'),
 (8, 'Pengaturan Grup Harga Barang', 6, 1, 'gouphargabarangpengaturan', 'fas fa-tachometer-alt');
 
 -- --------------------------------------------------------
@@ -102,6 +123,13 @@ CREATE TABLE `payment_type` (
   `user_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `payment_type`
+--
+
+INSERT INTO `payment_type` (`payment_id`, `payment_name`, `account_number`, `user_id`) VALUES
+(1, 'BNI', 3454352, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -120,7 +148,8 @@ CREATE TABLE `price_group` (
 --
 
 INSERT INTO `price_group` (`price_group_id`, `name`, `price`, `user_id`) VALUES
-(1, 'tfg', '45000.00', 1);
+(1, 'tfg', '45000.00', 1),
+(2, 'BGH', '50000.00', 1);
 
 -- --------------------------------------------------------
 
@@ -131,19 +160,22 @@ INSERT INTO `price_group` (`price_group_id`, `name`, `price`, `user_id`) VALUES
 CREATE TABLE `product` (
   `product_id` char(5) NOT NULL,
   `product_name` varchar(255) NOT NULL,
+  `category_id` int(5) NOT NULL,
   `weight` int(10) NOT NULL,
   `price_group_id` tinyint(5) NOT NULL,
   `price` decimal(16,2) NOT NULL,
   `user_id` int(5) NOT NULL,
-  `picture` varchar(25) NOT NULL
+  `picture` varchar(25) NOT NULL,
+  `view` int(5) NOT NULL,
+  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `product`
 --
 
-INSERT INTO `product` (`product_id`, `product_name`, `weight`, `price_group_id`, `price`, `user_id`, `picture`) VALUES
-('bh001', 'Plang', 135, 1, '45000.00', 1, 'bh001.png');
+INSERT INTO `product` (`product_id`, `product_name`, `category_id`, `weight`, `price_group_id`, `price`, `user_id`, `picture`, `view`, `datetime`) VALUES
+('bh001', 'Plang1', 1, 135, 1, '45000.00', 1, 'bh001.jpg', 0, '2020-09-27 12:07:10');
 
 -- --------------------------------------------------------
 
@@ -174,7 +206,10 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`role_id`, `role_name`) VALUES
-(1, 'distributor');
+(1, 'distributor'),
+(2, 'pemilik'),
+(3, 'reseller'),
+(4, 'user');
 
 -- --------------------------------------------------------
 
@@ -185,6 +220,7 @@ INSERT INTO `role` (`role_id`, `role_name`) VALUES
 CREATE TABLE `store_order` (
   `id` int(5) NOT NULL,
   `product_name` varchar(255) NOT NULL,
+  `category_id` int(5) NOT NULL,
   `user_id` int(5) NOT NULL,
   `qty` int(10) NOT NULL,
   `total_price` decimal(16,2) NOT NULL,
@@ -265,6 +301,12 @@ INSERT INTO `variation_detail` (`id`, `variation_id`, `name_detail_variation`, `
 --
 
 --
+-- Indeks untuk tabel `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`category_id`);
+
+--
 -- Indeks untuk tabel `config`
 --
 ALTER TABLE `config`
@@ -341,6 +383,12 @@ ALTER TABLE `variation_detail`
 --
 
 --
+-- AUTO_INCREMENT untuk tabel `category`
+--
+ALTER TABLE `category`
+  MODIFY `category_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT untuk tabel `config`
 --
 ALTER TABLE `config`
@@ -356,13 +404,13 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT untuk tabel `payment_type`
 --
 ALTER TABLE `payment_type`
-  MODIFY `payment_id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `payment_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `price_group`
 --
 ALTER TABLE `price_group`
-  MODIFY `price_group_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `price_group_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `proof_payment`
@@ -374,7 +422,7 @@ ALTER TABLE `proof_payment`
 -- AUTO_INCREMENT untuk tabel `role`
 --
 ALTER TABLE `role`
-  MODIFY `role_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `role_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `store_order`

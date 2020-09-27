@@ -13,15 +13,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'LoginController@login')->name('login');
+Route::get('/admin', 'LoginController@login')->name('login');
 Route::post('/login', 'LoginController@processlogin')->name('processlogin');
 Route::get('/logout', 'LoginController@logout')->name('logout');
 Route::get('/dashboard-view', 'DashboardController@index')->name('dashboard');
+
 Route::get('/product-view', 'ProductController@index')->name('product');
 Route::post('/product-create', 'ProductController@store')->name('productcreate');
 Route::post('/imageproduct-edit', 'ProductController@updateimage')->name('productimage-update');
+Route::post('/product-update', 'ProductController@update')->name('product_update');
+
+
 Route::get('/order-view', 'OrderController@index')->name('order');
 Route::get('/historyorder-view', 'HistoryOrderController@index')->name('historyorder');
+
 Route::get('/paymentsetting-view', 'PaymentSettingController@index')->name('paymentsetting');
+Route::post('/paymentsetting-create', 'PaymentSettingController@store')->name('paymentsetting-create');
+
 Route::get('/grouphargabarang-view', 'GroupHargaController@index')->name('gouphargabarangpengaturan');
+Route::post('/grouphargabarang-create', 'GroupHargaController@store')->name('gouphargabarangpengaturan-create');
+
+
+
+
+Route::get('/', 'HomeController@index')->name('home-view');
+
+Route::get('/category', 'CategoryStoreController@index')->name('categorystore-view');
 

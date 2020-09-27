@@ -9,6 +9,7 @@ use App\Models\Variation;
 use App\Models\Variationdetail;
 use App\Models\Pricegroup;
 use Validator;
+use File;
 
 class ProductController extends Controller
 {
@@ -129,7 +130,46 @@ class ProductController extends Controller
 
     public function updateimage(Request $request)
     {
+        $img                    = $request->file('file');
+        $product_id             = $request->id_product;
+        $ekstensi_diperbolehkan = array('png', 'jpg', 'JPEG', 'PNG');
+        $nama                   = $_FILES['file']['name'];
+        $x                      = explode('.', $nama);
+        $ekstensi               = strtolower(end($x));
+        $ukuran                 = $_FILES['file']['size'];
+        $nama_file_unik         = $product_id.'.'.$ekstensi;
 
+        $validator_general = Validator::make($request->all(),[
+            'file'     => 'required'
+        ]);
+        
+        if ($validator_general->fails()) {
+            alert()->error('ErrorAlert', $validator_general->errors()->first());
+            return back();
+        } 
+
+        $oldimg = Product::where('product_id', '=', $product_id)->select('picture')->first();
+        if(in_array($ekstensi, $ekstensi_diperbolehkan) === true): 
+            list($width, $height)   = getimagesize($img);    
+            if($ukuran < 104576):
+                $path = '../public/image_user/product/'.$oldimg->picture;
+                $backuppath = '../public/image_user/backup_product/'.$oldimg->picture;
+                $movepath = File::move($path, $backuppath);
+                $updimg = Product::where('product_id', '=', $product_id)->update([
+                    'picture' => $nama_file_unik
+                ]);
+
+                File:: delete($path);
+                $img->move(public_path('image_user/product/'), $nama_file_unik);
+                return back()->with('success', 'Gambar telah di update');
+            else:
+                alert()->error('ErrorAlert', 'Ukuran file harus di bawah 1mb');
+                return back();
+            endif;
+        else:
+            alert()->error('ErrorAlert', 'Ekstensi file harus png atau jpg');
+            return back();
+        endif;
     }
 
     /**
@@ -161,9 +201,43 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $pk        = $request->pk;
+        $name      = $request->name;
+        $value     = $request->value;
+
+        if($name === 'name'):
+            $pkproduct = $request->pkproduct;
+            $variationid = $request->variationid;
+            Pricegroup::where('price_group_id', '=', $pk)->update([
+                $name => $value
+            ]);
+            Product::where('product_id', '=', $pkproduct)->update([
+                'price' => $value
+            ]);
+
+            Variationdetail::where('variation_id', '=', $variationid)->update([
+                'price' => $value
+            ]);
+        else:
+            Product::where('product_id', '=', $pk)->update([
+                $name => $value
+            ]);
+        endif;
+
+    }
+
+    public function updatevariation(Request $request)
+    {
+        $variationname = $request->variation_name;
+        $stok          = $request->variation_stok;
+        $pilihan       = $request->pilihan;
+        $harga         = $request->Harga;
+
+        foreach ($stok as $stk):
+            
+        endforeach;
     }
 
     /**

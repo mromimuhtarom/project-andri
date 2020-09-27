@@ -12,6 +12,6 @@ class Pricegroup extends Model
     protected $table       = 'price_group';
     protected $primary_key = 'price_group_id';
     protected $guarded     = [];
-    public    $timestamp   = false;
+    public    $timestamps  = false;
 
 }

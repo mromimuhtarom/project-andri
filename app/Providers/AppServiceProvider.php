@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\Menuname;
 use View;
 use Illuminate\Routing\UrlGenerator;
+use App\Models\Category;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,6 +36,14 @@ class AppServiceProvider extends ServiceProvider
                     ->where('status', '=', 1)
                     ->where('parent_id', '=', 0)
                     ->get();
+        $category = Category::select(
+                        'category_name',
+                        'category_id'
+                    )
+                    ->where('parent_id', '=', 0)
+                    ->get();
+            
+        View::share('category', $category);
 
         View::share('adm_menu', $adm_menu);
     }

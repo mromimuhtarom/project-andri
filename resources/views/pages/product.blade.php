@@ -62,16 +62,18 @@
                                 <br class="gambarbelumedit{{ $pd->product_id}}">
                                 <a href="#" class="btn btn-primary ubahgambar{{ $pd->product_id}}">Ubah Gambar</a>                                
                             </td>
-                            <td>{{ $pd->product_name }}</td>
+                            <td><a href="#" class="usertext" data-name="product_name" data-pk="{{ $pd->product_id }}" data-type="text" data-url="{{ route('product_update') }}">{{ $pd->product_name }}</a></td>
                             <td>{{ $pd->product_id }}</td>
-                            <td>{{ $pd->weight }}</td>
-                            <td>{{ $pd->pricegroup->name }}</td>
+                            <td><a href="#" class="usertext" data-name="weight" data-pk="{{ $pd->product_id }}" data-type="number" data-url="{{ route('product_update') }}">{{ $pd->weight }}</a></td>
+                            <td><a href="#" class="pricegroup" data-name="name" data-pkproduct="{{ $pd->product_id }}" data-variationid="{{ $pd->variation->variation_id }}" data-pk="{{ $pd->price_group_id }}" data-type="select" data-url="{{ route('product_update') }}" data-value="{{ $pd->price_group_id }}">{{ $pd->pricegroup->name }}</a></td>
                             <td>
-                                @foreach ($pd->variation_detail as $vr)
-                                    {{ $vr->name_detail_variation}}: {{ $vr->qty }},
-                                @endforeach
+                                <a href="#" data-toggle="modal" data-target="#modaleditpilihan{{ $pd->product_id }}">
+                                    @foreach ($pd->variation_detail as $vr)
+                                        {{ $vr->name_detail_variation}}: {{ $vr->qty }},
+                                    @endforeach
+                                </a>
                             </td>
-                            <td>{{ $vr->price }}</td>
+                            <td><a href="#" class="usertext" data-name="price" data-pk="{{ $pd->product_id }}" data-type="number" data-url="{{ route('product_update') }}">{{ $vr->price }}</a></td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -79,6 +81,76 @@
             </div>
         </div>
     </div>
+
+
+    {{-- Modal Edit Pilihan --}}
+    @foreach($product as $pd)
+    <div class="modal fade" id="modaleditpilihan{{ $pd->product_id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Variasi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ route('productcreate') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <td colspan="4">Nama Variasi</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            <input type="text" class="form-control" name="variation_name" placeholder="Nama Variasi" id="variation_name" value="{{ $pd->variation->variation_name }}">
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody id="textboxEdit{{ $pd->product_id }}">
+                                    <tr>
+                                        <td>Stok</td>
+                                        <td>Nama Pilihan</td>
+                                        <td>Harga</td>
+                                        <td><a href="#" class="btn btn-secondary edit{{ $pd->product_id }}" id="Add{{ $pd->product_id }}">Tambah</a></td>
+                                    </tr>
+                                    @foreach ($pd->variation_detail as $vr)
+                                    <tr class="mainproductvarian{{ $vr->id }}">
+                                        <td><input class="form-control stok_pilihanedit{{ $pd->product_id }}" type="text" name="variation_stok[]" value="{{ $vr->qty }}" id="" placeholder="Stok" required></td>
+                                        <td><input class="form-control nama_pilihanedit{{ $pd->product_id }}" type="text" name="pilihan[]" id="" value="{{ $vr->name_detail_variation }}" placeholder="Nama pilihan" required></td>
+                                        <td><input class="form-control harga_pilihanedit{{ $pd->product_id }}" type="text" name="Harga[]" id="" value="{{ $vr->price }}" placeholder="Harga" required></td>
+                                        <td><a href="#" class="btn btn-danger remove{{ $pd->product_id }}" id="mainproductvarian{{ $vr->id }}" >Hapus</a></td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table><br>
+                            <script>
+                                $(document).ready(function() {  
+                                    var i = 0;
+    
+                                    $("#Add{{ $pd->product_id }}").on("click", function() {  
+                                        $("#textboxEdit{{ $pd->product_id }}").append('<tr class="productvariant'+i+'"><td><input class="form-control stok_pilihanedit{{ $pd->product_id }}" type="text" name="variation_stok[]" value="{{ $vr->qty }}" id="" placeholder="Stok"></td><td><input class="form-control nama_pilihanedit{{ $pd->product_id }}" type="text" name="pilihan[]" id="" value="{{ $vr->name_detail_variation }}" placeholder="Nama pilihan"></td><td><input class="form-control harga_pilihanedit{{ $pd->product_id }}" type="text" name="Harga[]" id="" value="{{ $vr->price }}" placeholder="Harga"></td><td><a href="#" class="btn btn-danger remove{{ $pd->product_id }}" >Hapus</a></td></tr>');  
+                                        i++;
+                                    });
+                                    $("#textboxEdit{{ $pd->product_id }}").on("click", ".remove{{ $pd->product_id }}", function() {
+                                        console.log('dfg');
+                                        var idrmvplh = $(this).attr('id');
+                                        $('.'+idrmvplh).remove();
+                                    })    
+                                }); 
+                            </script>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    @endforeach
 
     {{-- Modal Create --}}
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -196,14 +268,44 @@
 
     <script>
         $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $('#dataTable').DataTable({
-                "bLengthChange": false
+                "bLengthChange": false,
+                "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                    $('.usertext').editable({
+                        mode :'inline',
+                        validate: function(value) {
+                            if($.trim(value) == '') {
+                            return 'This field is required';
+                            }
+                        }
+                    });
+
+                    $('.pricegroup').editable({
+                        mode:'inline',
+                        source: [
+                            {value: '', text: 'Pilih Group Harga'},
+                            @foreach ($pricegroup as $vr)
+                            {value: {{ $vr->price_group_id }}, text: '{{ $vr->name }} ({{ $vr->price }})'},
+                            @endforeach
+                        ],
+                        validate: function(value) {
+                        if($.trim(value) == '') {
+                            return 'This field is required';
+                        }
+                        }
+                    });
+                }
             });
             @foreach($product as $pd)
             $(".ubahgambar{{ $pd->product_id}}").on("click", function() {
                 $(this).hide();
                 $(".gambarbelumedit{{ $pd->product_id}}").css("display", "none");
-                $(".kolomeditgambar{{ $pd->product_id}}").append('<form action="{{ route("productimage-update") }}" enctype="multipart/form-data" class="editgambar{{ $pd->product_id}}">@csrf<div style="border-radius:5px;border:1px solid black;position: relative;display: inline-block;width:200px;height:100px;"><img src="/image_user/product/{{ $pd->picture }}" id="imgedit" alt="" style="display: block;max-width:190px;max-height:90px;margin-left: auto; margin-right: auto;"></div><br><input type="hidden" name="id_product" value="{{ $pd->product_id}}"><input type="file" onchange="readURLeditimg(this)" class="btn btn-secondary" name="" id="editgambar"><br><button type="submit" class="btn btn-success">Simpan</button> <a href="#" class="btn btn-danger editgambar" id="bataleditgambar{{ $pd->product_id}}">Batal</a></form>');
+                $(".kolomeditgambar{{ $pd->product_id}}").append('<form method="POST" action="{{ route("productimage-update") }}" enctype="multipart/form-data" class="editgambar{{ $pd->product_id}}"> @csrf <div style="border-radius:5px;border:1px solid black;position: relative;display: inline-block;width:200px;height:100px;"><img src="/image_user/product/{{ $pd->picture }}" id="imgedit" alt="" style="display: block;max-width:190px;max-height:90px;margin-left: auto; margin-right: auto;"></div><br><input type="hidden" name="id_product" value="{{ $pd->product_id}}"><input type="file" onchange="readURLeditimg(this)" class="btn btn-secondary" name="file" id="editgambar"><br><button type="submit" class="btn btn-success">Simpan</button> <a href="#" class="btn btn-danger editgambar" id="bataleditgambar{{ $pd->product_id}}">Batal</a></form>');
             });
 
             $('.kolomeditgambar{{ $pd->product_id}}').on('click', '#bataleditgambar{{ $pd->product_id}}', function(){

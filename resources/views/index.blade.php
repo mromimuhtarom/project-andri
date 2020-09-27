@@ -5,12 +5,36 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
+        <meta name="csrf-token" content="{{ csrf_token() }}"> 
         <meta name="author" content="" />
         <title>Dashboard - SB Admin</title>
         <link href="/css/styles.css" rel="stylesheet" />
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+        <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+        <style>
+            .editable-submit::before {
+              font-family: "Font Awesome 5 Free"; 
+              font-weight: 900; 
+              content: "Edit";
+            }
+            .editable-cancel::before {
+              font-family: "Font Awesome 5 Free"; 
+              font-weight: bold; 
+              content: "Batal";
+            }
+
+            .editable-cancel {
+                background-color:rgb(221, 83, 83);
+                color: white;
+            }
+            .editable-cancel:hover {
+                background-color:rgb(204, 80, 80) !important;
+                color: white !important;
+            }
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
