@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/admin', 'LoginController@login')->name('login');
+Route::get('/user', 'UserLoginController@index')->name('loginuser');
 Route::post('/login', 'LoginController@processlogin')->name('processlogin');
 Route::get('/logout', 'LoginController@logout')->name('logout');
 Route::get('/dashboard-view', 'DashboardController@index')->name('dashboard');
@@ -38,5 +39,5 @@ Route::post('/grouphargabarang-create', 'GroupHargaController@store')->name('gou
 
 Route::get('/', 'HomeController@index')->name('home-view');
 
-Route::get('/category', 'CategoryStoreController@index')->name('categorystore-view');
+Route::get('/category/{category_name}', 'CategoryStoreController@index')->name('categorystore-view');
 

@@ -23,9 +23,4 @@ class Category extends Model
     public function product(){
         return $this->parent->hasMany(Product::class, 'category_id', 'category_id');
     }
-
-    public function productcategorychild()
-    {
-        return $this->children->join('product', 'product.category_id', '=', 'category.category_id')->get();
-    }
 }

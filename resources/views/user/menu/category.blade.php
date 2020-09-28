@@ -15,7 +15,7 @@
             <div class="panel-body">
                 <ul>
                     @foreach ($ct->children as $ct1)
-                        <li><a href="{{ route('categorystore-view') }}">{{ $ct1->category_name }}</a></li>
+                        <li><a href="{{ route('categorystore-view', str_replace(' ', '_', $ct1->category_name)) }}">{{ $ct1->category_name }}</a></li>
                     @endforeach
                 </ul>
             </div>
@@ -24,7 +24,7 @@
     @else   
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4 class="panel-title"><a href="{{ route('categorystore-view') }}">{{ $ct->category_name }}</a></h4>
+            <h4 class="panel-title"><a href="{{ route('categorystore-view', str_replace(' ', '_', $ct1->category_name)) }}">{{ $ct->category_name }}</a></h4>
         </div>
     </div>
     @endif        
