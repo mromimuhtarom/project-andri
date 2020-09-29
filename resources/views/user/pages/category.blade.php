@@ -1,4 +1,4 @@
-@extends('user.index');
+@extends('user.template.template-w-sidebar');
 
 @section('content')
     <div class="features_items"><!--features_items-->

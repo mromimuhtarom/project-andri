@@ -21,63 +21,81 @@
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/store_user/images/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/store_user/images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/store_user/images/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="/store_user/images/ico/apple-touch-icon-57-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="/store_user/images/ico/apple-touch-icon-57-precomposed.png">
+	<style>
+		html{
+			width: 100%;
+			height: 100%;
+		}
+		body {
+			background: url(/image/login/login.jpg) no-repeat center center fixed;
+			background-repeat: no-repeat;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+			width:100%;
+			height: 100%;
+		}
+		.overlay{
+			background: rgba(208, 209, 166, 0.5);
+			margin: 0px;
+			width: 100%;
+			height: 100%;
+			top: 0px;
+			left: 0px;
+		}
+	</style>
 </head><!--/head-->
 
 <body>
-	<header id="header"><!--header-->		
-		<div class="header-middle"><!--header-middle-->
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-4">
-						<div class="logo pull-left">
-                            <a href="{{ route('home-view') }}"><img src="/store_user/images/home/logo.png" alt="" /></a>
+	<div class="overlay">
+		<header id="header"><!--header-->		
+			<div class="header-middle"><!--header-middle-->
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-4">
+							<div class="logo pull-left">
+								<a href="{{ route('home-view') }}"><img src="/store_user/images/home/logo.png" alt="" /></a>
+							</div>
+						</div>
+						<div class="col-sm-8">
+							<div class="shop-menu pull-right">
+								<ul class="nav navbar-nav">
+									<li><a href=""><i class="fa fa-user"></i> Daftar</a></li>
+									<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Keranjang</a></li>
+									@if (Session::get('login'))
+									<li><a href="{{ route('logoutuser-process') }}" class="active"><i class="fa fa-lock"></i> Keluar</a></li>
+									@else 
+									<li><a href="{{ route('loginuser')}}" class="active"><i class="fa fa-lock"></i> Login</a></li>
+									@endif
+								</ul>
+							</div>
 						</div>
 					</div>
-					<div class="col-sm-8">
-						<div class="shop-menu pull-right">
-							<ul class="nav navbar-nav">
-								<li><a href=""><i class="fa fa-user"></i> Daftar</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Keranjang</a></li>
-								<li><a href="login.html" class="active"><i class="fa fa-lock"></i> Login</a></li>
-							</ul>
-						</div>
+				</div>
+			</div><!--/header-middle-->
+		</header><!--/header-->
+		
+		<section id="form"><!--form-->
+			<div class="container">
+				<div class="row">
+					<div class="col col-sm-offset-1">
+						<div class="login-form"><!--login form-->
+							<h2>Selamat datang</h2>
+							<h4>silahkan login terlebih dahulu</h4>
+							<form action="{{ route('loginuser-process')}}" method="POST">
+								@csrf
+								<input type="text" name="username" placeholder="Username" />
+								<input type="password" name="password" placeholder="Password" />
+								<button type="submit" class="btn btn-default">Masuk</button>
+							</form>
+						</div><!--/login form-->
 					</div>
 				</div>
 			</div>
-		</div><!--/header-middle-->
-	</header><!--/header-->
-	
-	<section id="form"><!--form-->
-		<div class="container">
-			<div class="row">
-				<div class="col col-sm-offset-1">
-					<div class="login-form"><!--login form-->
-                        <h2>Selamat datang</h2>
-                        <h4>silahkan login terlebih dahulu</h4>
-						<form action="#">
-							<input type="text" placeholder="Username" />
-							<input type="password" placeholder="Password" />
-							<button type="submit" class="btn btn-default">Masuk</button>
-						</form>
-					</div><!--/login form-->
-				</div>
-			</div>
-		</div>
-	</section><!--/form-->
-	
-	
-	<footer id="footer"><!--Footer-->
-		
-		<div class="footer-bottom">
-			<div class="container">
-				<div class="row">
-					<p class="pull-left">Copyright © 2020 E-SHOPPER Inc. All rights reserved.</p>
-				</div>
-			</div>
-		</div>
-		
-	</footer><!--/Footer-->
+		</section><!--/form-->
+	</div>
 	
 
   
@@ -86,6 +104,7 @@
     <script src="/store_user/js/jquery.scrollUp.min.js"></script>
 	<script src="/store_user/js/bootstrap.min.js"></script>
     <script src="/store_user/js/jquery.prettyPhoto.js"></script>
-    <script src="/store_user/js/main.js"></script>
+	<script src="/store_user/js/main.js"></script>
+	@include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
 </body>
 </html>

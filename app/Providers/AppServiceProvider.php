@@ -7,6 +7,7 @@ use App\Models\Menuname;
 use View;
 use Illuminate\Routing\UrlGenerator;
 use App\Models\Category;
+use Session;
 
 class AppServiceProvider extends ServiceProvider
 {

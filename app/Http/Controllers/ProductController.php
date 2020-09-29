@@ -114,8 +114,8 @@ class ProductController extends Controller
                         endforeach;
 
                     endif;
-
-                    return back()->with('success', 'input data telah berhasil');
+                    alert()->success('input data telah berhasil');
+                    return back();
 
             else:
                 alert()->error('ErrorAlert', 'Ukuran file harus di bawah 1mb');
@@ -161,7 +161,8 @@ class ProductController extends Controller
 
                 File:: delete($path);
                 $img->move(public_path('image_user/product/'), $nama_file_unik);
-                return back()->with('success', 'Gambar telah di update');
+                alert()->success('input data telah berhasil');
+                return back();
             else:
                 alert()->error('ErrorAlert', 'Ukuran file harus di bawah 1mb');
                 return back();

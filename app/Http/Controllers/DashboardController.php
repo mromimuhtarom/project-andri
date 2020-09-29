@@ -8,6 +8,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        dd(Session::get('login'));
         return view('pages.dashboard');
     }
 }
