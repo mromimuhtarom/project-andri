@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 27 Sep 2020 pada 19.34
+-- Waktu pembuatan: 29 Sep 2020 pada 17.41
 -- Versi server: 10.1.38-MariaDB
 -- Versi PHP: 7.3.2
 
@@ -41,6 +41,19 @@ CREATE TABLE `category` (
 INSERT INTO `category` (`category_id`, `category_name`, `parent_id`) VALUES
 (1, 'Pakaian', 0),
 (2, 'Baju Pria', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `chart`
+--
+
+CREATE TABLE `chart` (
+  `id` int(5) NOT NULL,
+  `product_id` char(5) NOT NULL,
+  `qty` int(5) NOT NULL,
+  `user_id` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -167,15 +180,17 @@ CREATE TABLE `product` (
   `user_id` int(5) NOT NULL,
   `picture` varchar(25) NOT NULL,
   `view` int(5) NOT NULL,
-  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `product`
 --
 
-INSERT INTO `product` (`product_id`, `product_name`, `category_id`, `weight`, `price_group_id`, `price`, `user_id`, `picture`, `view`, `datetime`) VALUES
-('bh001', 'Plang1', 1, 135, 1, '45000.00', 1, 'bh001.jpg', 0, '2020-09-27 12:07:10');
+INSERT INTO `product` (`product_id`, `product_name`, `category_id`, `weight`, `price_group_id`, `price`, `user_id`, `picture`, `view`, `datetime`, `description`) VALUES
+('2', 'fddf', 2, 23, 1, '345666.00', 1, 'ty', 0, '2020-09-28 12:28:02', ''),
+('bh001', 'Plang1', 2, 135, 1, '45000.00', 1, 'bh001.jpg', 4, '2020-09-27 12:07:10', '');
 
 -- --------------------------------------------------------
 
@@ -307,6 +322,12 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`);
 
 --
+-- Indeks untuk tabel `chart`
+--
+ALTER TABLE `chart`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `config`
 --
 ALTER TABLE `config`
@@ -387,6 +408,12 @@ ALTER TABLE `variation_detail`
 --
 ALTER TABLE `category`
   MODIFY `category_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT untuk tabel `chart`
+--
+ALTER TABLE `chart`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `config`
