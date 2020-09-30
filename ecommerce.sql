@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 29 Sep 2020 pada 17.41
--- Versi server: 10.1.38-MariaDB
--- Versi PHP: 7.3.2
+-- Waktu pembuatan: 30 Sep 2020 pada 10.59
+-- Versi server: 10.4.14-MariaDB
+-- Versi PHP: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -51,9 +50,18 @@ INSERT INTO `category` (`category_id`, `category_name`, `parent_id`) VALUES
 CREATE TABLE `chart` (
   `id` int(5) NOT NULL,
   `product_id` char(5) NOT NULL,
+  `variation_id` int(5) NOT NULL,
+  `variation_detail_id` int(5) NOT NULL,
   `qty` int(5) NOT NULL,
   `user_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `chart`
+--
+
+INSERT INTO `chart` (`id`, `product_id`, `variation_id`, `variation_detail_id`, `qty`, `user_id`) VALUES
+(1, 'bh001', 18, 4, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -180,17 +188,15 @@ CREATE TABLE `product` (
   `user_id` int(5) NOT NULL,
   `picture` varchar(25) NOT NULL,
   `view` int(5) NOT NULL,
-  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `description` text NOT NULL
+  `datetime` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `product`
 --
 
-INSERT INTO `product` (`product_id`, `product_name`, `category_id`, `weight`, `price_group_id`, `price`, `user_id`, `picture`, `view`, `datetime`, `description`) VALUES
-('2', 'fddf', 2, 23, 1, '345666.00', 1, 'ty', 0, '2020-09-28 12:28:02', ''),
-('bh001', 'Plang1', 2, 135, 1, '45000.00', 1, 'bh001.jpg', 4, '2020-09-27 12:07:10', '');
+INSERT INTO `product` (`product_id`, `product_name`, `category_id`, `weight`, `price_group_id`, `price`, `user_id`, `picture`, `view`, `datetime`) VALUES
+('bh001', 'Plang1', 2, 135, 1, '45000.00', 1, 'bh001.jpg', 0, '2020-09-27 12:07:10');
 
 -- --------------------------------------------------------
 
@@ -268,7 +274,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`, `telp`, `address`) VALUES
-(1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 1, '0866666666', 'testing');
+(1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 1, '0866666666', 'testing'),
+(2, 'romi', '$2y$10$nAGM1JYHB26Z1ooihRUFvuwos5bG7Up462jIZ/fK6vJHxPLV70edi', 'Muhammad Romi Muhtarom', 4, '082392191962', 'bengkong\r\n');
 
 -- --------------------------------------------------------
 
@@ -413,7 +420,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT untuk tabel `chart`
 --
 ALTER TABLE `chart`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `config`
@@ -461,7 +468,7 @@ ALTER TABLE `store_order`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `variation`
