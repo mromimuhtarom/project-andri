@@ -47,4 +47,5 @@ Route::get('/user/logout', 'UserLoginController@registerview')->name('registerus
 Route::get('/', 'HomeController@index')->name('home-view');
 
 Route::get('/category/{category_name}', 'CategoryStoreController@index')->name('categorystore-view');
+Route::get('/cart', 'CartController@index')->name('cart-view');
 

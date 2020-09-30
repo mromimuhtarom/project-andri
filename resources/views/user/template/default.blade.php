@@ -63,7 +63,7 @@
 							<div class="shop-menu pull-right">
 								<ul class="nav navbar-nav">
 									<li><a href="{{ route('registeruser') }}"><i class="fa fa-user"></i> Daftar</a></li>
-									<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Keranjang</a></li>
+									<li><a href="{{ route('cart-view') }}"><i class="fa fa-shopping-cart"></i> Keranjang</a></li>
 									@if (Session::get('login'))
 									<li><a href="{{ route('logoutuser-process') }}" class="active"><i class="fa fa-lock"></i> Keluar</a></li>
 									@else 
