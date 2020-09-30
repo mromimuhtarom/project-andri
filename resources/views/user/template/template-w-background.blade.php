@@ -62,7 +62,7 @@
 						<div class="col-sm-8">
 							<div class="shop-menu pull-right">
 								<ul class="nav navbar-nav">
-									<li><a href="" style="background:none !important"><i class="fa fa-user"></i> Daftar</a></li>
+									<li><a href="{{ route('registeruser') }}" style="background:none !important"><i class="fa fa-user"></i> Daftar</a></li>
 									<li><a href="cart.html" style="background:none !important"><i class="fa fa-shopping-cart"></i> Keranjang</a></li>
 									@if (Session::get('login'))
 									<li><a href="{{ route('logoutuser-process') }}" class="active"><i class="fa fa-lock"></i> Keluar</a></li>

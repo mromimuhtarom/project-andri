@@ -33,6 +33,11 @@ class UserLoginController extends Controller
         endif;
     }
 
+    public function registerview()
+    {
+        return view('user.pages.register');
+    }
+
     public function logout()
     {
         Session::flush();

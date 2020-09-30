@@ -42,6 +42,7 @@ Route::post('/grouphargabarang-create', 'GroupHargaController@store')->name('gou
 Route::get('/user', 'UserLoginController@index')->name('loginuser');
 Route::post('/user/process', 'UserLoginController@login')->name('loginuser-process');
 Route::get('/user/logout', 'UserLoginController@logout')->name('logoutuser-process');
+Route::get('/user/logout', 'UserLoginController@registerview')->name('registeruser');
 
 Route::get('/', 'HomeController@index')->name('home-view');
 
