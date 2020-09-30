@@ -41,11 +41,12 @@ Route::post('/grouphargabarang-create', 'GroupHargaController@store')->name('gou
 
 Route::get('/user', 'UserLoginController@index')->name('loginuser');
 Route::post('/user/process', 'UserLoginController@login')->name('loginuser-process');
-Route::get('/user/logout', 'UserLoginController@logout')->name('logoutuser-process');
-Route::get('/user/logout', 'UserLoginController@registerview')->name('registeruser');
 
+Route::get('/user/register-view', 'UserLoginController@registerview')->name('registeruser');
+Route::get('/user/logout', 'UserLoginController@logout')->name('logoutuser-process');
 Route::get('/', 'HomeController@index')->name('home-view');
 
 Route::get('/category/{category_name}', 'CategoryStoreController@index')->name('categorystore-view');
 Route::get('/cart', 'CartController@index')->name('cart-view');
+Route::post('/cart/qty-update', 'CartController@update')->name('cart-qty-update');
 

@@ -21,7 +21,8 @@
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/store_user/images/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/store_user/images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/store_user/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="/store_user/images/ico/apple-touch-icon-57-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="/store_user/images/ico/apple-touch-icon-57-precomposed.png">
+	<script src="/store_user/js/jquery.js"></script>
 </head><!--/head-->
 
 <body>
@@ -112,7 +113,7 @@
 	
 
   
-    <script src="/store_user/js/jquery.js"></script>
+    
 	<script src="/store_user/js/bootstrap.min.js"></script>
 	<script src="/store_user/js/jquery.scrollUp.min.js"></script>
 	<script src="/store_user/js/price-range.js"></script>

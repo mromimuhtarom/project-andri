@@ -9,7 +9,7 @@ class Category extends Model
 {
     use HasFactory;
     protected $table = 'category';
-    public $timestamp = false;
+    public $timestamps = false;
     protected $fillable = array('parent_id', 'name', 'category_id');
 
     public function parent()
