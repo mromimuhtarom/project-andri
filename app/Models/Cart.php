@@ -26,4 +26,9 @@ class Cart extends Model
     {
         return $this->hasOne(Variation::class, 'variation_id', 'variation_id');
     }
+
+    public function paymentType()
+    {
+        return $this->product->hasMany(Paymenttype::class, 'user_id', 'user_id');
+    }
 }

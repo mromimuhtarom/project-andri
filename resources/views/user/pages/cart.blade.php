@@ -50,92 +50,45 @@
 										</table>		
                                 </td>
                                 <td class="cart_delete">
-                                    <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+									<a class="cart_menu" href="#" data-toggle="modal" data-target="#exampleModal{{ $ct->id }}">Beli</i></a>
                                 </td>
-                            </tr>
+							</tr>
+								<!-- Modal -->
+							<div class="modal fade" id="exampleModal{{ $ct->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Pembelian Barang</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									</div>
+									<form action="" method="POST">
+										<div class="modal-body">
+											<input type="hidden" name="product_id" value="{{ $ct->product_id }}">
+											<input type="hidden" name="qty" value="{{ $ct->qty }}">
+											<input type="hidden" name="variation_detail" value="{{ $ct->variation_detail_id }}">
+											<select name="" id="">
+												<option value="">Pilih Tipe Pembayaran</option>
+												@foreach ($ct->paymentType as $pt)
+													<option value="{{ $pt->payment_id }}">{{ $pt->payment_name }}</option>
+												@endforeach
+											</select>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+											<button type="submit" class="btn cart_menu">Bayar</button>
+										</div>
+									</form>
+								</div>
+								</div>
+							</div>
                         @endforeach
 					</tbody>
 				</table>
 			</div>
 		</div>
 	</section> <!--/#cart_items-->
-
-	{{-- <section id="do_action">
-		<div class="container">
-			<div class="heading">
-				<h3>What would you like to do next?</h3>
-				<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
-			</div>
-			<div class="row">
-				<div class="col-sm-6">
-					<div class="chose_area">
-						<ul class="user_option">
-							<li>
-								<input type="checkbox">
-								<label>Use Coupon Code</label>
-							</li>
-							<li>
-								<input type="checkbox">
-								<label>Use Gift Voucher</label>
-							</li>
-							<li>
-								<input type="checkbox">
-								<label>Estimate Shipping & Taxes</label>
-							</li>
-						</ul>
-						<ul class="user_info">
-							<li class="single_field">
-								<label>Country:</label>
-								<select>
-									<option>United States</option>
-									<option>Bangladesh</option>
-									<option>UK</option>
-									<option>India</option>
-									<option>Pakistan</option>
-									<option>Ucrane</option>
-									<option>Canada</option>
-									<option>Dubai</option>
-								</select>
-								
-							</li>
-							<li class="single_field">
-								<label>Region / State:</label>
-								<select>
-									<option>Select</option>
-									<option>Dhaka</option>
-									<option>London</option>
-									<option>Dillih</option>
-									<option>Lahore</option>
-									<option>Alaska</option>
-									<option>Canada</option>
-									<option>Dubai</option>
-								</select>
-							
-							</li>
-							<li class="single_field zip-field">
-								<label>Zip Code:</label>
-								<input type="text">
-							</li>
-						</ul>
-						<a class="btn btn-default update" href="">Get Quotes</a>
-						<a class="btn btn-default check_out" href="">Continue</a>
-					</div>
-				</div>
-				<div class="col-sm-6">
-					<div class="total_area">
-						<ul>
-							<li>Cart Sub Total <span>$59</span></li>
-							<li>Eco Tax <span>$2</span></li>
-							<li>Shipping Cost <span>Free</span></li>
-							<li>Total <span>$61</span></li>
-						</ul>
-							<a class="btn btn-default update" href="">Update</a>
-							<a class="btn btn-default check_out" href="">Check Out</a>
-					</div>
-				</div>
-			</div>
-		</div>
-    </section><!--/#do_action--> --}}
     <script>
         $(document).ready(function() {
 			@foreach ($cart as $ct)
@@ -215,7 +168,8 @@
                         }
                     });
                 } else if(totalqty == 0) {
-					console.log('fgdf');
+					var rowclass = 'rowproduct'+id;
+					$('.'+rowclass).remove();
 					$.ajax({
                         url: '{{ route("cart-delete") }}',
                         type: 'post',
