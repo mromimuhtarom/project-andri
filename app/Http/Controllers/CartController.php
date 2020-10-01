@@ -33,4 +33,24 @@ class CartController extends Controller
             "message" => 'sdfsd'
         ]);
     }
+
+    public function delete(Request $request)
+    {
+        if($request->ajax())
+        {
+            $pk = $request->pk;
+            if($pk != NULL): 
+                Cart::where('id', '=', $pk)->delete();
+
+                return json_encode([
+                    "status"    =>  "OK",
+                    "message"   =>  "Hapus data berhasil"
+                ]);
+            endif;
+                return json_encode([
+                    "status"    =>  "OK",
+                    "message"   =>  "Hapus data gagal"
+                ]);
+        }
+    }
 }
