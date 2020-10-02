@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 30 Sep 2020 pada 10.59
+-- Waktu pembuatan: 02 Okt 2020 pada 10.20
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.4.10
 
@@ -61,7 +61,7 @@ CREATE TABLE `chart` (
 --
 
 INSERT INTO `chart` (`id`, `product_id`, `variation_id`, `variation_detail_id`, `qty`, `user_id`) VALUES
-(1, 'bh001', 18, 4, 3, 1);
+(1, 'bh001', 18, 4, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -266,16 +266,21 @@ CREATE TABLE `user` (
   `fullname` varchar(255) NOT NULL,
   `role_id` int(5) NOT NULL,
   `telp` varchar(15) NOT NULL,
-  `address` text NOT NULL
+  `Province_id` int(5) NOT NULL,
+  `province_name` varchar(255) NOT NULL,
+  `city_id` int(5) NOT NULL,
+  `city_name` varchar(255) NOT NULL,
+  `postal_code` varchar(10) NOT NULL,
+  `detail_address` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `user`
 --
 
-INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`, `telp`, `address`) VALUES
-(1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 1, '0866666666', 'testing'),
-(2, 'romi', '$2y$10$nAGM1JYHB26Z1ooihRUFvuwos5bG7Up462jIZ/fK6vJHxPLV70edi', 'Muhammad Romi Muhtarom', 4, '082392191962', 'bengkong\r\n');
+INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`, `telp`, `Province_id`, `province_name`, `city_id`, `city_name`, `postal_code`, `detail_address`) VALUES
+(1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 1, '0866666666', 0, '', 0, '', '', ''),
+(2, 'romi', '$2y$10$nAGM1JYHB26Z1ooihRUFvuwos5bG7Up462jIZ/fK6vJHxPLV70edi', 'Muhammad Romi Muhtarom', 4, '082392191962', 0, '', 0, '', '', '');
 
 -- --------------------------------------------------------
 
