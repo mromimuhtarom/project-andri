@@ -17,12 +17,16 @@
             <table width="100%" border="1" class="textboxmany">
                 <tr>
                     <td>
-                        <select name="" class="form-control"  id="">
+                        <select name="" class="form-control province"  id="">
                             <option value="">Pilih Provinsi</option>
+                            
+                            @foreach ($province->rajaongkir->results as $pv)
+                            <option value="{{ $pv->province_id}}">{{$pv->province}}</option>
+                            @endforeach
                         </select>
                     </td>
                     <td>
-                        <select name="" class="form-control" id="">
+                        <select name="" class="form-control city" id="">
                             <option value="">Pilih Kota</option>
                         </select>
                     </td>
@@ -77,7 +81,6 @@
                     $('#fullname').val(obj.data.fullname);
                     $('#nohp').val(obj.data.telp);
                     $('#nohp').val(obj.data.telp);
-                    $('#address').val(obj.)
                     // if(obj.status == "OK"){
                     //    alert(obj.message); 
                     // } else {
@@ -88,6 +91,38 @@
                 }
             });
         });
+
+        $('.province').on('click', function(){
+            var pv = $(this).val();
+
+            if(pv !== ''){
+                $.ajax({
+                    url: '{{ route("profile-view") }}',
+                    type: 'get',
+                    data:{
+                        _token: "{{ csrf_token() }}",
+                        province_id: pv
+                    },
+                    success: function(response){
+                        //add response in modal body
+                        var obj = JSON.parse(response);
+                        $('.city_detail').remove();
+                        $.each( obj.city.rajaongkir.results, function(index, city ) {
+                            $('.city').append('<option class="city_detail" value="'+city.city_id+'">'+city.city_name+'</option>')
+                        });
+                        // if(obj.status == "OK"){
+                        //    alert(obj.message); 
+                        // } else {
+                        //     alert(obj.message);
+                        // }
+                    
+                        
+                    }
+                });
+            } else {
+                $('.city_detail').remove();
+            }
+        })
     });
 </script>
 
