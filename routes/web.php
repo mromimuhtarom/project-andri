@@ -53,5 +53,9 @@ Route::post('/cart-delete', 'CartController@delete')->name('cart-delete');
 
 
 Route::get('/Profile-view', 'ProfileController@index')->name('profile-view');
+Route::post('/profile-update', 'ProfileController@updateprofile')->name('profile-updateuser');
+Route::post('/profile-updatepwd', 'ProfileController@updatepassword')->name('profile-updatepwd');
+Route::post('/profile-createaddress', 'ProfileController@storeAddress')->name('profile-createaddress');
+Route::post('/profile-updateaddress', 'ProfileController@updateAddress')->name('profile-updaddress');
 // Route::post('/province', )
 

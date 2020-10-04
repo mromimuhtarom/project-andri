@@ -21,6 +21,12 @@ class User extends Authenticatable
     ];
     protected $table = 'user';
     protected $primary_key = 'user_id';
+    public $timestamps = false;
+
+    public function address()
+    {
+        return $this->hasMany(Address::class, 'user_id', 'user_id');
+    }
 
     /**
      * The attributes that should be hidden for arrays.
