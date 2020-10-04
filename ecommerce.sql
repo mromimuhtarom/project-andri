@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 02 Okt 2020 pada 10.20
--- Versi server: 10.4.14-MariaDB
--- Versi PHP: 7.4.10
+-- Waktu pembuatan: 05 Okt 2020 pada 01.41
+-- Versi server: 10.1.38-MariaDB
+-- Versi PHP: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -20,6 +21,38 @@ SET time_zone = "+00:00";
 --
 -- Database: `ecommerce`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `address`
+--
+
+CREATE TABLE `address` (
+  `address_id` int(5) NOT NULL,
+  `accept_name` varchar(255) DEFAULT NULL,
+  `province_id` int(5) NOT NULL,
+  `province_name` varchar(255) NOT NULL,
+  `city_id` int(5) NOT NULL,
+  `city_name` varchar(255) NOT NULL,
+  `postal_code` varchar(10) NOT NULL,
+  `detail_address` text NOT NULL,
+  `user_id` int(5) NOT NULL,
+  `telp` varchar(15) DEFAULT NULL,
+  `status` tinyint(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `address`
+--
+
+INSERT INTO `address` (`address_id`, `accept_name`, `province_id`, `province_name`, `city_id`, `city_name`, `postal_code`, `detail_address`, `user_id`, `telp`, `status`) VALUES
+(1, 'Romi', 25, '', 3, '', '3454', 'dfgdf', 1, '082392191962', 2),
+(2, 'winna', 4, '', 0, '', '324', 'fdbfgbfg', 1, '43556666', 1),
+(3, NULL, 17, 'Kepulauan Riau', 48, 'Batam', '3455', 'vhgvh, bengkong', 2, NULL, 1),
+(4, 'Franky', 17, 'Kepulauan Riau', 48, 'Batam', 'dsc', 'sdssd, bdfss', 2, '082244556677', 1),
+(5, 'Mantap Jiwa sraya', 3, 'Banten', 402, 'Serang', '2142', 'sfsrrf,dgtgrt', 2, '082392191962', 2),
+(6, 'Mantap Jiwa sraya', 1, 'Bali', 17, 'Badung', '2342', 'dsfsdf, sfdsd', 2, '082392191962', 1);
 
 -- --------------------------------------------------------
 
@@ -188,7 +221,7 @@ CREATE TABLE `product` (
   `user_id` int(5) NOT NULL,
   `picture` varchar(25) NOT NULL,
   `view` int(5) NOT NULL,
-  `datetime` timestamp NOT NULL DEFAULT current_timestamp()
+  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -265,22 +298,16 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `fullname` varchar(255) NOT NULL,
   `role_id` int(5) NOT NULL,
-  `telp` varchar(15) NOT NULL,
-  `Province_id` int(5) NOT NULL,
-  `province_name` varchar(255) NOT NULL,
-  `city_id` int(5) NOT NULL,
-  `city_name` varchar(255) NOT NULL,
-  `postal_code` varchar(10) NOT NULL,
-  `detail_address` text NOT NULL
+  `telp` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `user`
 --
 
-INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`, `telp`, `Province_id`, `province_name`, `city_id`, `city_name`, `postal_code`, `detail_address`) VALUES
-(1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 1, '0866666666', 0, '', 0, '', '', ''),
-(2, 'romi', '$2y$10$nAGM1JYHB26Z1ooihRUFvuwos5bG7Up462jIZ/fK6vJHxPLV70edi', 'Muhammad Romi Muhtarom', 4, '082392191962', 0, '', 0, '', '', '');
+INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`, `telp`) VALUES
+(1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 1, '0866666666'),
+(2, 'romi', '$2y$10$nAGM1JYHB26Z1ooihRUFvuwos5bG7Up462jIZ/fK6vJHxPLV70edi', 'Muhammad Romi Muhtarom', 4, '082392191962');
 
 -- --------------------------------------------------------
 
@@ -326,6 +353,12 @@ INSERT INTO `variation_detail` (`id`, `variation_id`, `name_detail_variation`, `
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indeks untuk tabel `address`
+--
+ALTER TABLE `address`
+  ADD PRIMARY KEY (`address_id`);
 
 --
 -- Indeks untuk tabel `category`
@@ -414,6 +447,12 @@ ALTER TABLE `variation_detail`
 --
 -- AUTO_INCREMENT untuk tabel yang dibuang
 --
+
+--
+-- AUTO_INCREMENT untuk tabel `address`
+--
+ALTER TABLE `address`
+  MODIFY `address_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `category`
