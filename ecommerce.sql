@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 05 Okt 2020 pada 11.02
--- Versi server: 10.4.14-MariaDB
--- Versi PHP: 7.4.10
+-- Waktu pembuatan: 06 Okt 2020 pada 01.04
+-- Versi server: 10.1.38-MariaDB
+-- Versi PHP: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -86,16 +87,17 @@ CREATE TABLE `chart` (
   `variation_detail_id` int(5) NOT NULL,
   `qty` int(5) NOT NULL,
   `user_id` int(5) NOT NULL,
-  `address_id` int(5) NOT NULL
+  `address_id` int(5) NOT NULL,
+  `delivery_id` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `chart`
 --
 
-INSERT INTO `chart` (`id`, `product_id`, `variation_id`, `variation_detail_id`, `qty`, `user_id`, `address_id`) VALUES
-(1, 'bh001', 18, 4, 4, 1, 0),
-(2, 'bh001', 18, 0, 3, 2, 0);
+INSERT INTO `chart` (`id`, `product_id`, `variation_id`, `variation_detail_id`, `qty`, `user_id`, `address_id`, `delivery_id`) VALUES
+(1, 'bh001', 18, 4, 4, 1, 0, ''),
+(2, 'bh001', 18, 0, 3, 2, 0, '');
 
 -- --------------------------------------------------------
 
@@ -223,7 +225,7 @@ CREATE TABLE `product` (
   `user_id` int(5) NOT NULL,
   `picture` varchar(25) NOT NULL,
   `view` int(5) NOT NULL,
-  `datetime` timestamp NOT NULL DEFAULT current_timestamp()
+  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

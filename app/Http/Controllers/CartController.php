@@ -35,10 +35,62 @@ class CartController extends Controller
         return view('user.pages.cart', compact('cart', 'addressmain', 'addresslist', 'sender'));
     }
 
-    public function checkPrice(Request $request)
+    public function apiOngkir($param)
     {
-        $address_id = $request->address_id;
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $param,
+            CURLOPT_HTTPHEADER => array(
+                "content-type: application/x-www-form-urlencoded",
+                "key: your-api-key"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            return "cURL Error #:" . $err;
+        } else {
+            return json_decode($response);
+        }
+    }
+
+    public function UpdateDelivery(Request $request)
+    {
+        $delivery_id = $request->delivery_id;
         $cart_id    = $request->cart_id;
+        $weight     = $request->weight;
+        if ($request->ajax()) {
+            $id  = $request->id;
+            $qty = $request->qty;
+            $cart = Cart::where('id', '=', $cart_id)->first();
+
+            $param = "origin=501&destination=".$cart->city_id."&weight=".$weight."&courier=".$delivery_id;
+            $ongkir = $this->apiOngkir($param);
+            if($id != NULL)
+            Cart::where('id', '=', $cart_id)->update([
+                'delivery_id'   =>  $delivery_id
+            ]);
+            return json_encode([
+                "status"     => "OK",
+                "dataongkir" => $ongkir
+            ]);
+        }
+        return json_encode([
+            "message" => 'sdfsd'
+        ]);
+
     }
 
     public function update(Request $request)

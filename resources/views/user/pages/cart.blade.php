@@ -60,7 +60,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select name="delivery" id="delivery{{ $ct->id }}" data-pk="{{ $ct->id }}" data-product_id="{{ $ct->product_id }}" id="delivery">
+                                    <select name="delivery" id="delivery{{ $ct->id }}" data-weight="{{ $ct->product->weight }}" data-pk="{{ $ct->id }}" data-product_id="{{ $ct->product_id }}" class="delivery">
                                         <option value="">Pilih Pengiriman</option>
                                         @foreach ($sender as $key => $value)
                                             <option value="{{ $key }}">{{ $value }}</option>
@@ -174,26 +174,23 @@
             
             $('.delivery').on('click', function(){
                 var product_id = $(this).attr('data-product_id');
-                var id = $(this).attr('data-product_id');
+                var id         = $(this).attr('data-product_id');
+                var weight     = $(this).attr('data-weight');
+                var delivery   = $('#delivery'+id).val();
+                var qty        = $('#cart_quantity_input'+id).val();
+
                 
                     $.ajax({
                         url: '{{ route("cart-qty-update") }}',
                         type: 'post',
                         data:{
-                            qty: totalqty,
+                            delivery_id: delivery,
                             id: id,
+                            weight: weight,
                             _token: "{{ csrf_token() }}"
                         },
                         success: function(response){
-                            //add response in modal body
 							var obj = JSON.parse(response);
-							// if(obj.status == "OK"){
-                            //    alert(obj.message); 
-                            // } else {
-                            //     alert(obj.message);
-                            // }
-                      
-                            
                         }
                     });
 
