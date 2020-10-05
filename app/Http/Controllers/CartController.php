@@ -8,6 +8,9 @@ use App\Models\Cart;
 use App\Models\Storeorder;
 use App\Models\Product;
 use App\Models\Variationdetail;
+use App\Models\User;
+use App\Models\Address;
+use App\Models\Config;
 
 class CartController extends Controller
 {
@@ -15,7 +18,27 @@ class CartController extends Controller
     {
         $user_id = Session::get('user_id');
         $cart = Cart::where('user_id', '=', $user_id)->get();
-        return view('user.pages.cart', compact('cart'));
+        $addressmain = Address::where('user_id', '=', $user_id)
+                       ->where('status', '=', 2)
+                       ->first();
+        $addresslist = Address::where('user_id', '=', $user_id)->get();
+        $typesend   = Config::where('id', '=', 2)->first();
+        $replace = str_replace(':', ',', $typesend->value);
+        $typesendexplode = explode(',', $replace);
+        $sender = [
+            $typesendexplode[0] => $typesendexplode[1],
+            $typesendexplode[2] => $typesendexplode[3],
+            $typesendexplode[4] => $typesendexplode[5]
+        ];
+
+
+        return view('user.pages.cart', compact('cart', 'addressmain', 'addresslist', 'sender'));
+    }
+
+    public function checkPrice(Request $request)
+    {
+        $address_id = $request->address_id;
+        $cart_id    = $request->cart_id;
     }
 
     public function update(Request $request)

@@ -16,9 +16,13 @@
 							<td class="image">Nama Barang</td>
 							<td class="description"></td>
 							<td class="price">Harga</td>
-							<td class="quantity">Qty</td>
+                            <td class="quantity">Qty</td>
+                            <td width="10%">Ganti Alamat</td>
+                            <td width="10%">
+                                Jenis <br>Pengiriman
+                            </td>
 							<td class="total">Total</td>
-							<td></td>
+							<td>Aksi</td>
 						</tr>
 					</thead>
 					<tbody>
@@ -29,29 +33,52 @@
                                 </td>
                                 <td class="cart_description">
                                     <h4><a href="">{{ $ct->product->product_name }}</a></h4>
-                                    <p>{{$ct->variation->variation_name }} : {{ $ct->variation_detail->name_detail_variation }}</p>
+                                    @if($ct->variation_detail_id != 0)<p>{{$ct->variation->variation_name }} : {{ $ct->variation_detail->name_detail_variation }}</p>@endif
                                 </td>
                                 <td class="cart_price">
-                                    <p>{{ $ct->variation_detail->price }}</p>
+                                    <p class="priceitem{{ $ct->id }}">
+                                        @if($ct->variation_detail_id != 0)
+                                        {{ $ct->variation_detail->price }}
+                                        @else 
+                                        {{$ct->product->price}}
+                                        @endif
+                                    </p>
                                 </td>
                                 <td class="cart_quantity">
                                     <div class="cart_quantity_button">
                                         <a class="cart_quantity_up" data-pk="{{ $ct->id }}" data-product_id="{{ $ct->product_id }}" href="#"> + </a>
-                                        <input class="cart_quantity_input" id="cart_quantity_input{{ $ct->product_id }}" type="text" name="quantity" value="{{ $ct->qty }}" autocomplete="off" size="2">
+                                        <input class="cart_quantity_input" id="cart_quantity_input{{ $ct->id }}" type="text" name="quantity" value="{{ $ct->qty }}" autocomplete="off" size="2">
                                         <a class="cart_quantity_down" data-pk="{{ $ct->id }}" data-product_id="{{ $ct->product_id }}" href="#"> - </a>
                                     </div>
+                                </td>
+                                <td>
+                                    <select name="address" id="address{{ $ct->id }}" data-pk="{{ $ct->id }}" data-product_id="{{ $ct->product_id }}" class="addressdetail">
+                                        <option value="">Pilih Alamat</option>
+                                        @foreach ($addresslist as $adl)
+                                        <option value="{{ $adl->address_id }}" @if($adl->address_id == $addressmain->address_id) selected @endif>{{ $adl->detail_address}}, {{ $adl->city_name }}, {{ $adl->province_name }}, Kode Pos: {{ $adl->postal_code }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="delivery" id="delivery{{ $ct->id }}" data-pk="{{ $ct->id }}" data-product_id="{{ $ct->product_id }}" id="delivery">
+                                        <option value="">Pilih Pengiriman</option>
+                                        @foreach ($sender as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
+                                    </select>
                                 </td>
                                 <td class="cart_total">
 										<table class="cart_total_price">
 											<tr id="totalprice">
 												<td>Rp.</td>
-												<td class="pricetotal{{ $ct->product_id }}" data-price="@if($ct->variation_detail != NULL){{ $ct->variation_detail->price}}@else{{ $ct->product->price }}@endif"></td>
+												<td class="pricetotal{{ $ct->id }}" data-price="@if($ct->variation_detail != NULL){{ $ct->variation_detail->price}}@else{{ $ct->product->price }}@endif"></td>
 											</tr>
 										</table>		
                                 </td>
-                                <td class="cart_delete">
+                                <td class="cart_delete" align="center">
 									<a class="cart_menu" href="#" data-toggle="modal" data-target="#exampleModal{{ $ct->id }}">Beli</i></a>
                                 </td>
+
 							</tr>
 								<!-- Modal -->
 							<div class="modal fade" id="exampleModal{{ $ct->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -92,25 +119,63 @@
     <script>
         $(document).ready(function() {
 			@foreach ($cart as $ct)
-			var a{{$ct->product_id}} = $('#cart_quantity_input{{ $ct->product_id }}').val();
-			var b{{$ct->product_id}} = $('.pricetotal{{ $ct->product_id }}').attr('data-price');
-			var total{{$ct->product_id}} = a{{$ct->product_id}} * b{{$ct->product_id}};
-			$('.pricetotal{{ $ct->product_id }}').html(total{{$ct->product_id}});
+			var a{{$ct->id}} = $('#cart_quantity_input{{ $ct->id }}').val();
+			var b{{$ct->id}} = $('.pricetotal{{ $ct->id }}').attr('data-price');
+			var total{{$ct->id}} = a{{$ct->id}} * b{{$ct->id}};
+            var delivery{{$ct->id}} = $('#delivery{{ $ct->id }}').val();
+            if(delivery{{$ct->id}}){
+                $('.pricetotal{{ $ct->id }}').html(total{{$ct->id}});
+            } else {
+                $('.pricetotal{{ $ct->id }}').html('0');
+            }
+			
 			@endforeach
 
             // ---- untuk nambah qty -----//
             $('.cart_quantity_up').on('click', function(){
                 var product_id = $(this).attr('data-product_id');
                 var id         = $(this).attr('data-pk');
-                var qtyclass   = 'cart_quantity_input'+product_id;
+                var qtyclass   = 'cart_quantity_input'+id;
                 var qtyval     = $('#'+qtyclass).val();
                 var totalqty   = parseInt(qtyval) + 1;
-				var priceclass = "pricetotal"+product_id;
+				var priceclass = "pricetotal"+id;
 				var price      = $('.'+priceclass).attr('data-price');
 				$('.'+priceclass).remove();
 				var total      = parseInt(price) * parseInt(totalqty);
-				$('#totalprice').append('<td class="pricetotal'+product_id+'" data-price="'+price+'">'+total+'</td>');
                 $('#'+qtyclass).val(totalqty);
+                var delivery = $('#delivery'+id).val();
+
+                if(delivery) {
+                    $('#totalprice').append('<td class="pricetotal'+id+'" data-price="'+price+'">'+total+'</td>');
+                    $.ajax({
+                        url: '{{ route("cart-qty-update") }}',
+                        type: 'post',
+                        data:{
+                            qty: totalqty,
+                            id: id,
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(response){
+                            //add response in modal body
+							var obj = JSON.parse(response);
+							// if(obj.status == "OK"){
+                            //    alert(obj.message); 
+                            // } else {
+                            //     alert(obj.message);
+                            // }
+                      
+                            
+                        }
+                    });
+                } else {
+                    $('#totalprice').append('<td class="pricetotal'+product_id+'" data-price="'+price+'">0</td>');
+                }
+            });
+            
+            $('.delivery').on('click', function(){
+                var product_id = $(this).attr('data-product_id');
+                var id = "#delivery"+product_id;
+                var address = $('#address'+product_id).val();
 
                     $.ajax({
                         url: '{{ route("cart-qty-update") }}',
@@ -132,7 +197,13 @@
                             
                         }
                     });
-            });
+                if(address){
+
+                } else {
+
+                }
+
+            })
 
             // --- untuk ngurang qty --- //
             $('.cart_quantity_down').on('click', function(){
