@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 05 Okt 2020 pada 01.41
--- Versi server: 10.1.38-MariaDB
--- Versi PHP: 7.3.2
+-- Waktu pembuatan: 05 Okt 2020 pada 11.02
+-- Versi server: 10.4.14-MariaDB
+-- Versi PHP: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -86,15 +85,17 @@ CREATE TABLE `chart` (
   `variation_id` int(5) NOT NULL,
   `variation_detail_id` int(5) NOT NULL,
   `qty` int(5) NOT NULL,
-  `user_id` int(5) NOT NULL
+  `user_id` int(5) NOT NULL,
+  `address_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `chart`
 --
 
-INSERT INTO `chart` (`id`, `product_id`, `variation_id`, `variation_detail_id`, `qty`, `user_id`) VALUES
-(1, 'bh001', 18, 4, 4, 1);
+INSERT INTO `chart` (`id`, `product_id`, `variation_id`, `variation_detail_id`, `qty`, `user_id`, `address_id`) VALUES
+(1, 'bh001', 18, 4, 4, 1, 0),
+(2, 'bh001', 18, 0, 3, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -113,7 +114,8 @@ CREATE TABLE `config` (
 --
 
 INSERT INTO `config` (`id`, `name`, `value`) VALUES
-(1, 'order_status', '1:L_PENDING,2:L_PROCESS,3:L_FAILED,4:L_SUCCESS');
+(1, 'order_status', '1:L_PENDING,2:L_PROCESS,3:L_FAILED,4:L_SUCCESS'),
+(2, 'delivery_service', 'jne:JNE,pos:Pos Indonesia,tiki:Tiki');
 
 -- --------------------------------------------------------
 
@@ -221,7 +223,7 @@ CREATE TABLE `product` (
   `user_id` int(5) NOT NULL,
   `picture` varchar(25) NOT NULL,
   `view` int(5) NOT NULL,
-  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `datetime` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -229,7 +231,7 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `product_name`, `category_id`, `weight`, `price_group_id`, `price`, `user_id`, `picture`, `view`, `datetime`) VALUES
-('bh001', 'Plang1', 2, 135, 1, '45000.00', 1, 'bh001.jpg', 0, '2020-09-27 12:07:10');
+('bh001', 'Plang1', 2, 135, 1, '43000.00', 1, 'bh001.jpg', 0, '2020-09-27 12:07:10');
 
 -- --------------------------------------------------------
 
@@ -283,6 +285,15 @@ CREATE TABLE `store_order` (
   `variation_id` int(5) NOT NULL,
   `variation_name` varchar(255) NOT NULL,
   `variation_detail_name` varchar(255) NOT NULL,
+  `delivery_id` varchar(10) NOT NULL,
+  `address_id` int(5) NOT NULL,
+  `postal_code` varchar(10) NOT NULL,
+  `city_id` int(5) NOT NULL,
+  `city_name` varchar(255) NOT NULL,
+  `province_id` int(5) NOT NULL,
+  `province_name` varchar(255) NOT NULL,
+  `accept_name` varchar(255) NOT NULL,
+  `telp` varchar(15) NOT NULL,
   `status` tinyint(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -464,13 +475,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT untuk tabel `chart`
 --
 ALTER TABLE `chart`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `config`
 --
 ALTER TABLE `config`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `menu`

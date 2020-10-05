@@ -144,9 +144,6 @@
 				var total      = parseInt(price) * parseInt(totalqty);
                 $('#'+qtyclass).val(totalqty);
                 var delivery = $('#delivery'+id).val();
-
-                if(delivery) {
-                    $('#totalprice').append('<td class="pricetotal'+id+'" data-price="'+price+'">'+total+'</td>');
                     $.ajax({
                         url: '{{ route("cart-qty-update") }}',
                         type: 'post',
@@ -167,16 +164,18 @@
                             
                         }
                     });
+
+                if(delivery) {
+                    $('#totalprice').append('<td class="pricetotal'+id+'" data-price="'+price+'">'+total+'</td>');
                 } else {
-                    $('#totalprice').append('<td class="pricetotal'+product_id+'" data-price="'+price+'">0</td>');
+                    $('#totalprice').append('<td class="pricetotal'+id+'" data-price="'+price+'">0</td>');
                 }
             });
             
             $('.delivery').on('click', function(){
                 var product_id = $(this).attr('data-product_id');
-                var id = "#delivery"+product_id;
-                var address = $('#address'+product_id).val();
-
+                var id = $(this).attr('data-product_id');
+                
                     $.ajax({
                         url: '{{ route("cart-qty-update") }}',
                         type: 'post',
@@ -197,28 +196,29 @@
                             
                         }
                     });
-                if(address){
-
-                } else {
-
-                }
 
             })
 
             // --- untuk ngurang qty --- //
             $('.cart_quantity_down').on('click', function(){
                 var product_id = $(this).attr('data-product_id');
-                var qtyclass   = 'cart_quantity_input'+product_id;
                 var id         = $(this).attr('data-pk');
+                var qtyclass   = 'cart_quantity_input'+id;
                 var qtyval     = $('#'+qtyclass).val();
                 var totalqty   = parseInt(qtyval) - 1;
-				var priceclass = "pricetotal"+product_id;
+				var priceclass = "pricetotal"+id;
 				var price      = $('.'+priceclass).attr('data-price');
+                var delivery = $('#delivery'+id).val();
+
 				console.log(totalqty)
                 if(totalqty > 0)  {
 					$('.'+priceclass).remove();
 					var total      = parseInt(price) * parseInt(totalqty);
-					$('#totalprice').append('<td class="pricetotal'+product_id+'" data-price="'+price+'">'+total+'</td>');
+                    if(delivery){
+                        $('#totalprice').append('<td class="pricetotal'+id+'" data-price="'+price+'">'+total+'</td>');
+                    } else {
+                        $('#totalprice').append('<td class="pricetotal'+id+'" data-price="'+price+'">0</td>');
+                    }
                     $('#'+qtyclass).val(totalqty);
 					$.ajax({
                         url: '{{ route("cart-qty-update") }}',
