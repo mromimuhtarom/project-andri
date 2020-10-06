@@ -174,14 +174,14 @@
             
             $('.delivery').on('click', function(){
                 var product_id = $(this).attr('data-product_id');
-                var id         = $(this).attr('data-product_id');
+                var id         = $(this).attr('data-pk'); 
                 var weight     = $(this).attr('data-weight');
                 var delivery   = $('#delivery'+id).val();
                 var qty        = $('#cart_quantity_input'+id).val();
-
-                
+                console.log(id);
+                  
                     $.ajax({
-                        url: '{{ route("cart-qty-update") }}',
+                        url: '{{ route("cart-upddelivery") }}',
                         type: 'post',
                         data:{
                             delivery_id: delivery,
@@ -191,6 +191,7 @@
                         },
                         success: function(response){
 							var obj = JSON.parse(response);
+                            console.log(obj);
                         }
                     });
 

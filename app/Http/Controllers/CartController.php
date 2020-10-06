@@ -50,7 +50,7 @@ class CartController extends Controller
             CURLOPT_POSTFIELDS => $param,
             CURLOPT_HTTPHEADER => array(
                 "content-type: application/x-www-form-urlencoded",
-                "key: your-api-key"
+                "key: 4d6444a58c240d9ed1038a8891738950"
             ),
         ));
 
@@ -69,14 +69,13 @@ class CartController extends Controller
     public function UpdateDelivery(Request $request)
     {
         $delivery_id = $request->delivery_id;
-        $cart_id    = $request->cart_id;
+        $cart_id    = $request->id;
         $weight     = $request->weight;
         if ($request->ajax()) {
             $id  = $request->id;
             $qty = $request->qty;
             $cart = Cart::where('id', '=', $cart_id)->first();
-
-            $param = "origin=501&destination=".$cart->city_id."&weight=".$weight."&courier=".$delivery_id;
+            $param = "origin=501&destination=".$cart->address->city_id."&weight=".$weight."&courier=".$delivery_id;
             $ongkir = $this->apiOngkir($param);
             if($id != NULL)
             Cart::where('id', '=', $cart_id)->update([
