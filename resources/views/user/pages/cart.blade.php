@@ -18,9 +18,6 @@
 							<td class="price">Harga</td>
                             <td class="quantity">Qty</td>
                             <td width="10%">Ganti Alamat</td>
-                            <td width="10%">
-                                Jenis <br>Pengiriman
-                            </td>
 							<td class="total">Total</td>
 							<td>Aksi</td>
 						</tr>
@@ -59,14 +56,6 @@
                                         @endforeach
                                     </select>
                                 </td>
-                                <td>
-                                    <select name="delivery" id="delivery{{ $ct->id }}" data-weight="{{ $ct->product->weight }}" data-pk="{{ $ct->id }}" data-product_id="{{ $ct->product_id }}" class="delivery">
-                                        <option value="">Pilih Pengiriman</option>
-                                        @foreach ($sender as $key => $value)
-                                            <option value="{{ $key }}">{{ $value }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
                                 <td class="cart_total">
 										<table class="cart_total_price">
 											<tr id="totalprice">
@@ -95,12 +84,88 @@
 											<input type="hidden" name="product_id" value="{{ $ct->product_id }}">
 											<input type="hidden" name="qty" value="{{ $ct->qty }}">
 											<input type="hidden" name="variation_detail" value="{{ $ct->variation_detail_id }}">
-											<select name="" id="">
+                                            <select name="" id="">
 												<option value="">Pilih Tipe Pembayaran</option>
 												@foreach ($ct->paymentType as $pt)
 													<option value="{{ $pt->payment_id }}">{{ $pt->payment_name }}</option>
 												@endforeach
-											</select>
+                                            </select>
+                                            <select name="delivery" id="delivery{{ $ct->id }}" data-weight="{{ $ct->product->weight }}" data-pk="{{ $ct->id }}" data-product_id="{{ $ct->product_id }}" data-origin={{ $ct->originaddressseller->city_id }} class="delivery">
+                                                <option value="" disabled>Pilih Pengiriman</option>
+                                                @foreach ($sender as $key => $value)
+                                                    <option value="{{ $key }}" @if($key === $ct->delivery_id) selected @endif>{{ $value }}</option>
+                                                @endforeach
+                                            </select>
+                                            <select name="service" class="service" id="service{{ $ct->id }}">
+                                                <option value="" disabled>Pilih Service</option>
+                                            </select>
+                                            <table>
+                                                <tr class="totalwithcouriertable">
+                                                    <td>Total Harga :</td>
+                                                    <td class="totalwithcourier"></td>
+                                                </tr>
+                                            </table>
+                                            <script>
+                                                var dlvr = $('#delivery{{ $ct->id }}').val(); 
+                                                if(dlvr){
+                                                    var product_id = $('#delivery{{ $ct->id }}').attr('data-product_id');
+                                                    var id         = $('#delivery{{ $ct->id }}').attr('data-pk'); 
+                                                    var weight     = $('#delivery{{ $ct->id }}').attr('data-weight');
+                                                    var qty        = $('#cart_quantity_input{{ $ct->id }}').val();
+                                                    var origin     = $('#delivery{{ $ct->id }}').attr('data-origin');
+                                                    var service    = '{{ $ct->service }}';
+                                                        $.ajax({
+                                                            url: '{{ route("cart-servicelist") }}',
+                                                            type: 'post',
+                                                            data:{
+                                                                delivery_id: dlvr,
+                                                                id         : id,
+                                                                weight     : weight,
+                                                                origin     : origin,
+                                                                _token     : "{{ csrf_token() }}"
+                                                            },
+                                                            success: function(response){
+                                                                var obj = JSON.parse(response);
+                                                                $.each( obj.dataongkir.rajaongkir.results[0].costs, function(index, srv ) {
+                                                                    if(service == srv.service){
+                                                                        $('#service{{ $ct->id }}').append('<option class="scrv" selected value="'+srv.service+'">'+srv.service+'</option>')
+                                                                    } else {
+                                                                        $('#service{{ $ct->id }}').append('<option class="scrv" value="'+srv.service+'">'+srv.service+'</option>');
+                                                                    }
+                                                                });
+                                                            }
+                                                        });
+
+
+                                                }
+                                                $('#service{{ $ct->id }}').on('change', function(){
+                                                    var product_id = $('#delivery{{ $ct->id }}').attr('data-product_id');
+                                                    var id         = $('#delivery{{ $ct->id }}').attr('data-pk'); 
+                                                    var weight     = $('#delivery{{ $ct->id }}').attr('data-weight');
+                                                    var delivery   = $('#delivery{{ $ct->id }}').val();
+                                                    var qty        = $('#cart_quantity_input{{ $ct->id }}').val();
+                                                    var origin     = $('#delivery{{ $ct->id }}').attr('data-origin');
+                                                    var val        = $(this).val();
+                                                    if(val){
+                                                        $.ajax({
+                                                            url: '{{ route("cart-upddelivery") }}',
+                                                            type: 'post',
+                                                            data:{
+                                                                delivery_id: delivery,
+                                                                id         : id,
+                                                                weight     : weight,
+                                                                origin     : origin,
+                                                                srvc       : val,
+                                                                _token     : "{{ csrf_token() }}"
+                                                            },
+                                                            success: function(response){
+                                                                var obj = JSON.parse(response);
+                                                                console.log(obj);
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            </script>
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -172,30 +237,32 @@
                 }
             });
             
-            $('.delivery').on('click', function(){
-                var product_id = $(this).attr('data-product_id');
-                var id         = $(this).attr('data-pk'); 
-                var weight     = $(this).attr('data-weight');
-                var delivery   = $('#delivery'+id).val();
-                var qty        = $('#cart_quantity_input'+id).val();
-                console.log(id);
+            // $('.delivery').on('click', function(){
+            //     var product_id = $(this).attr('data-product_id');
+            //     var id         = $(this).attr('data-pk'); 
+            //     var weight     = $(this).attr('data-weight');
+            //     var delivery   = $('#delivery'+id).val();
+            //     var qty        = $('#cart_quantity_input'+id).val();
+            //     var origin     = $(this).attr('data-origin');
+            //     console.log(id);
                   
-                    $.ajax({
-                        url: '{{ route("cart-upddelivery") }}',
-                        type: 'post',
-                        data:{
-                            delivery_id: delivery,
-                            id: id,
-                            weight: weight,
-                            _token: "{{ csrf_token() }}"
-                        },
-                        success: function(response){
-							var obj = JSON.parse(response);
-                            console.log(obj);
-                        }
-                    });
+            //         $.ajax({
+            //             url: '{{ route("cart-upddelivery") }}',
+            //             type: 'post',
+            //             data:{
+            //                 delivery_id: delivery,
+            //                 id: id,
+            //                 weight: weight,
+            //                 origin: origin,
+            //                 _token: "{{ csrf_token() }}"
+            //             },
+            //             success: function(response){
+			// 				var obj = JSON.parse(response);
+            //                 console.log(obj);
+            //             }
+            //         });
 
-            })
+            // })
 
             // --- untuk ngurang qty --- //
             $('.cart_quantity_down').on('click', function(){

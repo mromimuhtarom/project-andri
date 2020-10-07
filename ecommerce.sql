@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 06 Okt 2020 pada 01.04
--- Versi server: 10.1.38-MariaDB
--- Versi PHP: 7.3.2
+-- Waktu pembuatan: 07 Okt 2020 pada 10.26
+-- Versi server: 10.4.14-MariaDB
+-- Versi PHP: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -47,7 +46,7 @@ CREATE TABLE `address` (
 --
 
 INSERT INTO `address` (`address_id`, `accept_name`, `province_id`, `province_name`, `city_id`, `city_name`, `postal_code`, `detail_address`, `user_id`, `telp`, `status`) VALUES
-(1, 'Romi', 25, '', 3, '', '3454', 'dfgdf', 1, '082392191962', 2),
+(1, 'Romi', 1, 'Bali', 17, 'Badung', '3454', 'dfgdf', 1, '082392191962', 2),
 (2, 'winna', 4, '', 0, '', '324', 'fdbfgbfg', 1, '43556666', 1),
 (3, NULL, 17, 'Kepulauan Riau', 48, 'Batam', '3455', 'vhgvh, bengkong', 2, NULL, 1),
 (4, 'Franky', 17, 'Kepulauan Riau', 48, 'Batam', 'dsc', 'sdssd, bdfss', 2, '082244556677', 1),
@@ -88,16 +87,17 @@ CREATE TABLE `chart` (
   `qty` int(5) NOT NULL,
   `user_id` int(5) NOT NULL,
   `address_id` int(5) NOT NULL,
-  `delivery_id` varchar(10) NOT NULL
+  `delivery_id` varchar(10) NOT NULL,
+  `service` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `chart`
 --
 
-INSERT INTO `chart` (`id`, `product_id`, `variation_id`, `variation_detail_id`, `qty`, `user_id`, `address_id`, `delivery_id`) VALUES
-(1, 'bh001', 18, 4, 4, 1, 0, ''),
-(2, 'bh001', 18, 0, 3, 2, 0, '');
+INSERT INTO `chart` (`id`, `product_id`, `variation_id`, `variation_detail_id`, `qty`, `user_id`, `address_id`, `delivery_id`, `service`) VALUES
+(1, 'bh001', 18, 4, 4, 1, 0, '', ''),
+(2, 'bh001', 18, 0, 3, 2, 5, 'jne', 'OKE');
 
 -- --------------------------------------------------------
 
@@ -225,7 +225,7 @@ CREATE TABLE `product` (
   `user_id` int(5) NOT NULL,
   `picture` varchar(25) NOT NULL,
   `view` int(5) NOT NULL,
-  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `datetime` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

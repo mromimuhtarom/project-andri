@@ -51,6 +51,7 @@ Route::get('/cart', 'CartController@index')->name('cart-view');
 Route::post('/cart/qty-update', 'CartController@update')->name('cart-qty-update');
 Route::post('/cart-delete', 'CartController@delete')->name('cart-delete');
 Route::post('/cart-updatedelivery', 'CartController@UpdateDelivery')->name('cart-upddelivery');
+Route::post('/cart-service-list', 'CartController@service')->name('cart-servicelist');
 
 
 Route::get('/Profile-view', 'ProfileController@index')->name('profile-view');

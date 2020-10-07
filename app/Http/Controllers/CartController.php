@@ -66,24 +66,48 @@ class CartController extends Controller
         }
     }
 
+    public function service(Request $request)
+    {
+            $delivery_id = $request->delivery_id;
+            $cart_id     = $request->id;
+            $weight      = $request->weight;
+            $origin      = $request->origin;
+            $cart = Cart::where('id', '=', $cart_id)->first();
+            $param = "origin=".$origin."&destination=".$cart->address->city_id."&weight=".$weight."&courier=".$delivery_id;
+            $ongkir = $this->apiOngkir($param);
+            return json_encode([
+                "status"     => "OK",
+                "dataongkir" => $ongkir
+            ]);
+    }
+
     public function UpdateDelivery(Request $request)
     {
         $delivery_id = $request->delivery_id;
-        $cart_id    = $request->id;
-        $weight     = $request->weight;
+        $cart_id     = $request->id;
+        $weight      = $request->weight;
+        $origin      = $request->origin;
+        $srvc        = $request->srvc;
         if ($request->ajax()) {
             $id  = $request->id;
             $qty = $request->qty;
             $cart = Cart::where('id', '=', $cart_id)->first();
-            $param = "origin=501&destination=".$cart->address->city_id."&weight=".$weight."&courier=".$delivery_id;
+            $param = "origin=".$origin."&destination=".$cart->address->city_id."&weight=".$weight."&courier=".$delivery_id;
             $ongkir = $this->apiOngkir($param);
+            $service = $ongkir->rajaongkir->results[0]->costs;
+            foreach($service as $srv):
+                if($srv->service === $srvc):
+                    $price = $srv->cost[0]->value;
+                endif;
+            endforeach;
             if($id != NULL)
             Cart::where('id', '=', $cart_id)->update([
-                'delivery_id'   =>  $delivery_id
+                'delivery_id'   =>  $delivery_id,
+                'service'       => $srvc
             ]);
             return json_encode([
                 "status"     => "OK",
-                "dataongkir" => $ongkir
+                "dataongkir" => $price
             ]);
         }
         return json_encode([
