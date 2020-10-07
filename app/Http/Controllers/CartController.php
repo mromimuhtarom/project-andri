@@ -98,6 +98,7 @@ class CartController extends Controller
             foreach($service as $srv):
                 if($srv->service === $srvc):
                     $price = $srv->cost[0]->value;
+                    $etd   = $srv->cost[0]->etd;
                 endif;
             endforeach;
             if($id != NULL)
@@ -107,7 +108,8 @@ class CartController extends Controller
             ]);
             return json_encode([
                 "status"     => "OK",
-                "dataongkir" => $price
+                "dataongkir" => $price,
+                "day"        => $etd
             ]);
         }
         return json_encode([

@@ -99,9 +99,15 @@
                                             <select name="service" class="service" id="service{{ $ct->id }}">
                                                 <option value="" disabled>Pilih Service</option>
                                             </select>
-                                            <table>
+                                            <table width="100%">
+                                                <tr>
+                                                    <td>Jangka Waktu Pengiriman</td>
+                                                    <td>:</td>
+                                                    <td class="etd{{ $ct->id }}"></td>
+                                                </tr>
                                                 <tr class="totalwithcouriertable">
-                                                    <td>Total Harga :</td>
+                                                    <td>Total Harga</td>
+                                                    <td>:</td>
                                                     <td class="totalwithcourier"></td>
                                                 </tr>
                                             </table>
@@ -160,6 +166,7 @@
                                                             },
                                                             success: function(response){
                                                                 var obj = JSON.parse(response);
+                                                                $('.etd{{ $ct->id }}').append(obj.day)
                                                                 console.log(obj);
                                                             }
                                                         });
