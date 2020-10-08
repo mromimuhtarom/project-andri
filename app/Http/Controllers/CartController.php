@@ -72,9 +72,12 @@ class CartController extends Controller
             $cart_id     = $request->id;
             $weight      = $request->weight;
             $origin      = $request->origin;
-            $cart = Cart::where('id', '=', $cart_id)->first();
-            $param = "origin=".$origin."&destination=".$cart->address->city_id."&weight=".$weight."&courier=".$delivery_id;
-            $ongkir = $this->apiOngkir($param);
+            $cart        = Cart::where('id', '=', $cart_id)->first();
+            $param       = "origin=".$origin."&destination=".$cart->address->city_id."&weight=".$weight."&courier=".$delivery_id;
+            $ongkir      = $this->apiOngkir($param);
+            Cart::where('id', '=', $cart_id)->update([
+               'delivery_id'    => $delivery_id 
+            ]);
             return json_encode([
                 "status"     => "OK",
                 "dataongkir" => $ongkir
@@ -100,17 +103,19 @@ class CartController extends Controller
                     $price = $srv->cost[0]->value;
                     $etd   = $srv->cost[0]->etd;
                 endif;
+                $a = $srv->service;
             endforeach;
-            if($id != NULL)
-            Cart::where('id', '=', $cart_id)->update([
-                'delivery_id'   =>  $delivery_id,
-                'service'       => $srvc
-            ]);
-            return json_encode([
-                "status"     => "OK",
-                "dataongkir" => $price,
-                "day"        => $etd
-            ]);
+            if($id != NULL):
+                Cart::where('id', '=', $cart_id)->update([
+                    'delivery_id'   =>  $delivery_id,
+                    'service'       => $srvc
+                ]);
+                return json_encode([
+                    "status"     => "OK",
+                    "dataongkir" => $srvc,
+                    "day"        => $param
+                ]);
+            endif;
         }
         return json_encode([
             "message" => 'sdfsd'
