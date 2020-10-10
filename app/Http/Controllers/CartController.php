@@ -103,7 +103,6 @@ class CartController extends Controller
                     $price = $srv->cost[0]->value;
                     $etd   = $srv->cost[0]->etd;
                 endif;
-                $a = $srv->service;
             endforeach;
             if($id != NULL):
                 Cart::where('id', '=', $cart_id)->update([
@@ -112,8 +111,8 @@ class CartController extends Controller
                 ]);
                 return json_encode([
                     "status"     => "OK",
-                    "dataongkir" => $srvc,
-                    "day"        => $param
+                    "dataongkir" => $price,
+                    "day"        => $etd
                 ]);
             endif;
         }

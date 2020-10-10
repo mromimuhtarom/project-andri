@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 08 Okt 2020 pada 11.01
+-- Waktu pembuatan: 10 Okt 2020 pada 06.58
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.4.10
 
@@ -96,7 +96,7 @@ CREATE TABLE `chart` (
 --
 
 INSERT INTO `chart` (`id`, `product_id`, `variation_id`, `variation_detail_id`, `qty`, `user_id`, `address_id`, `delivery_id`, `service`) VALUES
-(1, 'bh001', 18, 4, 4, 1, 1, 'jne', 'REG'),
+(1, 'bh001', 18, 4, 4, 1, 1, 'pos', 'CTCYES'),
 (2, 'bh001', 18, 0, 3, 2, 5, 'pos', 'ECO');
 
 -- --------------------------------------------------------

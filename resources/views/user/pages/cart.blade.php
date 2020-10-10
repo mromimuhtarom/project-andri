@@ -132,7 +132,7 @@
                             var qty        = $('#cart_quantity_input{{ $ct->id }}').val();
                             var origin     = $('#delivery{{ $ct->id }}').attr('data-origin');
                             var price      = $('.pricetotal{{ $ct->id }}').attr('data-price');
-
+                            console.log(service);
                             if(dlvr){
                                 var svb = '{{ $ct->service }}';
                                     $.ajax({
@@ -147,7 +147,16 @@
                                         },
                                         success: function(response){
                                             var obj = JSON.parse(response);
-                                            $('#service{{ $ct->id }}').append('<option value="" class="scrv{{ $ct->id }}" disabled>Pilih Service</option>');
+                                            var a = [];
+                                            $.each( obj.dataongkir.rajaongkir.results[0].costs, function(index, srv ) {
+                                                    a.push(srv.service);
+                                            });
+                                            if(jQuery.inArray( svb, a )){
+                                                var selected = 'selected';
+                                            }else {
+                                                var selected = '';
+                                            }
+                                            $('#service{{ $ct->id }}').append('<option value="" class="scrv{{ $ct->id }}" '+selected+' disabled>Pilih Service</option>');
                                             $.each( obj.dataongkir.rajaongkir.results[0].costs, function(index, srv ) {
                                                 if(svb == srv.service){
                                                     var total = price * qty + srv.cost[0].value;
@@ -183,7 +192,6 @@
                                             $('.etd{{ $ct->id }}').append(obj.day)
                                             $('.priceongkir{{$ct->id}}').append(obj.dataongkir);
                                             $('.totalwithcourier{{$ct->id}}').append(total);
-                                            
                                             console.log(total);
                                         }
                                     });
