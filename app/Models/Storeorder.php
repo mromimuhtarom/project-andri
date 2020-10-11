@@ -11,7 +11,7 @@ class Storeorder extends Model
     protected $table       = 'store_order';
     protected $primary_key = 'id';
     protected $guarded     = [];
-    public    $timestamp   = false;
+    public    $timestamps   = false;
     public $status_name = [
         '0' => 'Menunggu',
         '1' => 'Terima',

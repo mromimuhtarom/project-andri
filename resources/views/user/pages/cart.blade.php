@@ -17,7 +17,6 @@
 							<td class="description"></td>
 							<td class="price">Harga</td>
                             <td class="quantity">Qty</td>
-                            <td width="10%">Ganti Alamat</td>
 							<td class="total">Total</td>
 							<td>Aksi</td>
 						</tr>
@@ -48,17 +47,9 @@
                                         <a class="cart_quantity_down" data-pk="{{ $ct->id }}" data-product_id="{{ $ct->product_id }}" href="#"> - </a>
                                     </div>
                                 </td>
-                                <td>
-                                    <select name="address" id="address{{ $ct->id }}" data-pk="{{ $ct->id }}" data-product_id="{{ $ct->product_id }}" class="addressdetail">
-                                        <option value="">Pilih Alamat</option>
-                                        @foreach ($addresslist as $adl)
-                                        <option value="{{ $adl->address_id }}" @if($adl->address_id == $addressmain->address_id) selected @endif>{{ $adl->detail_address}}, {{ $adl->city_name }}, {{ $adl->province_name }}, Kode Pos: {{ $adl->postal_code }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
                                 <td class="cart_total">
 										<table class="cart_total_price">
-											<tr id="totalprice">
+											<tr id="totalprice{{ $ct->id }}">
 												<td>Rp.</td>
 												<td class="pricetotal{{ $ct->id }}" data-price="@if($ct->variation_detail != NULL){{ $ct->variation_detail->price}}@else{{ $ct->product->price }}@endif"></td>
 											</tr>
@@ -86,24 +77,30 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
-                <form action="" method="POST">
+                <form action="{{ route('cart-create') }}" method="POST">
+                    @csrf
                     <div class="modal-body">
-                        <input type="hidden" name="product_id" value="{{ $ct->product_id }}">
-                        <input type="hidden" name="qty" value="{{ $ct->qty }}">
-                        <input type="hidden" name="variation_detail" value="{{ $ct->variation_detail_id }}">
-                        <select name="" id="">
+                        <input type="hidden" name="cart_id" value="{{ $ct->id }}">
+                        <input type="hidden" name="ongkir" class="ongkir" id="ongkir{{ $ct->id }}">
+                        <select name="payment" id="" class="form-control">
                             <option value="">Pilih Tipe Pembayaran</option>
                             @foreach ($ct->paymentType as $pt)
                                 <option value="{{ $pt->payment_id }}">{{ $pt->payment_name }}</option>
                             @endforeach
                         </select>
-                        <select name="delivery" id="delivery{{ $ct->id }}" data-weight="{{ $ct->product->weight }}" data-pk="{{ $ct->id }}" data-product_id="{{ $ct->product_id }}" data-origin={{ $ct->originaddressseller->city_id }} class="delivery">
-                            <option value="" disabled>Pilih Pengiriman</option>
+                        <select name="address" id="address{{ $ct->id }}" data-pk="{{ $ct->id }}" data-product_id="{{ $ct->product_id }}" class="addressdetail form-control">
+                            <option value="" @if(!$addressmain->address_id) selected @endif disabled>Pilih Alamat</option>
+                            @foreach ($addresslist as $adl)
+                            <option value="{{ $adl->address_id }}" @if($adl->address_id == $addressmain->address_id) selected @endif>{{ $adl->detail_address}}, {{ $adl->city_name }}, {{ $adl->province_name }}, Kode Pos: {{ $adl->postal_code }}</option>
+                            @endforeach
+                        </select>
+                        <select name="delivery" id="delivery{{ $ct->id }}" data-weight="{{ $ct->product->weight }}" data-pk="{{ $ct->id }}" data-product_id="{{ $ct->product_id }}" data-origin={{ $ct->originaddressseller->city_id }} class="delivery form-control">
+                            <option value="" @if(!$ct->delivery_id) selected @endif disabled>Pilih Pengiriman</option>
                             @foreach ($sender as $key => $value)
                                 <option value="{{ $key }}" @if($key === $ct->delivery_id) selected @endif>{{ $value }}</option>
                             @endforeach
                         </select>
-                        <select name="service" class="service" id="service{{ $ct->id }}">
+                        <select name="service" class="service form-control" id="service{{ $ct->id }}">
                             
                         </select>
                         <table width="100%">
@@ -132,7 +129,7 @@
                             var qty        = $('#cart_quantity_input{{ $ct->id }}').val();
                             var origin     = $('#delivery{{ $ct->id }}').attr('data-origin');
                             var price      = $('.pricetotal{{ $ct->id }}').attr('data-price');
-                            console.log(service);
+                            
                             if(dlvr){
                                 var svb = '{{ $ct->service }}';
                                     $.ajax({
@@ -163,6 +160,7 @@
                                                     $('#service{{ $ct->id }}').append('<option class="scrv{{ $ct->id }}" selected value="'+srv.service+'">'+srv.service+'</option>');
                                                     $('.etd{{ $ct->id }}').append(srv.cost[0].etd)
                                                     $('.priceongkir{{$ct->id}}').append(srv.cost[0].value);
+                                                    $('#ongkir{{ $ct->id }}').val(srv.cost[0].value);
                                                     $('.totalwithcourier{{$ct->id}}').append(total);
                                                 } else {
                                                     $('#service{{ $ct->id }}').append('<option class="scrv{{ $ct->id }}" value="'+srv.service+'">'+srv.service+'</option>');
@@ -170,8 +168,6 @@
                                             });
                                         }
                                     });
-
-
                             }
 
                             if(dlvr && service){
@@ -191,14 +187,22 @@
                                             var total = price * qty + obj.dataongkir;
                                             $('.etd{{ $ct->id }}').append(obj.day)
                                             $('.priceongkir{{$ct->id}}').append(obj.dataongkir);
+                                            $('#ongkir{{ $ct->id }}').val(obj.dataongkir);
                                             $('.totalwithcourier{{$ct->id}}').append(total);
-                                            console.log(total);
                                         }
                                     });
 
                             }
                             $('#service{{ $ct->id }}').on('change', function(){
                                 var val        = $(this).val();
+                                var dlvr       = $('#delivery{{ $ct->id }}').val();
+                                var service    = $('#service{{ $ct->id }}').val();
+                                var product_id = $('#delivery{{ $ct->id }}').attr('data-product_id');
+                                var id         = $('#delivery{{ $ct->id }}').attr('data-pk');
+                                var weight     = $('#delivery{{ $ct->id }}').attr('data-weight');
+                                var qty        = $('#cart_quantity_input{{ $ct->id }}').val();
+                                var origin     = $('#delivery{{ $ct->id }}').attr('data-origin');
+                                var price      = $('.pricetotal{{ $ct->id }}').attr('data-price');
                                 if(val){
                                     $.ajax({
                                         url: '{{ route("cart-upddelivery") }}',
@@ -213,16 +217,14 @@
                                         },
                                         success: function(response){
                                             var obj = JSON.parse(response);
-                                            console.log(obj);
                                             var total = price * qty + obj.dataongkir;
                                             $('.etd{{ $ct->id }}').remove();
                                             $('.priceongkir{{$ct->id}}').remove();
                                             $('.totalwithcourier{{$ct->id}}').remove();
                                             $('.etdtable{{ $ct->id }}').append('<td class="etd{{ $ct->id }}">'+obj.day+'</td>')
                                             $('.priceongkirtable{{$ct->id}}').append('<td class="priceongkir{{ $ct->id }}">'+obj.dataongkir+'</td>');
+                                            $('#ongkir{{ $ct->id }}').val(obj.dataongkir);
                                             $('.totalwithcouriertable{{$ct->id}}').append('<td class="totalwithcourier{{$ct->id}}">'+total+'</td>');
-                                            
-                                            console.log(obj);
                                         }
                                     });
                                 }
@@ -295,9 +297,9 @@
                     });
 
                 if(delivery) {
-                    $('#totalprice').append('<td class="pricetotal'+id+'" data-price="'+price+'">'+total+'</td>');
+                    $('#totalprice'+id).append('<td class="pricetotal'+id+'" data-price="'+price+'">'+total+'</td>');
                 } else {
-                    $('#totalprice').append('<td class="pricetotal'+id+'" data-price="'+price+'">0</td>');
+                    $('#totalprice'+id).append('<td class="pricetotal'+id+'" data-price="'+price+'">0</td>');
                 }
             });
             
@@ -308,7 +310,7 @@
                 var delivery   = $('#delivery'+id).val();
                 var qty        = $('#cart_quantity_input'+id).val();
                 var origin     = $(this).attr('data-origin');
-                console.log(id);
+                $('#service'+id).attr('disabled', 'disabled');
                   
                     $.ajax({
                         url: '{{ route("cart-servicelist") }}',
@@ -323,11 +325,11 @@
                         success: function(response){
 							var obj = JSON.parse(response);
                             $('.scrv'+id).remove();
+                            $('#service'+id).removeAttr('disabled');
                             $('#service'+id).append('<option value="" class="scrv'+id+'" selected disabled>Pilih Service</option>');
                             $.each( obj.dataongkir.rajaongkir.results[0].costs, function(index, srv ) {
                                     $('#service'+id).append('<option class="scrv'+id+'" value="'+srv.service+'">'+srv.service+'</option>');
                             });
-                            console.log(obj);
                         }
                     });
 
@@ -343,15 +345,13 @@
 				var priceclass = "pricetotal"+id;
 				var price      = $('.'+priceclass).attr('data-price');
                 var delivery = $('#delivery'+id).val();
-
-				console.log(totalqty)
                 if(totalqty > 0)  {
 					$('.'+priceclass).remove();
 					var total      = parseInt(price) * parseInt(totalqty);
                     if(delivery){
-                        $('#totalprice').append('<td class="pricetotal'+id+'" data-price="'+price+'">'+total+'</td>');
+                        $('#totalprice'+id).append('<td class="pricetotal'+id+'" data-price="'+price+'">'+total+'</td>');
                     } else {
-                        $('#totalprice').append('<td class="pricetotal'+id+'" data-price="'+price+'">0</td>');
+                        $('#totalprice'+id).append('<td class="pricetotal'+id+'" data-price="'+price+'">0</td>');
                     }
                     $('#'+qtyclass).val(totalqty);
 					$.ajax({

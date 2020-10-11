@@ -11,6 +11,7 @@ use App\Models\Variationdetail;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\Config;
+use Validator;
 
 class CartController extends Controller
 {
@@ -33,6 +34,84 @@ class CartController extends Controller
 
 
         return view('user.pages.cart', compact('cart', 'addressmain', 'addresslist', 'sender'));
+    }
+
+    public function store(Request $request)
+    {
+        $cart_id  = $request->cart_id;
+        $ongkir   = $request->ongkir;
+        $payment  = $request->payment;
+        $delivery = $request->delivery;
+        $service  = $request->service;
+        $address  = $request->address;
+        $payment  = $request->payment;
+        $user_id  = Session::get('user_id');
+        $validator = Validator::make($request->all(),[
+            'delivery' => 'required',
+            'service'  => 'required',
+            'address'  => 'required',
+            'payment'  => 'required',
+            'ongkir'   => 'required|integer',
+            'cart_id'  => 'required'
+        ]);
+        
+        if ($validator->fails()) {
+            alert()->error('ErrorAlert',$validator->errors()->first());
+            return back();
+        } 
+
+        $cart  = Cart::where('id', '=', $cart_id)->first();
+        if(isset($cart->variation_detail)): 
+            $price = $cart->variation_detail->price;
+            $totalqtyseller = $cart->variation_detail->qty - $cart->qty;
+            Variationdetail::where('id', '=', $cart->variation_detail_id)->update([
+                'qty'   => $totalqtyseller
+            ]);
+            $totalqtysellergeneral = $cart->product->qty - $cart->qty;
+            Product::where('product_id', '=', $cart->product_id)->update([
+                'qty' => $totalqtysellergeneral
+            ]);
+        else: 
+            $price = $cart->product->price;
+            $totalqtyseller = $cart->product->qty - $cart->qty;
+            Product::where('product_id', '=', $cart->product_id)->update([
+                'qty' => $totalqtyseller
+            ]);
+        endif; 
+        Storeorder::create([
+            'product_name'          => $cart->product->product_name,
+            'category_id'           => $cart->product->category_id,
+            'user_id'               => $user_id,
+            'qty'                   => $cart->qty,
+            'price_product'         => $price,
+            'note'                  => 'Proses Pembuktian',
+            'seller_user_id'        => $cart->product->user_id,
+            'variation_id'          => $cart->variation_id,
+            'variation_name'        => $cart->variation->variation_name,
+            'variation_detail_name' => $cart->variation_detail->name_detail_variation,
+            'delivery_id'           => $cart->delivery_id,
+            'service_name'          => $service,
+            'address_id'            => $cart->address_id,
+            'postal_code'           => $cart->address->postal_code,
+            'city_id'               => $cart->address->city_id,
+            'city_name'             => $cart->address->city_name,
+            'province_id'           => $cart->address->province_id,
+            'province_name'         => $cart->address->province_name,
+            'accept_name'           => $cart->address->accept_name,
+            'telp'                  => $cart->address->telp,
+            'status'                => 5,
+            'ongkir'                => $ongkir,
+            'payment_id'            => $payment,
+            'payment_name'          => $cart->paymentType->payment_name,
+            'picture'               => $cart->product->picture
+        ]);
+
+        Cart::where('id', '=', $cart_id)->delete();
+
+        alert()->success('Terima kasih untuk membeli selanjutnya mengirimkan bukti transfer pembayaran');
+        return redirect()->route('approvepaymentview');
+
+
     }
 
     public function apiOngkir($param)

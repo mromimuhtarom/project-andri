@@ -52,6 +52,7 @@ Route::post('/cart/qty-update', 'CartController@update')->name('cart-qty-update'
 Route::post('/cart-delete', 'CartController@delete')->name('cart-delete');
 Route::post('/cart-updatedelivery', 'CartController@UpdateDelivery')->name('cart-upddelivery');
 Route::post('/cart-service-list', 'CartController@service')->name('cart-servicelist');
+Route::post('/cart-create', 'CartController@store')->name('cart-create');
 
 
 Route::get('/Profile-view', 'ProfileController@index')->name('profile-view');
@@ -59,6 +60,8 @@ Route::post('/profile-update', 'ProfileController@updateprofile')->name('profile
 Route::post('/profile-updatepwd', 'ProfileController@updatepassword')->name('profile-updatepwd');
 Route::post('/profile-createaddress', 'ProfileController@storeAddress')->name('profile-createaddress');
 Route::post('/profile-updateaddress', 'ProfileController@updateAddress')->name('profile-updaddress');
+
+Route::get('/Approvepayment-view', 'ApprovePaymentController@index')->name('approvepaymentview');
 
 
 Route::get('/detail_product/{id_product}', 'DetailProductController@index')->name('DetailProduc-view');

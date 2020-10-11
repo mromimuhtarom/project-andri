@@ -70,7 +70,7 @@
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
 								<li><a href="{{ route('cart-view') }}" class="active">Keranjang</a></li>
-								<li><a href="contact-us.html">Belum di bayar</a></li>
+								<li><a href="{{ route('approvepaymentview') }}">Belum di bayar</a></li>
 								<li><a href="">Proses</a></li>
 								<li><a href="">sudah di terima</a></li>
 								<li><a href="">Di Tolak</a></li>
@@ -93,6 +93,7 @@
 	<script src="/store_user/js/bootstrap.min.js"></script>
 	<script src="/store_user/js/jquery.scrollUp.min.js"></script>
     <script src="/store_user/js/jquery.prettyPhoto.js"></script>
-    <script src="/store_user/js/main.js"></script>
+	<script src="/store_user/js/main.js"></script>
+	@include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
 </body>
 </html>
