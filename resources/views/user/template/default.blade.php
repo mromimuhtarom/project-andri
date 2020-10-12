@@ -72,8 +72,7 @@
 								<li><a href="{{ route('cart-view') }}" class="active">Keranjang</a></li>
 								<li><a href="{{ route('approvepaymentview') }}">Belum di bayar</a></li>
 								<li><a href="">Proses</a></li>
-								<li><a href="">sudah di terima</a></li>
-								<li><a href="">Di Tolak</a></li>
+								<li><a href="">Diterima Atau di tolak</a></li>
 							</ul>
 						</div>
 					</div>

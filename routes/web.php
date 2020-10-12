@@ -56,12 +56,13 @@ Route::post('/cart-create', 'CartController@store')->name('cart-create');
 
 
 Route::get('/Profile-view', 'ProfileController@index')->name('profile-view');
-Route::post('/profile-update', 'ProfileController@updateprofile')->name('profile-updateuser');
-Route::post('/profile-updatepwd', 'ProfileController@updatepassword')->name('profile-updatepwd');
-Route::post('/profile-createaddress', 'ProfileController@storeAddress')->name('profile-createaddress');
-Route::post('/profile-updateaddress', 'ProfileController@updateAddress')->name('profile-updaddress');
+Route::post('/Profile-update', 'ProfileController@updateprofile')->name('profile-updateuser');
+Route::post('/Profile-updatepwd', 'ProfileController@updatepassword')->name('profile-updatepwd');
+Route::post('/Profile-createaddress', 'ProfileController@storeAddress')->name('profile-createaddress');
+Route::post('/Profile-updateaddress', 'ProfileController@updateAddress')->name('profile-updaddress');
 
 Route::get('/Approvepayment-view', 'ApprovePaymentController@index')->name('approvepaymentview');
+Route::post('/Approvepayment-create', 'ApprovePaymentController@Uploadimage')->name('approvepayment-create');
 
 
 Route::get('/detail_product/{id_product}', 'DetailProductController@index')->name('DetailProduc-view');

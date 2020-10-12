@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 11 Okt 2020 pada 18.10
--- Versi server: 10.1.38-MariaDB
--- Versi PHP: 7.3.2
+-- Waktu pembuatan: 12 Okt 2020 pada 10.59
+-- Versi server: 10.4.14-MariaDB
+-- Versi PHP: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -227,7 +226,7 @@ CREATE TABLE `product` (
   `user_id` int(5) NOT NULL,
   `picture` varchar(25) NOT NULL,
   `view` int(5) NOT NULL,
-  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `datetime` timestamp NOT NULL DEFAULT current_timestamp(),
   `qty` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -305,15 +304,16 @@ CREATE TABLE `store_order` (
   `payment_id` int(5) NOT NULL,
   `payment_name` varchar(255) NOT NULL,
   `picture` varchar(255) NOT NULL,
-  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `provementpic` varchar(255) DEFAULT NULL,
+  `datetime` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `store_order`
 --
 
-INSERT INTO `store_order` (`id`, `product_name`, `category_id`, `user_id`, `qty`, `price_product`, `note`, `seller_user_id`, `variation_id`, `variation_name`, `variation_detail_name`, `delivery_id`, `service_name`, `address_id`, `postal_code`, `city_id`, `city_name`, `province_id`, `province_name`, `accept_name`, `telp`, `status`, `ongkir`, `payment_id`, `payment_name`, `picture`, `datetime`) VALUES
-(1, 'Plang1', 2, 2, 4, '43543.00', 'Proses Pembuktian', 1, 18, 'sdfs', 'dfgdf', 'JNE', 'OKE', 5, '2142', 402, 'Serang', 3, 'Banten', 'Mantap Jiwa sraya', '082392191962', 5, 24000, 1, 'bni', '1.jpg', '2020-10-11 08:56:25');
+INSERT INTO `store_order` (`id`, `product_name`, `category_id`, `user_id`, `qty`, `price_product`, `note`, `seller_user_id`, `variation_id`, `variation_name`, `variation_detail_name`, `delivery_id`, `service_name`, `address_id`, `postal_code`, `city_id`, `city_name`, `province_id`, `province_name`, `accept_name`, `telp`, `status`, `ongkir`, `payment_id`, `payment_name`, `picture`, `provementpic`, `datetime`) VALUES
+(1, 'Plang1', 2, 2, 4, '43543.00', 'Proses Pembuktian', 1, 18, 'sdfs', 'dfgdf', 'JNE', 'OKE', 5, '2142', 402, 'Serang', 3, 'Banten', 'Mantap Jiwa sraya', '082392191962', 5, 24000, 1, 'bni', '1.jpg', '1.jpg', '2020-10-11 08:56:25');
 
 -- --------------------------------------------------------
 
