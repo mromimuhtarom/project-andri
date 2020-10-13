@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 12 Okt 2020 pada 10.59
+-- Waktu pembuatan: 13 Okt 2020 pada 10.59
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.4.10
 
@@ -313,7 +313,7 @@ CREATE TABLE `store_order` (
 --
 
 INSERT INTO `store_order` (`id`, `product_name`, `category_id`, `user_id`, `qty`, `price_product`, `note`, `seller_user_id`, `variation_id`, `variation_name`, `variation_detail_name`, `delivery_id`, `service_name`, `address_id`, `postal_code`, `city_id`, `city_name`, `province_id`, `province_name`, `accept_name`, `telp`, `status`, `ongkir`, `payment_id`, `payment_name`, `picture`, `provementpic`, `datetime`) VALUES
-(1, 'Plang1', 2, 2, 4, '43543.00', 'Proses Pembuktian', 1, 18, 'sdfs', 'dfgdf', 'JNE', 'OKE', 5, '2142', 402, 'Serang', 3, 'Banten', 'Mantap Jiwa sraya', '082392191962', 5, 24000, 1, 'bni', '1.jpg', '1.jpg', '2020-10-11 08:56:25');
+(1, 'Plang1', 2, 2, 4, '43543.00', 'Proses Pembuktian', 1, 18, 'sdfs', 'dfgdf', 'JNE', 'OKE', 5, '2142', 402, 'Serang', 3, 'Banten', 'Mantap Jiwa sraya', '082392191962', 3, 24000, 1, 'bni', '1.jpg', '1.jpg', '2020-10-11 08:56:25');
 
 -- --------------------------------------------------------
 
@@ -377,7 +377,10 @@ CREATE TABLE `variation_detail` (
 
 INSERT INTO `variation_detail` (`id`, `variation_id`, `name_detail_variation`, `qty`, `price`) VALUES
 (4, 18, 'sdfs', 25, '45000.00'),
-(5, 18, 'dfgdf', 9, '43543.00');
+(5, 18, 'dfgdf', 9, '43543.00'),
+(6, 18, 'cvbc', 34, '45000.00'),
+(7, 18, 'dfhdfgh', 32, '43000.00'),
+(8, 18, 'dfbghfc b', 45, '34000.00');
 
 --
 -- Indexes for dumped tables
@@ -559,7 +562,7 @@ ALTER TABLE `variation`
 -- AUTO_INCREMENT untuk tabel `variation_detail`
 --
 ALTER TABLE `variation_detail`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

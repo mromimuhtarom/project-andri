@@ -8,10 +8,10 @@
 					<div class="product-details"><!--product-details-->
 						<div class="col-sm-5">
 							<div class="view-product">
-								<img src="/store_user/images/product-details/1.jpg" alt="" />
-								<h3>ZOOM</h3>
+								<img src="/image_user/product/{{ $product->picture }}" style="object-fit:cover;" alt="" />
+								{{-- <h3>ZOOM</h3> --}}
 							</div>
-							<div id="similar-product" class="carousel slide" data-ride="carousel">
+							{{-- <div id="similar-product" class="carousel slide" data-ride="carousel">
 								
 								  <!-- Wrapper for slides -->
 								    <div class="carousel-inner">
@@ -40,39 +40,60 @@
 								  <a class="right item-control" href="#similar-product" data-slide="next">
 									<i class="fa fa-angle-right"></i>
 								  </a>
-							</div>
+							</div> --}}
 
 						</div>
 						<div class="col-sm-7">
 							<div class="product-information"><!--/product-information-->
-								<img src="/store_user/images/product-details/new.jpg" class="newarrival" alt="" />
-								<h2>Anne Klein Sleeveless Colorblock Scuba</h2>
-								<p>Web ID: 1089772</p>
+								{{-- <img src="/store_user/images/product-details/new.jpg" class="newarrival" alt="" /> --}}
+								<h2>{{ $product->product_name }}</h2>
 								<img src="/store_user/images/product-details/rating.png" alt="" />
 								<span>
-									<span>US $59</span>
-									<label>Quantity:</label>
-									<input type="text" value="3" />
+									<span>Rp. {{ number_format($product->price, 2) }}</span>
+									<label>Quantity: {{ number_format($product->qty) }}</label>
+									<input type="number" value="1" />
 									<button type="button" class="btn btn-fefault cart">
 										<i class="fa fa-shopping-cart"></i>
-										Add to cart
+										Tambahkan ke keranjang
 									</button>
+									<br>
+									<div style="border:1px solid black">
+										<div style="border:1px solid black" align="left">
+											Pilihan {{$product->variation->variation_name }}
+										</div>
+										<div style="border:1px solid black" align="left">
+											@php 
+											$vardet = 0;
+											@endphp
+											@foreach ($product->variation_detail as $vd)
+										
+												@if($vardet%4 == 0)
+													<br>
+												@endif
+												<td><a href="" class="btn btn-fefault cart">{{ $vd->name_detail_variation }}</a></td>
+											@php
+											$vardet++;	
+											@endphp
+											@endforeach
+										</div>
+									</div>
 								</span>
 							</div><!--/product-information-->
+
 						</div>
 					</div><!--/product-details-->
 					
 					<div class="category-tab shop-details-tab"><!--category-tab-->
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs">
-								<li><a href="#details" data-toggle="tab">Details</a></li>
+								{{-- <li><a href="#details" data-toggle="tab">Details</a></li>
 								<li><a href="#companyprofile" data-toggle="tab">Company Profile</a></li>
-								<li><a href="#tag" data-toggle="tab">Tag</a></li>
+								<li><a href="#tag" data-toggle="tab">Tag</a></li> --}}
 								<li class="active"><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
 							</ul>
 						</div>
 						<div class="tab-content">
-							<div class="tab-pane fade" id="details" >
+							{{-- <div class="tab-pane fade" id="details" >
 								<div class="col-sm-3">
 									<div class="product-image-wrapper">
 										<div class="single-products">
@@ -223,7 +244,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> --}}
 							
 							<div class="tab-pane fade active in" id="reviews" >
 								<div class="col-sm-12">
@@ -252,7 +273,7 @@
 						</div>
 					</div><!--/category-tab-->
 					
-					<div class="recommended_items"><!--recommended_items-->
+					{{-- <div class="recommended_items"><!--recommended_items-->
 						<h2 class="title text-center">recommended items</h2>
 						
 						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
@@ -341,7 +362,7 @@
 								<i class="fa fa-angle-right"></i>
 							  </a>			
 						</div>
-					</div><!--/recommended_items-->
+					</div><!--/recommended_items--> --}}
 					
 				</div>
 			</div>

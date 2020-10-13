@@ -13,4 +13,9 @@ class DetailProductController extends Controller
         $product = Product::where('product_id', '=', $product_id)->first();
         return view('user.pages.detail_product', compact('product'));
     }
+
+    public function variationdetail(Request $request)
+    {
+        $product = Product::where('product_id', '=', $product_id)->first();
+    }
 }

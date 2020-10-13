@@ -71,8 +71,8 @@
 							<ul class="nav navbar-nav collapse navbar-collapse">
 								<li><a href="{{ route('cart-view') }}" class="active">Keranjang</a></li>
 								<li><a href="{{ route('approvepaymentview') }}">Belum di bayar</a></li>
-								<li><a href="">Proses</a></li>
-								<li><a href="">Diterima Atau di tolak</a></li>
+								<li><a href="{{ route('process-view') }}">Proses</a></li>
+								<li><a href="{{ route('acceptdecline-view') }}">Diterima Atau di tolak</a></li>
 							</ul>
 						</div>
 					</div>

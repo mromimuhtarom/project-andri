@@ -65,6 +65,11 @@ Route::get('/Approvepayment-view', 'ApprovePaymentController@index')->name('appr
 Route::post('/Approvepayment-create', 'ApprovePaymentController@Uploadimage')->name('approvepayment-create');
 
 
+Route::get('/Process-view', 'ProcessController@index')->name('process-view');
+
+Route::get('/acceptdecline-view', 'AcceptDeclineController@index')->name('acceptdecline-view');
+
+
 Route::get('/detail_product/{id_product}', 'DetailProductController@index')->name('DetailProduc-view');
 // Route::post('/province', )
 
