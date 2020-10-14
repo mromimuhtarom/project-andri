@@ -12,4 +12,9 @@ class Variation extends Model
     public    $timestamps   = false;
     protected $guarded     = [];
     protected $primary_key = 'variation_id';
+    
+    public function variation_detail()
+    {
+        return $this->hasMany('App\Models\Variationdetail', 'variation_id', 'variation_id');
+    }
 }

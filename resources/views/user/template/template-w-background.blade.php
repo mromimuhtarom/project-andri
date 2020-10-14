@@ -25,6 +25,7 @@
 	<link rel="apple-touch-icon-precomposed" href="/store_user/images/ico/apple-touch-icon-57-precomposed.png">
 	<script src="/store_user/js/jquery.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script src="/js/general.js"></script>
 	<style>
 		html{
 			width: 100%;

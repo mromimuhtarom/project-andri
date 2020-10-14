@@ -70,6 +70,8 @@ Route::get('/Process-view', 'ProcessController@index')->name('process-view');
 Route::get('/acceptdecline-view', 'AcceptDeclineController@index')->name('acceptdecline-view');
 
 
-Route::get('/detail_product/{id_product}', 'DetailProductController@index')->name('DetailProduc-view');
+Route::get('/{id_product}', 'DetailProductController@index')->name('detailproduct-view');
+Route::post('/totalprice', 'DetailProductController@totalprice')->name('totalprice');
+Route::post('/add-cart', 'DetailProductController@cartstore')->name('addcart');
 // Route::post('/province', )
 

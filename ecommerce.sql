@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 13 Okt 2020 pada 10.59
+-- Waktu pembuatan: 14 Okt 2020 pada 11.00
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.4.10
 
@@ -87,8 +87,8 @@ CREATE TABLE `chart` (
   `qty` int(5) NOT NULL,
   `user_id` int(5) NOT NULL,
   `address_id` int(5) NOT NULL,
-  `delivery_id` varchar(10) NOT NULL,
-  `service` varchar(20) NOT NULL
+  `delivery_id` varchar(10) DEFAULT NULL,
+  `service` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -97,7 +97,8 @@ CREATE TABLE `chart` (
 
 INSERT INTO `chart` (`id`, `product_id`, `variation_id`, `variation_detail_id`, `qty`, `user_id`, `address_id`, `delivery_id`, `service`) VALUES
 (1, 'bh001', 18, 4, 4, 1, 1, 'pos', 'CTCYES'),
-(2, 'bh001', 18, 0, 3, 2, 5, 'jne', 'OKE');
+(2, 'bh001', 18, 0, 3, 2, 5, 'jne', 'OKE'),
+(4, 'bh001', 18, 6, 5, 1, 1, 'pos', 'Paket Kilat Khusus');
 
 -- --------------------------------------------------------
 
@@ -227,15 +228,16 @@ CREATE TABLE `product` (
   `picture` varchar(25) NOT NULL,
   `view` int(5) NOT NULL,
   `datetime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `qty` int(5) NOT NULL
+  `qty` int(5) NOT NULL,
+  `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `product`
 --
 
-INSERT INTO `product` (`id`, `product_id`, `product_name`, `category_id`, `weight`, `price_group_id`, `price`, `user_id`, `picture`, `view`, `datetime`, `qty`) VALUES
-(1, 'bh001', 'Plang1', 2, 135, 1, '43000.00', 1, '1.jpg', 0, '2020-09-27 12:07:10', 34);
+INSERT INTO `product` (`id`, `product_id`, `product_name`, `category_id`, `weight`, `price_group_id`, `price`, `user_id`, `picture`, `view`, `datetime`, `qty`, `description`) VALUES
+(1, 'bh001', 'Plang1', 2, 135, 1, '43000.00', 1, '1.jpg', 0, '2020-09-27 12:07:10', 34, '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> 									<p><b>Write Your Review</b></p>');
 
 -- --------------------------------------------------------
 
@@ -496,7 +498,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT untuk tabel `chart`
 --
 ALTER TABLE `chart`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `config`
