@@ -56,13 +56,17 @@
 	
 		<div class="header-bottom"><!--header-bottom-->
 			<div class="container">
-				<div class="row">
+				<div class="row"> 
 					<div class="col-sm-9">
 
 					</div>
 					<div class="col-sm-3">
 						<div class="search_box pull-right">
-							<input type="text" placeholder="Search"/>
+							<a href="{{ route('search')}}">asda</a>
+							{{-- <form action="{{ route('search')}}">
+								<input type="text" name="productname" placeholder="Cari Nama Produk"/>
+								<button type="submit" class="btn btn-warning"><i class="fa fa-search"></i></button>
+							</form> --}}
 						</div>
 					</div>
 				</div>

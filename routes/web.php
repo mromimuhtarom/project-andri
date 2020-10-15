@@ -73,5 +73,8 @@ Route::get('/acceptdecline-view', 'AcceptDeclineController@index')->name('accept
 Route::get('/{id_product}', 'DetailProductController@index')->name('detailproduct-view');
 Route::post('/totalprice', 'DetailProductController@totalprice')->name('totalprice');
 Route::post('/add-cart', 'DetailProductController@cartstore')->name('addcart');
+
+
+Route::get('/search', 'HomeController@index')->name('search');
 // Route::post('/province', )
 

@@ -16,4 +16,13 @@ class HomeController extends Controller
         $categorystore = Category::limit('4')->get();
         return view('user.pages.home', compact('productmanyview', 'productnewsale', 'categorystore'));
     }
+
+    public function searchproduct(Request $request)
+    {
+        dd('hjh');
+        $productname     = $request->productname;
+        $productmanyview = Product::where('product_name', 'LIKE', '%'.$productname.'%')
+                           ->get();
+        return view('user.pages.searchproduct', compact('productmanyview', 'productname'));
+    }
 }
