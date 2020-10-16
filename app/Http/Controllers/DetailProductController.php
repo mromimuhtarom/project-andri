@@ -25,6 +25,10 @@ class DetailProductController extends Controller
         $product_id = $request->product_id;
         $variation  = $request->variation_id;
 
+        if(Session::get('login')): 
+            return redirect()->route('loginuser');
+        endif;
+
         if($dataname): 
             $variation = Variationdetail::where('id', '=', $variation)
                          ->where('name_detail_variation', '=', $dataname)

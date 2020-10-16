@@ -19,10 +19,9 @@ class HomeController extends Controller
 
     public function searchproduct(Request $request)
     {
-        dd('hjh');
         $productname     = $request->productname;
         $productmanyview = Product::where('product_name', 'LIKE', '%'.$productname.'%')
-                           ->get();
+                           ->paginate(25);
         return view('user.pages.searchproduct', compact('productmanyview', 'productname'));
     }
 }

@@ -9,7 +9,7 @@
                 <div class="product-image-wrapper">
                     <div class="single-products">
                         <div class="productinfo text-center">
-                            {{-- <img src="/image_user/product/{{ $pdv->picture }}" alt="" /> --}}
+                            <img src="/image_user/product/{{ $pdv->picture }}" alt="" />
                             <h2>Rp. {{ number_format($pdv->price) }}</h2>
                             <p>{{ $pdv->product_name }}</p>
                             <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
@@ -25,12 +25,13 @@
                 </div>
             </div>
         @endforeach        
-        <ul class="pagination">
+        {{ $productmanyview->links('user.pagination.default') }}
+        {{-- <ul class="pagination">
             <li class="active"><a href="">1</a></li>
             <li><a href="">2</a></li>
             <li><a href="">3</a></li>
             <li><a href="">&raquo;</a></li>
-        </ul>
+        </ul> --}}
     </div><!--features_items-->
 </div>
 

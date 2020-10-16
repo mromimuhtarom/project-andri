@@ -62,11 +62,10 @@
 					</div>
 					<div class="col-sm-3">
 						<div class="search_box pull-right">
-							<a href="{{ route('search')}}">asda</a>
-							{{-- <form action="{{ route('search')}}">
+							<form action="{{ route('search-detail')}}" method="GET">
 								<input type="text" name="productname" placeholder="Cari Nama Produk"/>
 								<button type="submit" class="btn btn-warning"><i class="fa fa-search"></i></button>
-							</form> --}}
+							</form>
 						</div>
 					</div>
 				</div>

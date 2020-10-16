@@ -50,6 +50,7 @@
                             <th>Group Harga</th>
                             <th>Stok</th>
                             <th>Harga</th>
+                            <td>Deskripsi</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -68,12 +69,17 @@
                             <td><a href="#" class="pricegroup" data-name="name" data-pkproduct="{{ $pd->product_id }}" data-variationid="{{ $pd->variation->variation_id }}" data-pk="{{ $pd->price_group_id }}" data-type="select" data-url="{{ route('product_update') }}" data-value="{{ $pd->price_group_id }}">{{ $pd->pricegroup->name }}</a></td>
                             <td>
                                 <a href="#" data-toggle="modal" data-target="#modaleditpilihan{{ $pd->product_id }}">
-                                    @foreach ($pd->variation_detail as $vr)
+                                    @foreach ($pd->variation->variation_detail as $vr)
                                         {{ $vr->name_detail_variation}}: {{ $vr->qty }},
                                     @endforeach
                                 </a>
                             </td>
                             <td><a href="#" class="usertext" data-name="price" data-pk="{{ $pd->product_id }}" data-type="number" data-url="{{ route('product_update') }}">{{ $vr->price }}</a></td>
+                            <td>
+                                <a href="#" data-toggle="modal" data-target="#modaleditdesc{{ $pd->product_id }}">
+                                    {!! cutText(html_entity_decode($pd->description), 40, 1) !!}
+                                </a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -116,7 +122,7 @@
                                         <td>Harga</td>
                                         <td><a href="#" class="btn btn-secondary edit{{ $pd->product_id }}" id="Add{{ $pd->product_id }}">Tambah</a></td>
                                     </tr>
-                                    @foreach ($pd->variation_detail as $vr)
+                                    @foreach($pd->variation->variation_detail as $vr)
                                     <tr class="mainproductvarian{{ $vr->id }}">
                                         <td><input class="form-control stok_pilihanedit{{ $pd->product_id }}" type="text" name="variation_stok[]" value="{{ $vr->qty }}" id="" placeholder="Stok" required></td>
                                         <td><input class="form-control nama_pilihanedit{{ $pd->product_id }}" type="text" name="pilihan[]" id="" value="{{ $vr->name_detail_variation }}" placeholder="Nama pilihan" required></td>
@@ -141,6 +147,32 @@
                                     })    
                                 }); 
                             </script>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modaleditdesc{{ $pd->product_id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Pilihan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ route('productcreate') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <span>Nama Produk</span><br>
+                        <input type="text" value="{{ $pd->product_name }}" class="form-control" disabled>
+                        <span>Deskripsi</span><br>
+                        <textarea name="description" class="form-control">{{ $pd->description }}</textarea>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

@@ -42,6 +42,11 @@ Route::post('/grouphargabarang-create', 'GroupHargaController@store')->name('gou
 Route::get('/user', 'UserLoginController@index')->name('loginuser');
 Route::post('/user/process', 'UserLoginController@login')->name('loginuser-process');
 
+
+
+Route::get('/search-detail', 'HomeController@searchproduct')->name('search-detail');
+
+
 Route::get('/user/register-view', 'UserLoginController@registerview')->name('registeruser');
 Route::get('/user/logout', 'UserLoginController@logout')->name('logoutuser-process');
 Route::get('/', 'HomeController@index')->name('home-view');
@@ -75,6 +80,6 @@ Route::post('/totalprice', 'DetailProductController@totalprice')->name('totalpri
 Route::post('/add-cart', 'DetailProductController@cartstore')->name('addcart');
 
 
-Route::get('/search', 'HomeController@index')->name('search');
+
 // Route::post('/province', )
 

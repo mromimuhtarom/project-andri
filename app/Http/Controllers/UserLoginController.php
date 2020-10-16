@@ -13,6 +13,9 @@ class UserLoginController extends Controller
 {
     public function index()
     {
+        if(Session::get('login')): 
+            return back();
+        endif;
         return view('user.pages.login');
     }
 

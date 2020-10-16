@@ -16,7 +16,7 @@
                         <div class="overlay-content">
                             <h2>Rp. {{ number_format($pv->price, 2) }}</h2>
                             <p>{{ $pv->product_name }}</p>
-                            <a href="{{ route('detailproduct-view', $pv->product_id)}}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Detail Produk</a>
+                            <a href="@if(Session::get('login')){{ route('detailproduct-view', $pv->product_id)}}@else {{ route('loginuser') }} @endif" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Detail Produk</a>
                         </div>
                     </div>
             </div>
@@ -69,9 +69,9 @@
                                 <div class="productinfo text-center">
                                     <img src="/image_user/product/{{ $pc->picture }}" alt="" />
                                     <h2>Rp. {{ number_format($pc->price, 2) }}</h2>
-                                    <p>{{ $pc->product_name }}</p>          
+                                    <p>{{ $pc->product_name }}</p>      
+                                     <a href="{{ route('detailproduct-view', $pns->product_id)}}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Detail Produk</a>    
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
