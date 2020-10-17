@@ -172,7 +172,42 @@
                         <span>Nama Produk</span><br>
                         <input type="text" value="{{ $pd->product_name }}" class="form-control" disabled>
                         <span>Deskripsi</span><br>
-                        <textarea name="description" class="form-control">{{ $pd->description }}</textarea>
+                        <div name="description" id="editor{{ $pd->product_id }}" class="form-control">{{ $pd->description }}</div>
+                        <script>
+
+                                DecoupledEditor.create( document.querySelector( '#editor{{ $pd->product_id }}' ), {
+                                    // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+                                    // heading: {
+                                    //     options: [
+                                    //         { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                                    //         { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                                    //         { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                                    //     ]
+                                    // },
+                                    // fontSize: {
+                                    //     options: [
+                                    //         9,
+                                    //         11,
+                                    //         13,
+                                    //         'default',
+                                    //         17,
+                                    //         19,
+                                    //         21
+                                    //     ]
+                                    // },
+                                    // toolbar: [ 'heading', 'fontSize', '|', 'bold', 'italic', 'link', 'fontSize', 'bulletedList', 'numberedList', 'blockQuote' ]
+                                } )
+                                .then( editor => {
+                                    const toolbarContainer = document.querySelector( 'main .toolbar-container' );
+
+                                    toolbarContainer.prepend( editor.ui.view.toolbar.element );
+
+                                    window.editor = editor;
+                                } )
+                                .catch( err => {
+                                    console.error( err.stack );
+                                } );
+                        </script>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
