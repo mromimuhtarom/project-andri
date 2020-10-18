@@ -17,7 +17,7 @@ class ApprovePaymentController extends Controller
                         DB::raw('(price_product * qty) + ongkir as totalprice'),
                         'store_order.*'
                       )
-                      ->where('status', '=', 5)
+                      ->where('status', '=', 4)
                       ->where('user_id', '=', $user_id)
                       ->get();
         return view('user.pages.approvepayment', compact('storeorder'));
@@ -49,7 +49,7 @@ class ApprovePaymentController extends Controller
         if(in_array($ekstensi, $ekstensi_diperbolehkan) === true): 
             if($ukuran < 1048576):
                 $file->move(public_path('image/buktitransfer/'.$folder.'/'), $filename);
-                Storeorder::where('id', '=', $id)->where('status', '=', 5)->update([
+                Storeorder::where('id', '=', $id)->where('status', '=', 1)->update([
                     'provementpic' => $filename
                 ]);
             endif;

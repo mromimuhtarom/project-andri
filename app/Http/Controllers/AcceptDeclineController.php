@@ -12,7 +12,7 @@ class AcceptDeclineController extends Controller
     {
         $user_id    = Session::get('user_id');
         $storeorder = Storeorder::where('user_id', '=', $user_id)
-                      ->where('status', array(3, 4))
+                      ->where('status', array(2, 3))
                       ->get();
         return view('user.pages.acceptdecline', compact('storeorder'));
     }

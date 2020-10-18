@@ -41,4 +41,6 @@ class Cart extends Model
     {
         return $this->product->hasMany(Paymenttype::class, 'user_id', 'user_id');
     }
+
+
 }

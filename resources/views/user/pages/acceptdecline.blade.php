@@ -66,9 +66,9 @@
                                 </td>
                                 <td>{{ $so->note }}</td>
                                 <td>
-                                    @if($so->status == 3)
+                                    @if($so->status == 2)
                                         <span style="color:red">Di Tolak</span> 
-                                    @elseif($so->status == 4)
+                                    @elseif($so->status == 3)
                                         <span style="color:green">Di Terima</span> 
                                     @endif
                                 </td>

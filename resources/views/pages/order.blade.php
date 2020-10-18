@@ -56,7 +56,7 @@
                                 <td>{{ $od->qty }}</td>
                                 <td>{{ $od->total_price }}</td>
                                 <td></td>
-                                <td>{{ $od->strStatus() }}</td>
+                                <td>{{ $od->strStatus($od->status) }}</td>
                                 <td>
                                     @if ($od->status == 0)
                                         <button type="button" class="btn btn-success">Terima</button>

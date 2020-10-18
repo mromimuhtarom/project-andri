@@ -50,7 +50,7 @@
                             <th>Group Harga</th>
                             <th>Stok</th>
                             <th>Harga</th>
-                            <td>Deskripsi</td>
+                            <th>Deskripsi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -161,52 +161,33 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Pilihan</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Deskripsi</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="{{ route('productcreate') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('product_update') }}">
                     @csrf
                     <div class="modal-body">
+                        <input type="hidden" name="pk" value="{{ $pd->product_id }}">
+                        <input type="hidden" name="name" value="description">
                         <span>Nama Produk</span><br>
                         <input type="text" value="{{ $pd->product_name }}" class="form-control" disabled>
                         <span>Deskripsi</span><br>
-                        <div name="description" id="editor{{ $pd->product_id }}" class="form-control">{{ $pd->description }}</div>
+                        <textarea name="value" id="editor{{ $pd->product_id }}" class="form-control" required>{{ $pd->description }}</textarea>
                         <script>
-
-                                DecoupledEditor.create( document.querySelector( '#editor{{ $pd->product_id }}' ), {
-                                    // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
-                                    // heading: {
-                                    //     options: [
-                                    //         { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                                    //         { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                                    //         { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
-                                    //     ]
-                                    // },
-                                    // fontSize: {
-                                    //     options: [
-                                    //         9,
-                                    //         11,
-                                    //         13,
-                                    //         'default',
-                                    //         17,
-                                    //         19,
-                                    //         21
-                                    //     ]
-                                    // },
-                                    // toolbar: [ 'heading', 'fontSize', '|', 'bold', 'italic', 'link', 'fontSize', 'bulletedList', 'numberedList', 'blockQuote' ]
-                                } )
-                                .then( editor => {
-                                    const toolbarContainer = document.querySelector( 'main .toolbar-container' );
-
-                                    toolbarContainer.prepend( editor.ui.view.toolbar.element );
-
-                                    window.editor = editor;
-                                } )
-                                .catch( err => {
-                                    console.error( err.stack );
-                                } );
+                            CKEDITOR.replace( 'editor{{ $pd->product_id }}', {
+                              fontSize_sizes: "8/8px;9/9px;10/10px;11/11px;12/12px;14/14px;16/16px;18/18px;20/20px;22/22px;24/24px;26/26px;28/28px;36/36px;48/48px;72/72px",
+                              toolbar: [
+                                ['Undo', 'Redo' ],
+                                [ 'Bold', 'Italic', 'Underline' ],
+                                [ 'FontSize' ],
+                                [ 'TextColor' ], 
+                                [ 'NumberedList', 'BulletedList', '-', 'Blockquote' ]
+                              ]
+                            });
+                            CKEDITOR.config.autoParagraph = false;
+                            CKEDITOR.config.coreStyles_bold = { element: 'b', overrides: 'strong' };
                         </script>
                     </div>
                     <div class="modal-footer">
@@ -265,6 +246,22 @@
                                 @endforeach
                             </select><br>
                             <input type="text" class="form-control" name="price_general" id="harga" placeholder="Harga"><br>
+                            <span>Deskripsi</span>
+                            <textarea name="description" id="editor" class="form-control" placeholder="deskripsi"></textarea>
+                            <script>
+                                CKEDITOR.replace( 'editor', {
+                                    fontSize_sizes: "8/8px;9/9px;10/10px;11/11px;12/12px;14/14px;16/16px;18/18px;20/20px;22/22px;24/24px;26/26px;28/28px;36/36px;48/48px;72/72px",
+                                    toolbar: [
+                                        ['Undo', 'Redo' ],
+                                        [ 'Bold', 'Italic', 'Underline' ],
+                                        [ 'FontSize' ],
+                                        [ 'TextColor' ], 
+                                        [ 'NumberedList', 'BulletedList', '-', 'Blockquote' ]
+                                    ]
+                                    });
+                                    CKEDITOR.config.autoParagraph = false;
+                                    CKEDITOR.config.coreStyles_bold = { element: 'b', overrides: 'strong' };
+                            </script>
 
                             <span>Variasi</span>
                             <table width="100%">

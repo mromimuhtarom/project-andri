@@ -51,6 +51,7 @@ class ProductController extends Controller
         $price_group            = $request->price_group;
         $price_general          = $request->price_general;
         $variation_name         = $request->variation_name;
+        $description            = $request->description;
         $user_id                = Session::get('user_id');
         $file                   = $request->file('file');
         $ekstensi_diperbolehkan = array('png', 'jpg', 'JPEG', 'PNG');
@@ -95,7 +96,8 @@ class ProductController extends Controller
                         'price_group_id' => $price_group,
                         'price'          => $price_general,
                         'user_id'        => $user_id,
-                        'picture'        => $nama_file_unik
+                        'picture'        => $nama_file_unik,
+                        'description'    => $description  
                     ]); 
                     if($variation_name != NULL):
                         $variation = Variation::create([
@@ -207,9 +209,44 @@ class ProductController extends Controller
         $pk        = $request->pk;
         $name      = $request->name;
         $value     = $request->value;
+        if($name === 'name'):
+            if(strlen($value) > 255): 
+                return response()->json('Tidak boleh melebihi dari 255', 400);
+            endif;
+            if(!$value): 
+                return response()->json('Wajib diisi', 400);
+            endif;
+        elseif($name === 'weight'):
+            if(strlen($value) > 10): 
+                return response()->json('Tidak boleh melebihi dari 10', 400);
+            endif;
+
+            if(!$value): 
+                return response()->json('Wajib diisi', 400);
+            endif;
+        elseif($name === 'price'):
+            if(strlen($value) > 14): 
+                return response()->json('Tidak boleh melebihi dari 14', 400);
+            endif;
+            if(!$value): 
+                return response()->json('Wajib diisi', 400);
+            endif;
+        elseif($name === 'description'):
+            if(!$value): 
+                alert()->error('Tidak boleh kosong');
+                return back();
+            endif;
+        else: 
+            if($request->ajax()): 
+                return response()->json('Nama kolom tidak tersedia', 400);
+            else:
+                alert()->error('Nama kolom tidak tersedia'); 
+                return back();
+            endif;
+        endif;
 
         if($name === 'name'):
-            $pkproduct = $request->pkproduct;
+            $pkproduct   = $request->pkproduct;
             $variationid = $request->variationid;
             Pricegroup::where('price_group_id', '=', $pk)->update([
                 $name => $value
@@ -225,6 +262,11 @@ class ProductController extends Controller
             Product::where('product_id', '=', $pk)->update([
                 $name => $value
             ]);
+
+            if($name === 'description'): 
+                alert()->success('Edit deskripsi telah berhasil');
+                return back();
+            endif;
         endif;
 
     }

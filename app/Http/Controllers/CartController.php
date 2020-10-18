@@ -11,6 +11,7 @@ use App\Models\Variationdetail;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\Config;
+use App\Models\Paymenttype;
 use Validator;
 
 class CartController extends Controller
@@ -78,6 +79,7 @@ class CartController extends Controller
                 'qty' => $totalqtyseller
             ]);
         endif; 
+        $paymenttype = Paymenttype::where('payment_id', '=', $payment)->first();
         Storeorder::create([
             'product_name'          => $cart->product->product_name,
             'category_id'           => $cart->product->category_id,
@@ -99,10 +101,10 @@ class CartController extends Controller
             'province_name'         => $cart->address->province_name,
             'accept_name'           => $cart->address->accept_name,
             'telp'                  => $cart->address->telp,
-            'status'                => 5,
+            'status'                => 4,
             'ongkir'                => $ongkir,
             'payment_id'            => $payment,
-            'payment_name'          => $cart->paymentType->payment_name,
+            'payment_name'          => $paymenttype->payment_name,
             'picture'               => $cart->product->picture
         ]);
 

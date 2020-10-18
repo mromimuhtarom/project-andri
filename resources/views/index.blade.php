@@ -11,12 +11,11 @@
         <link href="/css/styles.css" rel="stylesheet" />
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-        <link type="text/css" href="/ckeditor/sample/css/sample.css" rel="stylesheet" media="screen" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
         <script src="/js/general.js"></script>
-        <script src="/ckeditor/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/4.13.0/full/ckeditor.js"></script>
         <style>
             .editable-submit::before {
               font-family: "Font Awesome 5 Free"; 
@@ -36,6 +35,15 @@
             .editable-cancel:hover {
                 background-color:rgb(204, 80, 80) !important;
                 color: white !important;
+            }
+
+            .editable-error-block {
+                color: red;
+            }
+
+            .editable-error-block::before{
+                content: "\a";
+                white-space: pre;
             }
         </style>
     </head>
@@ -100,7 +108,6 @@
         </div>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="/assets/demo/chart-area-demo.js"></script>
         <script src="/assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
