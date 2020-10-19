@@ -1,4 +1,4 @@
-@extends('index')
+@extends('admin.index')
 
 @section('content')
 <link rel="stylesheet" href="/css/btn.css">
@@ -82,8 +82,8 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div style="display: flex;justify-content: center;">{{ $approve->links('admin.pagination.default') }}</div>
             </div>
-            <div style="display: flex;justify-content: center;">{{ $approve->links() }}</div>
         </div>
     </div>
 
@@ -128,6 +128,7 @@
                 "searching": false,
                 "paging":false,
                 "bInfo":false,
+                "ordering": false
             });
         });
     </script>

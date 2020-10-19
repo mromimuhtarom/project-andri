@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use Session;
@@ -43,7 +44,8 @@ class ApprovementpaymentController extends Controller
                  )
                  ->where('seller_user_id', '=', $user_id)
                  ->where('status', 4)
-                 ->paginate(1);
+                 ->orderBy('datetime', 'desc')
+                 ->paginate(5);
         return view('admin.pages.approvementpayment', compact('approve', 'user_id'));
     }
 }

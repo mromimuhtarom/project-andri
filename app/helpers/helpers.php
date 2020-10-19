@@ -24,4 +24,24 @@ function cutText($text, $length, $mode = 2)
   endif;
 	return substr($text, 0, $length).$dot;
 }
+
+function iconsorting($fieldname)
+{
+  if(isset($_GET['namecolumn'])):
+    if($_GET['namecolumn'] === $fieldname):
+      if($_GET['sorting'] === 'asc'):
+        $icon = '-asc';
+      else:
+        $icon = '-desc';
+      endif;
+    else:
+      $icon = '';
+    endif;
+  else:
+    $icon = '';
+  endif;
+
+  return $icon;
+}
+
 ?>
