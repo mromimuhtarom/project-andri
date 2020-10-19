@@ -1,6 +1,9 @@
 @extends('index')
 
 @section('content')
+@php 
+setlocale(LC_TIME, 'id_ID.utf8');
+@endphp
 <link rel="stylesheet" href="/css/btn.css">
     <h1 class="mt-4">Pesanan</h1>
     <ol class="breadcrumb mb-4">
@@ -37,26 +40,41 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>Id Pelanggan</th>
                             <th>Nama Pelanggan</th>
                             <th>Nama Produk</th>
-                            <th>Kode Produk</th>
                             <th>Jumlah</th>
                             <th>Total Harga</th>
                             <th>Detail Info</th>
                             <th>Status</th>
+                            <th>Tanggal Pembelian</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($order as $od)
                             <tr>
+                                <td>{{ $od->user_id }}</td>
                                 <td>{{ $od->fullname }}</td>
-                                <td>{{ $od->product_name }}</td>
-                                <td>{{ $od->product_id }}</td>
+                                <td>
+                                    {{ $od->product_name }} <br>
+                                    @if ($od->variation_name)
+                                        <b>{{ $od->variation_name }} : {{ $od->variation_detail_name }}</b>
+                                    @endif
+                                </td>
                                 <td>{{ $od->qty }}</td>
-                                <td>{{ $od->total_price }}</td>
+                                <td>Rp. {{ number_format($od->totalpriceall, 2) }}</td>
                                 <td></td>
-                                <td>{{ $od->strStatus($od->status) }}</td>
+                                <td>
+                                    @if($od->status == 2)
+                                        <span style="color:red">{{ $od->strStatus($od->status) }}</span>
+                                    @elseif($od->status == 1)
+                                        <span style="color:blue">{{ $od->strStatus($od->status) }}</span>
+                                    @elseif($od->status == 3)
+                                        <span style="color:green">{{ $od->strStatus($od->status) }}</span>
+                                    @endif
+                                </td>
+                                <td>{{ date('d F Y', strtotime($od->datetime)) }}</td>
                                 <td>
                                     @if ($od->status == 0)
                                         <button type="button" class="btn btn-success">Terima</button>

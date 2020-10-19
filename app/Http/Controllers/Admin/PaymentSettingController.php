@@ -12,7 +12,7 @@ class PaymentSettingController extends Controller
     {
         $user_id = Session::get('user_id');
         $paymenttype = Paymenttype::where('user_id', '=', $user_id)->get();
-        return view('pages.paymentsetting', compact('paymenttype'));
+        return view('admin.pages.paymentsetting', compact('paymenttype'));
     }
 
     public function store(Request $request)

@@ -14,7 +14,7 @@ class LoginController extends Controller
 {
     public function login()
     {
-        return view('login');
+        return view('admin.login');
     }
 
     public function processlogin(Request $request)

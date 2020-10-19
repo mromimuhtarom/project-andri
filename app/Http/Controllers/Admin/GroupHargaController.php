@@ -12,7 +12,7 @@ class GroupHargaController extends Controller
     {
         $user_id = Session::get('user_id');
         $pricegroup = Pricegroup::where('user_id', '=', $user_id)->get();
-        return view('pages.groupharga', compact('pricegroup'));
+        return view('admin.pages.groupharga', compact('pricegroup'));
     }
 
     public function store(Request $request)

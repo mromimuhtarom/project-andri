@@ -26,7 +26,7 @@ Route::post('/product-update', 'ProductController@update')->name('product_update
 
 
 Route::get('/order-view', 'OrderController@index')->name('order');
-Route::get('/historyorder-view', 'HistoryOrderController@index')->name('historyorder');
+Route::get('/approvement-view', 'Admin\ApprovementpaymentController@index')->name('historyorder');
 
 Route::get('/paymentsetting-view', 'PaymentSettingController@index')->name('paymentsetting');
 Route::post('/paymentsetting-create', 'PaymentSettingController@store')->name('paymentsetting-create');

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 14 Okt 2020 pada 11.00
+-- Waktu pembuatan: 19 Okt 2020 pada 11.01
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.4.10
 
@@ -96,9 +96,8 @@ CREATE TABLE `chart` (
 --
 
 INSERT INTO `chart` (`id`, `product_id`, `variation_id`, `variation_detail_id`, `qty`, `user_id`, `address_id`, `delivery_id`, `service`) VALUES
-(1, 'bh001', 18, 4, 4, 1, 1, 'pos', 'CTCYES'),
 (2, 'bh001', 18, 0, 3, 2, 5, 'jne', 'OKE'),
-(4, 'bh001', 18, 6, 5, 1, 1, 'pos', 'Paket Kilat Khusus');
+(4, 'bh001', 18, 6, 10, 1, 1, 'pos', 'Paket Kilat Khusus');
 
 -- --------------------------------------------------------
 
@@ -117,7 +116,7 @@ CREATE TABLE `config` (
 --
 
 INSERT INTO `config` (`id`, `name`, `value`) VALUES
-(1, 'order_status', '1:L_PENDING,2:L_PROCESS,3:L_FAILED,4:L_SUCCESS,5:L_APPROVE_PAYMENT'),
+(1, 'order_status', '1:L_PROCESS,2:L_FAILED,3:L_SUCCESS,4:L_APPROVE_PAYMENT'),
 (2, 'delivery_service', 'jne:JNE,pos:Pos Indonesia,tiki:Tiki');
 
 -- --------------------------------------------------------
@@ -143,8 +142,8 @@ INSERT INTO `menu` (`menu_id`, `name`, `parent_id`, `status`, `route`, `icon`) V
 (1, 'Dashboard', 0, 1, 'dashboard', 'fas fa-tachometer-alt'),
 (2, 'Produk', 0, 1, 'product', 'fab fa-product-hunt'),
 (3, 'Pesanan', 0, 1, '', 'fas fa-shopping-cart'),
-(4, 'Pesanan Pelanggan', 3, 1, 'order', 'fas fa-shopping-cart'),
-(5, 'Sejarah Pesanan', 3, 1, 'historyorder', 'fas fa-history'),
+(4, 'Persetujuan Pembelian', 3, 1, 'historyorder', 'fas fa-shopping-cart'),
+(5, 'Pesanan Pelanggan', 3, 1, 'order', 'fas fa-history'),
 (6, 'Pengaturan', 0, 1, '', 'fas fa-cog'),
 (7, 'Pengaturan Pembayaran', 6, 1, 'paymentsetting', 'fas fa-hammer'),
 (8, 'Pengaturan Grup Harga Barang', 6, 1, 'gouphargabarangpengaturan', 'fas fa-tachometer-alt');
@@ -237,7 +236,7 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `product_id`, `product_name`, `category_id`, `weight`, `price_group_id`, `price`, `user_id`, `picture`, `view`, `datetime`, `qty`, `description`) VALUES
-(1, 'bh001', 'Plang1', 2, 135, 1, '43000.00', 1, '1.jpg', 0, '2020-09-27 12:07:10', 34, '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> 									<p><b>Write Your Review</b></p>');
+(1, 'bh001', 'Plang1', 2, 135, 1, '43000.00', 1, '1.jpg', 0, '2020-09-27 12:07:10', 30, '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> 									<p><b>Write Your Review</b></p>');
 
 -- --------------------------------------------------------
 
@@ -299,6 +298,7 @@ CREATE TABLE `store_order` (
   `city_name` varchar(255) NOT NULL,
   `province_id` int(5) NOT NULL,
   `province_name` varchar(255) NOT NULL,
+  `detail_address` text NOT NULL,
   `accept_name` varchar(255) NOT NULL,
   `telp` varchar(15) NOT NULL,
   `status` tinyint(5) NOT NULL,
@@ -314,8 +314,9 @@ CREATE TABLE `store_order` (
 -- Dumping data untuk tabel `store_order`
 --
 
-INSERT INTO `store_order` (`id`, `product_name`, `category_id`, `user_id`, `qty`, `price_product`, `note`, `seller_user_id`, `variation_id`, `variation_name`, `variation_detail_name`, `delivery_id`, `service_name`, `address_id`, `postal_code`, `city_id`, `city_name`, `province_id`, `province_name`, `accept_name`, `telp`, `status`, `ongkir`, `payment_id`, `payment_name`, `picture`, `provementpic`, `datetime`) VALUES
-(1, 'Plang1', 2, 2, 4, '43543.00', 'Proses Pembuktian', 1, 18, 'sdfs', 'dfgdf', 'JNE', 'OKE', 5, '2142', 402, 'Serang', 3, 'Banten', 'Mantap Jiwa sraya', '082392191962', 3, 24000, 1, 'bni', '1.jpg', '1.jpg', '2020-10-11 08:56:25');
+INSERT INTO `store_order` (`id`, `product_name`, `category_id`, `user_id`, `qty`, `price_product`, `note`, `seller_user_id`, `variation_id`, `variation_name`, `variation_detail_name`, `delivery_id`, `service_name`, `address_id`, `postal_code`, `city_id`, `city_name`, `province_id`, `province_name`, `detail_address`, `accept_name`, `telp`, `status`, `ongkir`, `payment_id`, `payment_name`, `picture`, `provementpic`, `datetime`) VALUES
+(1, 'Plang1', 2, 2, 4, '43543.00', 'Proses Pembuktian', 1, 18, 'sdfs', 'dfgdf', 'JNE', 'OKE', 5, '2142', 402, 'Serang', 3, 'Banten', 'Komplek Ykb Blok M No. 06', 'Mantap Jiwa sraya', '082392191962', 4, 24000, 1, 'bni', '1.jpg', '1.jpg', '2020-10-11 08:56:25'),
+(2, 'Plang1', 2, 1, 4, '45000.00', 'Proses Pembuktian', 1, 18, 'sdfs', 'sdfs', 'pos', 'Paket Kilat Khusus', 1, '3454', 17, 'Badung', 1, 'Bali', 'Komplek Ykb Blok M No. 06', 'Romi', '082392191962', 4, 8000, 1, 'BNI', '1.jpg', '1.jpg', '2020-10-19 08:50:51');
 
 -- --------------------------------------------------------
 
@@ -378,7 +379,7 @@ CREATE TABLE `variation_detail` (
 --
 
 INSERT INTO `variation_detail` (`id`, `variation_id`, `name_detail_variation`, `qty`, `price`) VALUES
-(4, 18, 'sdfs', 25, '45000.00'),
+(4, 18, 'sdfs', 21, '45000.00'),
 (5, 18, 'dfgdf', 9, '43543.00'),
 (6, 18, 'cvbc', 34, '45000.00'),
 (7, 18, 'dfhdfgh', 32, '43000.00'),
@@ -510,7 +511,7 @@ ALTER TABLE `config`
 -- AUTO_INCREMENT untuk tabel `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `menu_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `payment_type`
@@ -546,7 +547,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT untuk tabel `store_order`
 --
 ALTER TABLE `store_order`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`

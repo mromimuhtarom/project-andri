@@ -59,6 +59,6 @@ class DashboardController extends Controller
             endif;
         endforeach;
         $implodeprice = implode(',', $price);
-        return view('pages.dashboard', compact('buktitransfer', 'totpemapp', 'period', 'totpemappgraphic', 'implodeprice'));
+        return view('admin.pages.dashboard', compact('buktitransfer', 'totpemapp', 'period', 'totpemappgraphic', 'implodeprice'));
     }
 }
