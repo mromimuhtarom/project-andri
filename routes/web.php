@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/admin', 'Admin\LoginController@login')->name('login');
+Route::get('/admin', 'Admin\LoginController@login')->name('login'); 
 
 Route::post('/login', 'Admin\LoginController@processlogin')->name('processlogin');
 Route::get('/logout', 'Admin\LoginController@logout')->name('logout');
@@ -26,7 +26,11 @@ Route::post('/product-update', 'Admin\ProductController@update')->name('product_
 
 
 Route::get('/order-view', 'Admin\OrderController@index')->name('order');
-Route::get('/approvement-view', 'Admin\ApprovementpaymentController@index')->name('historyorder');
+Route::get('/order-serach', 'Admin\OrderController@search')->name('order-search');
+
+Route::get('/approvement-view', 'Admin\ApprovementpaymentController@index')->name('approvement-view');
+Route::post('/approvement-accept', 'Admin\ApprovementpaymentController@acceptprovement')->name('approvement-accept');
+Route::post('approvement-decline', 'Admin\ApprovementpaymentController@declineapprovement')->name('approvement-decline');
 
 Route::get('/paymentsetting-view', 'Admin\PaymentSettingController@index')->name('paymentsetting');
 Route::post('/paymentsetting-create', 'Admin\PaymentSettingController@store')->name('paymentsetting-create');

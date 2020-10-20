@@ -13,7 +13,7 @@ class ProcessController extends Controller
     {
         $user_id    = Session::get('user_id');
         $storeorder = Storeorder::where('user_id', '=', $user_id)
-                      ->where('status', 2)
+                      ->where('status', 1)
                       ->get();
         return view('user.pages.process', compact('storeorder'));
     }

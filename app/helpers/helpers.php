@@ -30,9 +30,9 @@ function iconsorting($fieldname)
   if(isset($_GET['namecolumn'])):
     if($_GET['namecolumn'] === $fieldname):
       if($_GET['sorting'] === 'asc'):
-        $icon = '-asc';
+        $icon = '-up';
       else:
-        $icon = '-desc';
+        $icon = '-down';
       endif;
     else:
       $icon = '';
