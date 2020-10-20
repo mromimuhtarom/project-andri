@@ -141,7 +141,6 @@
                                         i++;
                                     });
                                     $("#textboxEdit{{ $pd->product_id }}").on("click", ".remove{{ $pd->product_id }}", function() {
-                                        console.log('dfg');
                                         var idrmvplh = $(this).attr('id');
                                         $('.'+idrmvplh).remove();
                                     })    
