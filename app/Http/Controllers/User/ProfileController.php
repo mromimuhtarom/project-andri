@@ -102,6 +102,7 @@ class ProfileController extends Controller
         $city_id     = $request->city;
         $tlp         = $request->telp;
         $detail      = $request->detail_address;
+        $utama       = $request->utama;
         $provinceapi = $this->apiProvince('');
         $cityapi     = $this->apiCity('');
         $user_id     = Session::get('user_id');
@@ -111,7 +112,8 @@ class ProfileController extends Controller
             'province'        => 'required',
             'city'            => 'required',
             'telp'            => 'required',
-            'detail_address'  => 'required'
+            'detail_address'  => 'required',
+            'utama'           => 'required'
         ]);
         
         if ($validator_general->fails()) {
@@ -204,9 +206,21 @@ class ProfileController extends Controller
         $city_id     = $request->city;
         $tlp         = $request->telp;
         $detail      = $request->detail_address;
+        $utama       = $request->utama;
         $provinceapi = $this->apiProvince('');
         $cityapi     = $this->apiCity('');
         $address_id  = $request->address_id;
+        $user_id     = Session::get('user_id');
+        dd($utama);
+        if($utama != NULL): 
+            $validatorstatus = Validator::make($request->all(),[
+                'utama' =>  'required'
+            ]);
+            if($validatorstatus->fails()): 
+                alert()->error('ErrorAlert', $validator status->errors()->first());
+                return back();
+            endif;
+        endif;
 
         $validator_general = Validator::make($request->all(),[
             'accept_name'     => 'required',
@@ -240,6 +254,12 @@ class ProfileController extends Controller
             alert()->error('ErrorAlert', 'Kota tidak ada');
             return back();
         endif;
+        $address = Address::where('user_id', '=', $user_id)->get();
+        
+        $status = array();
+        foreach($address as $ads):
+            $sattus[] .= $ads->status;
+        endforeach;
 
         Address::where('address_id', '=', $address_id)->update([
             'accept_name'    => $accept_name,
@@ -249,8 +269,10 @@ class ProfileController extends Controller
             'city_name'      => $city_name,
             'postal_code'    => $postal_code,
             'detail_address' => $detail,
-            'telp'           => $tlp
+            'telp'           => $tlp,
+            'status'         => $utama
         ]);
+
 
         alert()->success('Edit data telah berhasil');
         return back();

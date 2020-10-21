@@ -36,17 +36,17 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th><a href="{{ route('approvement-view') }}?sorting={{ $sorting }}&namecolumn=id">ID Order <i class="fa fa-sort{{ iconsorting('id') }}"></i></a></th>
+                            <th><a href="{{ route('Approvement-Payment') }}?sorting={{ $sorting }}&namecolumn=id">ID Order <i class="fa fa-sort{{ iconsorting('id') }}"></i></a></th>
                             <th>Bukti Transfer</th>
                             <th>Gambar Produk</th>
-                            <th><a href="{{ route('approvement-view') }}?sorting={{ $sorting }}&namecolumn=user_id">Id Pelanggan <i class="fa fa-sort{{ iconsorting('user_id') }}"></i></a></th>
-                            <th><a href="{{ route('approvement-view') }}?sorting={{ $sorting }}&namecolumn=fullname">Nama Pelanggan <i class="fa fa-sort{{ iconsorting('fullname') }}"></i></a></th>
-                            <th><a href="{{ route('approvement-view') }}?sorting={{ $sorting }}&namecolumn=product_name">Nama Produk <i class="fa fa-sort{{ iconsorting('product_name') }}"></i></a></th>
-                            <th><a href="{{ route('approvement-view') }}?sorting={{ $sorting }}&namecolumn=qty">Jumlah <i class="fa fa-sort{{ iconsorting('qty') }}"></i></a></th>
-                            <th><a href="{{ route('approvement-view') }}?sorting={{ $sorting }}&namecolumn=totalpriceall">Total Harga <i class="fa fa-sort{{ iconsorting('totalpriceall') }}"></i></a></th>
+                            <th><a href="{{ route('Approvement-Payment') }}?sorting={{ $sorting }}&namecolumn=user_id">Id Pelanggan <i class="fa fa-sort{{ iconsorting('user_id') }}"></i></a></th>
+                            <th><a href="{{ route('Approvement-Payment') }}?sorting={{ $sorting }}&namecolumn=fullname">Nama Pelanggan <i class="fa fa-sort{{ iconsorting('fullname') }}"></i></a></th>
+                            <th><a href="{{ route('Approvement-Payment') }}?sorting={{ $sorting }}&namecolumn=product_name">Nama Produk <i class="fa fa-sort{{ iconsorting('product_name') }}"></i></a></th>
+                            <th><a href="{{ route('Approvement-Payment') }}?sorting={{ $sorting }}&namecolumn=qty">Jumlah <i class="fa fa-sort{{ iconsorting('qty') }}"></i></a></th>
+                            <th><a href="{{ route('Approvement-Payment') }}?sorting={{ $sorting }}&namecolumn=totalpriceall">Total Harga <i class="fa fa-sort{{ iconsorting('totalpriceall') }}"></i></a></th>
                             <th>Detail Info</th>
                             <th>Status</th>
-                            <th><a href="{{ route('approvement-view') }}?sorting={{ $sorting }}&namecolumn=datetime">Tanggal Pembelian <i class="fa fa-sort{{ iconsorting('datetime') }}"></i></a></th>
+                            <th><a href="{{ route('Approvement-Payment') }}?sorting={{ $sorting }}&namecolumn=datetime">Tanggal Pembelian <i class="fa fa-sort{{ iconsorting('datetime') }}"></i></a></th>
                             <th>Aksi</th>
                         </tr>
                     </thead>

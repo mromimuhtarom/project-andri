@@ -18,7 +18,7 @@ class OrderController extends Controller
         $username   = $request->username;
         $status     = $request->status;
         $namecolumn = $request->namecolumn;
-        $route      = 'order';
+        $route      = 'Customer-Orders';
 
         if($sorting === 'asc' || $sorting === NULL): 
             $sorting = 'desc';

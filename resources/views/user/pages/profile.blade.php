@@ -119,7 +119,14 @@
                             var city_id = '{{ $cty_id }}';
                             var accept_nm = '{{ $ads->accept_name }}';
                             var telp = '{{ $ads->telp }}';
+                            var statusadd = '{{ $ads->status }}'
+                            $('.city-edit').attr('disabled', 'disabled');
                             $('#accept_name-edit').val(accept_nm);
+                            if(statusadd == 2){
+                                $('.utama').html('<span style="color:green">Alamat Utama</span>')
+                            } else {
+                                $('.utama').html('Dijadikan alamat Utama <br><input type="radio" id="ya" name="utama" value="2"><label for="ya">Ya</label> <input type="radio" id="tidak" name="utama" value="1" checked><label for="tidak">Tidak</label>');
+                            }
                             $('#postal_code-edit').val(postal_code);
                             $('#province-edit').val(province_id);
                             $('#address_id-edit').val(id_address);
@@ -144,7 +151,7 @@
                                                 $('.city-edit').append('<option class="city_detail-edit" value="'+city.city_id+'">'+city.city_name+'</option>');
                                             }
                                         });
-                                        $('.city').removeAttr('disabled');
+                                        $('.city-edit').removeAttr('disabled');
                                     
                                         
                                     }
@@ -227,6 +234,8 @@
                             <input type="hidden" name="address_id" class="address_id-edit" id="address_id-edit">
                             <input type="text" name="accept_name" id="accept_name-edit" class="form-control" placeholder="Nama Penerima">
                             <input type="text" name="postal_code" id="postal_code-edit" class="form-control" placeholder="Kode Pos">
+                            <div class="utama">
+                            </div>
                             <table width="100%">
                                 <tr>
                                     <td>
@@ -373,7 +382,7 @@
         
         $('.province-edit').on('click', function(){
             var pv = $(this).val();
-            $('.city').attr('disabled', 'disabled');
+            $('.city-edit').attr('disabled', 'disabled');
 
             if(pv){
                 $.ajax({

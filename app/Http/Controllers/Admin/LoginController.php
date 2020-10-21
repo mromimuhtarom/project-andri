@@ -26,6 +26,7 @@ class LoginController extends Controller
             if(Auth::user()->role_id != 4):
                 Session::put('user_id', Auth::user()->user_id);
                 Session::put('username', Auth::user()->username);
+                Session::put('role_id', Auth::user()->role_id);
                 Session::put('login', TRUE);
                 alert()->success('Selamat anda berhasil login');
                 return redirect()->route('dashboard');

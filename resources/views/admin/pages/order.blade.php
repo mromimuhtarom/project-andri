@@ -54,7 +54,7 @@ setlocale(LC_TIME, 'id_ID.utf8');
                             <th><a href="{{ route($route) }}?sorting={{ $sorting }}&namecolumn=totalpriceall">Total Harga <i class="fa fa-sort{{ iconsorting('totalpriceall') }}"></i></a></th>
                             <th>Detail Info</th>
                             <th>Status</th>
-                            <th><a href="{{ route('order') }}?sorting={{ $sorting }}&namecolumn=datetime">Tanggal Pembelian <i class="fa fa-sort{{ iconsorting('datetime') }}"></i></a></th>
+                            <th><a href="{{ route($route) }}?sorting={{ $sorting }}&namecolumn=datetime">Tanggal Pembelian <i class="fa fa-sort{{ iconsorting('datetime') }}"></i></a></th>
                         </tr>
                     </thead>
                     <tbody>

@@ -40,6 +40,7 @@
             </form>
         </div>
     </div>
-    <script type="text/javascript" src="/js/login.js"></script>
+	<script type="text/javascript" src="/js/login.js"></script>
+	@include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
 </body>
 </html>

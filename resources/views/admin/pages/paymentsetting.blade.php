@@ -22,7 +22,7 @@
                         <tr>
                             <th>Nama Tipe Pembayaran</th>
                             <th>No rekening</th>
-                            <th></th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,7 +30,10 @@
                         <tr>
                             <td>{{ $pt->payment_name }}</td>
                             <td>{{ $pt->account_number }}</td>
-                            <td></td>
+                            <td><a href="#" class="btn-deletepayment" data-pk="{{ $pt->payment_id }}" data-toggle="modal" data-target="#deletepayment">
+                                    <i class="fas fa-times" style="color:red"></i>
+                                </a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -49,7 +52,7 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="{{ route('paymentsetting-create') }}">
+                <form method="POST" action="{{ route('Payment-Setting-create') }}">
                     @csrf
                     <div class="modal-body">
                         
@@ -65,9 +68,39 @@
         </div>
     </div>
 
+    {{-- Modal delete --}}
+    <div class="modal fade" id="deletepayment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hapus Tipe Pembayaran</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ route('Payment-Setting-delete') }}">
+                    {{ method_field('delete')}}
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" id="pk-deletepayment" name="pk" value="">
+                        Apakah anda yakin ingin menghapus data tersebut ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                        <button type="submit" class="btn btn-primary">Ya</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         $(document).ready(function() {
+            $('.btn-deletepayment').on('click', function(){
+                var pk = $(this).attr('data-pk');
+                $('#pk-deletepayment').val(pk);
+            });
             $('#dataTable').DataTable({
                 "bLengthChange": false,
                 "searching": false

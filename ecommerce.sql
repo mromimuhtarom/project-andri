@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 19 Okt 2020 pada 11.01
+-- Waktu pembuatan: 21 Okt 2020 pada 10.56
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.4.10
 
@@ -141,12 +141,12 @@ CREATE TABLE `menu` (
 INSERT INTO `menu` (`menu_id`, `name`, `parent_id`, `status`, `route`, `icon`) VALUES
 (1, 'Dashboard', 0, 1, 'dashboard', 'fas fa-tachometer-alt'),
 (2, 'Produk', 0, 1, 'product', 'fab fa-product-hunt'),
-(3, 'Pesanan', 0, 1, '', 'fas fa-shopping-cart'),
-(4, 'Persetujuan Pembelian', 3, 1, 'historyorder', 'fas fa-shopping-cart'),
-(5, 'Pesanan Pelanggan', 3, 1, 'order', 'fas fa-history'),
-(6, 'Pengaturan', 0, 1, '', 'fas fa-cog'),
-(7, 'Pengaturan Pembayaran', 6, 1, 'paymentsetting', 'fas fa-hammer'),
-(8, 'Pengaturan Grup Harga Barang', 6, 1, 'gouphargabarangpengaturan', 'fas fa-tachometer-alt');
+(3, 'Pesanan', 0, 1, 'Orders', 'fas fa-shopping-cart'),
+(4, 'Persetujuan Pembelian', 3, 1, 'Approvement-Payment', 'fas fa-shopping-cart'),
+(5, 'Pesanan Pelanggan', 3, 1, 'Customer-Orders', 'fas fa-history'),
+(6, 'Pengaturan', 0, 1, 'Settings', 'fas fa-cog'),
+(7, 'Pengaturan Pembayaran', 6, 1, 'Payment-Setting', 'fas fa-hammer'),
+(8, 'Pengaturan Grup Harga Barang', 6, 1, 'Price-Group', 'fas fa-tachometer-alt');
 
 -- --------------------------------------------------------
 
@@ -176,8 +176,8 @@ INSERT INTO `menu_access` (`role_id`, `menu_id`, `type`) VALUES
 
 CREATE TABLE `payment_type` (
   `payment_id` int(5) NOT NULL,
-  `payment_name` varchar(255) DEFAULT NULL,
-  `account_number` int(5) NOT NULL,
+  `payment_name` varchar(50) DEFAULT NULL,
+  `account_number` varchar(25) NOT NULL,
   `user_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -186,7 +186,7 @@ CREATE TABLE `payment_type` (
 --
 
 INSERT INTO `payment_type` (`payment_id`, `payment_name`, `account_number`, `user_id`) VALUES
-(1, 'BNI', 3454352, 1);
+(2, 'BNI', '65737837', 1);
 
 -- --------------------------------------------------------
 
@@ -206,8 +206,8 @@ CREATE TABLE `price_group` (
 --
 
 INSERT INTO `price_group` (`price_group_id`, `name`, `price`, `user_id`) VALUES
-(1, 'tfg', '45000.00', 1),
-(2, 'BGH', '50000.00', 1);
+(2, 'BGH', '50000.00', 1),
+(3, 'tgf', '45000.00', 1);
 
 -- --------------------------------------------------------
 
@@ -307,6 +307,7 @@ CREATE TABLE `store_order` (
   `payment_name` varchar(255) NOT NULL,
   `picture` varchar(255) NOT NULL,
   `provementpic` varchar(255) DEFAULT NULL,
+  `no_resi` varchar(255) NOT NULL,
   `datetime` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -314,9 +315,9 @@ CREATE TABLE `store_order` (
 -- Dumping data untuk tabel `store_order`
 --
 
-INSERT INTO `store_order` (`id`, `product_name`, `category_id`, `user_id`, `qty`, `price_product`, `note`, `seller_user_id`, `variation_id`, `variation_name`, `variation_detail_name`, `delivery_id`, `service_name`, `address_id`, `postal_code`, `city_id`, `city_name`, `province_id`, `province_name`, `detail_address`, `accept_name`, `telp`, `status`, `ongkir`, `payment_id`, `payment_name`, `picture`, `provementpic`, `datetime`) VALUES
-(1, 'Plang1', 2, 2, 4, '43543.00', 'Proses Pembuktian', 1, 18, 'sdfs', 'dfgdf', 'JNE', 'OKE', 5, '2142', 402, 'Serang', 3, 'Banten', 'Komplek Ykb Blok M No. 06', 'Mantap Jiwa sraya', '082392191962', 4, 24000, 1, 'bni', '1.jpg', '1.jpg', '2020-10-11 08:56:25'),
-(2, 'Plang1', 2, 1, 4, '45000.00', 'Proses Pembuktian', 1, 18, 'sdfs', 'sdfs', 'pos', 'Paket Kilat Khusus', 1, '3454', 17, 'Badung', 1, 'Bali', 'Komplek Ykb Blok M No. 06', 'Romi', '082392191962', 4, 8000, 1, 'BNI', '1.jpg', '1.jpg', '2020-10-19 08:50:51');
+INSERT INTO `store_order` (`id`, `product_name`, `category_id`, `user_id`, `qty`, `price_product`, `note`, `seller_user_id`, `variation_id`, `variation_name`, `variation_detail_name`, `delivery_id`, `service_name`, `address_id`, `postal_code`, `city_id`, `city_name`, `province_id`, `province_name`, `detail_address`, `accept_name`, `telp`, `status`, `ongkir`, `payment_id`, `payment_name`, `picture`, `provementpic`, `no_resi`, `datetime`) VALUES
+(1, 'Plang1', 2, 2, 4, '43543.00', 'Proses Pengiriman', 1, 18, 'sdfs', 'dfgdf', 'JNE', 'OKE', 5, '2142', 402, 'Serang', 3, 'Banten', 'Komplek Ykb Blok M No. 06', 'Mantap Jiwa sraya', '082392191962', 1, 24000, 1, 'bni', '1.jpg', '1.jpg', '4567896e433', '2020-10-11 08:56:25'),
+(2, 'Plang1', 2, 1, 4, '45000.00', 'sdsd', 1, 18, 'sdfs', 'sdfs', 'pos', 'Paket Kilat Khusus', 1, '3454', 17, 'Badung', 1, 'Bali', 'Komplek Ykb Blok M No. 06', 'Romi', '082392191962', 2, 8000, 1, 'BNI', '1.jpg', '1.jpg', '4567896e433', '2020-10-19 08:50:51');
 
 -- --------------------------------------------------------
 
@@ -338,7 +339,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`, `telp`) VALUES
-(1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 1, '0866666666'),
+(1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 3, '0866666666'),
 (2, 'romi', '$2y$10$nAGM1JYHB26Z1ooihRUFvuwos5bG7Up462jIZ/fK6vJHxPLV70edi', 'Muhammad Romi Muhtarom', 4, '082392191962');
 
 -- --------------------------------------------------------
@@ -511,19 +512,19 @@ ALTER TABLE `config`
 -- AUTO_INCREMENT untuk tabel `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `menu_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT untuk tabel `payment_type`
 --
 ALTER TABLE `payment_type`
-  MODIFY `payment_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `payment_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `price_group`
 --
 ALTER TABLE `price_group`
-  MODIFY `price_group_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `price_group_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `product`

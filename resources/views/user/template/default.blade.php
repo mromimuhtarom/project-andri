@@ -42,12 +42,12 @@
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
 								@if (Session::get('login'))
-								<li><a href="{{ route('profile-view') }}"><i class="fa fa-user"></i>Profile</a></li>
-								<li><a href="{{ route('cart-view') }}" style="background:none !important"><i class="fa fa-shopping-cart"></i> Keranjang</a></li>
-								<li><a href="{{ route('logoutuser-process') }}" class="active"><i class="fa fa-lock"></i> Keluar</a></li>
+								<li><a href="{{ route('profile-view') }}" class="{{ Request::is('Profile/*') ? 'active' : null}}"><i class="fa fa-user"></i>Profile</a></li>
+								<li><a href="{{ route('cart-view') }}" style="background:none !important" class="{{ Request::is('Cart/*') ? 'active' : null}}"><i class="fa fa-shopping-cart"></i> Keranjang</a></li>
+								<li><a href="{{ route('logoutuser-process') }}"><i class="fa fa-lock"></i> Keluar</a></li>
 								@else 
-								<li><a href="{{ route('registeruser') }}" style="background:none !important"><i class="fa fa-user"></i> Daftar</a></li>
-								<li><a href="{{ route('loginuser')}}" class="active"><i class="fa fa-lock"></i> Login</a></li>
+								<li><a href="{{ route('registeruser') }}" style="background:none !important" class="{{ Request::is('User/register-view') ? 'active' : null}}"><i class="fa fa-user"></i> Daftar</a></li>
+								<li><a href="{{ route('loginuser')}}" class="{{ Request::is('User/login') ? 'active' : null}}"><i class="fa fa-lock"></i> Login</a></li>
 								@endif
 							</ul>
 						</div>
@@ -70,10 +70,10 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="{{ route('cart-view') }}" class="active">Keranjang</a></li>
-								<li><a href="{{ route('approvepaymentview') }}">Belum di bayar</a></li>
-								<li><a href="{{ route('process-view') }}">Proses</a></li>
-								<li><a href="{{ route('acceptdecline-view') }}">Diterima Atau di tolak</a></li>
+								<li><a href="{{ route('cart-view') }}" class="{{ Request::is('Cart/Cart-Main/*') ? 'active' : null}}">Keranjang</a></li>
+								<li><a href="{{ route('approvepaymentview') }}" class="{{ Request::is('Cart/Approvement-Payment/*') ? 'active' : null}}">Belum di bayar</a></li>
+								<li><a href="{{ route('process-view') }}" class="{{ Request::is('Cart/Process/*') ? 'active' : null}}">Proses</a></li>
+								<li><a href="{{ route('acceptdecline-view') }}" class="{{ Request::is('Cart/Accept-Decline/*') ? 'active' : null}}">Diterima Atau di tolak</a></li>
 							</ul>
 						</div>
 					</div>

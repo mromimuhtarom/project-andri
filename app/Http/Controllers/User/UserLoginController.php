@@ -29,6 +29,7 @@ class UserLoginController extends Controller
             Session::put('user_id', Auth::user()->user_id);
             Session::put('username', Auth::user()->username);
             Session::put('login', TRUE);
+            Session::put('role_id', Auth::user()->role_id);
             alert()->success('Selamat anda berhasil login');
             return redirect()->route('home-view');
         else:

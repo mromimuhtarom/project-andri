@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Paymenttype;
 use Session;
+use Validator;
 
 class PaymentSettingController extends Controller
 {
@@ -21,6 +22,15 @@ class PaymentSettingController extends Controller
         $paymentname = $request->payment_name;
         $accountno   = $request->account_no;
         $user_id     = Session::get('user_id');
+        $validator = Validator::make($request->all(), [
+                        'payment_name'  =>  'required|max:50', 
+                        'account_no'    =>  'required|max:25'
+                    ]);
+
+        if ($validator->fails()) {
+            alert()->error('ErrorAlert',$validator->errors()->first());
+            return back();
+        } 
 
         Paymenttype::create([
             'payment_name'   => $paymentname,
@@ -28,6 +38,24 @@ class PaymentSettingController extends Controller
             'user_id'        => $user_id
         ]);
 
-        return back()->with('success', 'input data telah berhasil');
+        alert()->success('input data telah berhasil');
+        return back();
+    }
+
+    public function delete(Request $request){
+        $pk = $request->pk;
+        $validator = Validator::make($request->all(),[
+                        'pk'    =>  'required'
+                     ]);
+
+        if ($validator->fails()) {
+            alert()->error('ErrorAlert',$validator->errors()->first());
+            return back();
+        } 
+
+        Paymenttype::where('payment_id', '=', $pk)->delete();
+
+        alert()->success('Delete data telah berhasil');
+        return back();
     }
 }
