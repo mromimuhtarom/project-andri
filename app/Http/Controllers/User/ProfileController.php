@@ -15,12 +15,12 @@ class ProfileController extends Controller
     {
         $user_id  = Session::get('user_id');
         $profile  = User::where('user_id', $user_id)->first();
-        $province = $this->apiProvince('');
-        $city     = $this->apiCity('');
+        $province = apiProvince('');
+        $city     = apiCity('');
         if($request->ajax()):
                 $province_id  = $request->province_id;
                 $param = 'province='.$province_id;
-                $city = $this->apiCity($param);
+                $city = apiCity($param);
                 return json_encode([
                     "data" => $profile,
                     "city" => $city
@@ -28,70 +28,6 @@ class ProfileController extends Controller
         else: 
             return view('user.pages.profile', compact('profile', 'province', 'city'));
         endif;
-    }
-
-    public function curlApirajaongkir($url)
-    {
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => array(
-                "key: 4d6444a58c240d9ed1038a8891738950"
-            ),
-        ));
-
-        return $curl;
-    }
-
-    public function apiCity($param)
-    {
-        if($param != NULL): 
-            $param = "?".$param;
-        else: 
-            $param = '';
-        endif;
-        $url = "https://api.rajaongkir.com/starter/city".$param;
-        $curl = $this->curlApirajaongkir($url);
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
-        if ($err) {
-        return "cURL Error #:" . $err;
-        } else {
-        return json_decode($response);
-        }        
-    }
-
-    public function apiProvince($param)
-    {
-        if($param != NULL): 
-            $param = "?".$param;
-        else: 
-            $param = '';
-        endif;
-        $url = "https://api.rajaongkir.com/starter/province".$param;
-        $curl = $this->curlApirajaongkir($url);
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
-        if ($err) {
-        return "cURL Error #:" . $err;
-        } else {
-        return json_decode($response);
-        }        
     }
 
     public function storeAddress(Request $request)
@@ -102,9 +38,8 @@ class ProfileController extends Controller
         $city_id     = $request->city;
         $tlp         = $request->telp;
         $detail      = $request->detail_address;
-        $utama       = $request->utama;
-        $provinceapi = $this->apiProvince('');
-        $cityapi     = $this->apiCity('');
+        $provinceapi = apiProvince('');
+        $cityapi     = apiCity('');
         $user_id     = Session::get('user_id');
         $validator_general = Validator::make($request->all(),[
             'accept_name'     => 'required',
@@ -112,8 +47,7 @@ class ProfileController extends Controller
             'province'        => 'required',
             'city'            => 'required',
             'telp'            => 'required',
-            'detail_address'  => 'required',
-            'utama'           => 'required'
+            'detail_address'  => 'required'
         ]);
         
         if ($validator_general->fails()) {
@@ -207,20 +141,11 @@ class ProfileController extends Controller
         $tlp         = $request->telp;
         $detail      = $request->detail_address;
         $utama       = $request->utama;
-        $provinceapi = $this->apiProvince('');
-        $cityapi     = $this->apiCity('');
+        $provinceapi = apiProvince('');
+        $cityapi     = apiCity('');
         $address_id  = $request->address_id;
         $user_id     = Session::get('user_id');
-        dd($utama);
-        if($utama != NULL): 
-            $validatorstatus = Validator::make($request->all(),[
-                'utama' =>  'required'
-            ]);
-            if($validatorstatus->fails()): 
-                alert()->error('ErrorAlert', $validator status->errors()->first());
-                return back();
-            endif;
-        endif;
+
 
         $validator_general = Validator::make($request->all(),[
             'accept_name'     => 'required',
@@ -254,12 +179,37 @@ class ProfileController extends Controller
             alert()->error('ErrorAlert', 'Kota tidak ada');
             return back();
         endif;
-        $address = Address::where('user_id', '=', $user_id)->get();
-        
-        $status = array();
-        foreach($address as $ads):
-            $sattus[] .= $ads->status;
-        endforeach;
+
+        if($utama != NULL): 
+            $validatorstatus = Validator::make($request->all(),[
+                'utama' =>  'required'
+            ]);
+            if($validatorstatus->fails()): 
+                alert()->error('ErrorAlert', $validatorstatus->errors()->first());
+                return back();
+            endif;
+            $address = Address::where('user_id', '=', $user_id)->get();
+            $addressid = Address::where('address_id', '=', $address_id)->first();
+    
+            if($addressid->status != $utama): 
+                Address::where('address_id', '=', $address_id)->update([
+                    'status'    =>  $utama
+                ]);
+                foreach($address as $ads):
+                    if($ads->address_id != $address_id):
+                    Address::where('address_id', '=', $ads->address_id)->update([
+                        'status' => 1
+                    ]);
+                    endif;
+                endforeach;
+            else:
+                Address::where('address_id', '=', $address_id)->update([
+                    'status'    =>  $utama
+                ]);
+            endif;
+
+        endif;
+
 
         Address::where('address_id', '=', $address_id)->update([
             'accept_name'    => $accept_name,
@@ -269,12 +219,29 @@ class ProfileController extends Controller
             'city_name'      => $city_name,
             'postal_code'    => $postal_code,
             'detail_address' => $detail,
-            'telp'           => $tlp,
-            'status'         => $utama
+            'telp'           => $tlp
         ]);
 
 
         alert()->success('Edit data telah berhasil');
+        return back();
+    }
+
+    public function deleteAddress(Request $request) {
+        $pk = $request->pk;
+
+        $validator = Validator::make($request->all(),[
+            'pk'    =>  'required'
+        ]);
+
+        if($validator->fails()): 
+            alert()->error('ErrorAlert', $validator->errors()->first());
+            return back();
+        endif;
+
+        Address::where('address_id', '=', $pk)->delete();
+
+        alert()->success('Alamat berhasil di hapus');
         return back();
     }
 }

@@ -40,7 +40,12 @@ class UserLoginController extends Controller
 
     public function registerview()
     {
-        return view('user.pages.register');
+        $province = apiProvince('');
+        return view('user.pages.register', compact('province'));
+    }
+
+    public function city(Request $request) {
+
     }
 
     public function logout()

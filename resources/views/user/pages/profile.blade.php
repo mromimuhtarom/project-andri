@@ -108,7 +108,11 @@
                     <hr style="border:1px solid black">
                     <script>
                         $('.changebtn').on('click', '.edit-form', function(){
-                            $('.btn-action-address{{$ads->address_id}}').append('<a href="#" class="edit-address" data-toggle="modal" data-target="#editaddress">Ubah</a> <a href="#" class="hapus-address" data-id="{{ $ads->address_id}}">Hapus</a>');
+                            @if($ads->status != 2)
+                            $('.btn-action-address{{$ads->address_id}}').append('<a href="#" class="edit-address" data-toggle="modal" data-target="#editaddress">Ubah</a> <a href="#" data-toggle="modal" data-target="#deleaddress" class="hapus-address" data-id="{{ $ads->address_id}}">Hapus</a>');
+                            @else 
+                            $('.btn-action-address{{$ads->address_id}}').append('<a href="#" class="edit-address" data-toggle="modal" data-target="#editaddress">Ubah</a>');
+                            @endif
                         });
                         $('.btn-action-address{{$ads->address_id}}').on('click', '.edit-address', function(){
                             var id_address = '{{$ads->address_id}}';
@@ -121,6 +125,7 @@
                             var telp = '{{ $ads->telp }}';
                             var statusadd = '{{ $ads->status }}'
                             $('.city-edit').attr('disabled', 'disabled');
+                            $('.btn-update').attr('disabled', 'disbaled');
                             $('#accept_name-edit').val(accept_nm);
                             if(statusadd == 2){
                                 $('.utama').html('<span style="color:green">Alamat Utama</span>')
@@ -151,6 +156,7 @@
                                                 $('.city-edit').append('<option class="city_detail-edit" value="'+city.city_id+'">'+city.city_name+'</option>');
                                             }
                                         });
+                                        $('.btn-update').removeAttr('disabled');
                                         $('.city-edit').removeAttr('disabled');
                                     
                                         
@@ -223,7 +229,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit Alamat</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Hapus Alamat</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -260,8 +266,33 @@
                             <textarea name="detail_address" id="address-edit" class="form-control" placeholder="Detail Alamat" cols="30" rows="10"></textarea>
                         </div>
                         <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-success">Edit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deleaddress" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Alamat</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{{ route('profile-deladdress') }}">
+                        {{ method_field('delete')}}
+                        @csrf
+                        <div class="modal-body">
+                            <input type="hidden" name="pk" id="pk-deleteadd">
+                            Apakah anda yakin ingin menghapus alamat ini
+                        </div>
+                        <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success">Simpan</button>
+                            <button type="submit" class="btn btn-success btn-update">Hapus</button>
                         </div>
                     </form>
                 </div>
@@ -273,6 +304,11 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+
+        $('.hapus-address').on('click', function(){
+            var id = $(this).attr('data-id');
+            $('#pk-deleteadd').val(id);
         });
 
         $('.txt-xeditable').editable({

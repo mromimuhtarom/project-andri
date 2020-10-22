@@ -89,6 +89,7 @@ Route::middleware('authloginuser')->group(function(){
         Route::post('/Profile-updatepwd', 'User\ProfileController@updatepassword')->name('profile-updatepwd');
         Route::post('/Profile-createaddress', 'User\ProfileController@storeAddress')->name('profile-createaddress');
         Route::post('/Profile-updateaddress', 'User\ProfileController@updateAddress')->name('profile-updaddress');
+        Route::delete('Profile-deleteaddress', 'User\ProfileController@deleteAddress')->name('profile-deladdress');
     });
 
     Route::group(['prefix' => 'Cart'], function() {
