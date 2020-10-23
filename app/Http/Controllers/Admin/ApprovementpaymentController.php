@@ -30,7 +30,6 @@ class ApprovementpaymentController extends Controller
                  ->select(
                      'store_order.id',
                      'user.fullname',
-                     'user.telp',
                      'store_order.product_name',
                      'store_order.user_id',
                      'store_order.province_id',

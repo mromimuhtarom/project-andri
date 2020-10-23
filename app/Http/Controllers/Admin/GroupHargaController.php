@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Pricegroup;
 use Session;
 use Validator;
+use App\Models\Product;
 
 class GroupHargaController extends Controller
 {
@@ -38,6 +39,12 @@ class GroupHargaController extends Controller
         $validator = Validator::make($request->all(),[
                         'pk'    =>  'required'
                      ]);
+
+        $product = Product::where('price_group_id', $pk)->first();
+        if($product): 
+            alert()->error('ErrorAlert', 'Harga Group ini di pakai oleh produk tertentuk, silahkan diubah group harga di produk baru bsa menghapus group haraga ini');
+            return back();
+        endif;
 
         if ($validator->fails()) {
             alert()->error('ErrorAlert',$validator->errors()->first());

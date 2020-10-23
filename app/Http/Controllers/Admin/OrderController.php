@@ -33,7 +33,6 @@ class OrderController extends Controller
         $order = Storeorder::join('user', 'user.user_id', '=', 'store_order.user_id')
                  ->select(
                      'user.fullname',
-                     'user.telp',
                      'user.username',
                      'store_order.product_name',
                      'store_order.user_id',
@@ -92,7 +91,6 @@ class OrderController extends Controller
         $storeorder = Storeorder::join('user', 'user.user_id', '=', 'store_order.user_id')
                       ->select(
                         'user.fullname',
-                        'user.telp',
                         'user.username',
                         'store_order.product_name',
                         'store_order.user_id',
