@@ -67,6 +67,8 @@ Route::middleware('authloginadmin')->group(function(){
 Route::group(['prefix' => 'User'], function(){
     Route::post('/process', 'User\UserLoginController@login')->name('loginuser-process');
     Route::get('/register-view', 'User\UserLoginController@registerview')->name('registeruser');
+    Route::post('/register-create', 'User\UserLoginController@storeRegister')->name('registeruser-create');
+    Route::get('/city-view', 'User\UserLoginController@city')->name('city-view');
     Route::get('/login', 'User\UserLoginController@index')->name('loginuser');
 });
 

@@ -10,27 +10,27 @@
     <div class="login-form"><!--login form-->
         <h2>Selamat datang</h2>
         <h4>silahkan daftar terlebih dahulu untuk bisa melakukan belanja</h4>
-        <form action="{{ route('loginuser-process')}}" method="POST">
+        <form action="{{ route('registeruser-create')}}" method="POST">
             @csrf
-            <input type="text" name="username" class="form-control" placeholder="Nama Pengguna" />
+            <input type="text" name="username" class="form-control" placeholder="Nama Pengguna" required>
             <table width="100%">
                 <tr>
                     <td>
-                         <input type="text" class="form-control" name="front_name" placeholder="Nama Depan">
+                         <input type="text" class="form-control" name="front_name" placeholder="Nama Depan" required>
                     </td>
                     <td>
-                         <input type="text" class="form-control" name="front_name" placeholder="Nama Belakang">
+                         <input type="text" class="form-control" name="last_name" placeholder="Nama Belakang" required>
                     </td>
                 </tr>
             </table> 
             <span><b>Informasi Alamat Pengguna</b></span>
-            <input type="text" name="accept_name" class="form-control" placeholder="Nama Penerima">
-            <input type="text" name="no_hp" class="form-control" placeholder="No Telp Penerima">
-            <input type="text" name="postal_code" class="form-control" placeholder="Kode Pos">
+            <input type="text" name="accept_name" class="form-control" placeholder="Nama Penerima" required>
+            <input type="text" name="no_hp" class="form-control" placeholder="No Telp Penerima" required>
+            <input type="text" name="postal_code" class="form-control" placeholder="Kode Pos" required>
             <table width="100%">
                 <tr>
                     <td>
-                        <select name="province" class="form-control province">
+                        <select name="province" class="form-control province" required>
                             <option value="">Pilih Provinsi</option>
                             @foreach ($province->rajaongkir->results as $pv)
                                 <option value="{{ $pv->province_id }}">{{ $pv->province }}</option>
@@ -38,7 +38,7 @@
                         </select>
                     </td>
                     <td>
-                        <select name="city" class="form-control city">
+                        <select name="city" class="form-control city" required>
                             <option value="">Pilih Kota atau Kabupaten</option>
                         </select>
                     </td>
@@ -51,27 +51,30 @@
             <table width="100%">
                 <tr>
                     <td>
-                        <input type="password" class="form-control" name="password" placeholder="Kata Sandi" />
+                        <input type="password" class="form-control" name="password" placeholder="Kata Sandi" required>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="password" class="form-control" name="password" placeholder="Konfirmasi Kata Sandi" />
+                        <input type="password" class="form-control" name="confirmpassword" placeholder="Konfirmasi Kata Sandi" required>
                     </td>
                 </tr>
             </table>
-            <button type="submit" class="btn btn-default">Daftar</button>
+            <button type="submit" class="btn btn-default btn-disabled">Daftar</button>
         </form>
     </div><!--/login form--> 
 <script>
     $('.city').attr('disabled', 'disabled');
+    $('.btn-disabled').attr('disabled', 'disabled');
     $('.province').on('change', function(){
         var pv = $(this).val();
         $('.city').attr('disabled', 'disabled');
+        $('.btn-disabled').attr('disabled', 'disabled');
         $.ajax({
-            url: '{{ route("profile-view") }}',
+            url: '{{ route("city-view") }}',
             type: 'get',
             data:{
+                _token: "{{ csrf_token() }}",
                 province_id: pv
             }, 
             success: function(response){
@@ -81,6 +84,7 @@
                     $('.city').append('<option class="city_detail" value="'+city.city_id+'">'+city.city_name+'</option>');
                 });
                 $('.city').removeAttr('disabled');
+                $('.btn-disabled').removeAttr('disabled');
             }
         });
     });
