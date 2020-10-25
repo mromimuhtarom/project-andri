@@ -15,46 +15,82 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/admin', 'Admin\LoginController@login')->name('login');
 Route::post('/login', 'Admin\LoginController@processlogin')->name('processlogin'); 
-
+Route::get('/logout', 'Admin\LoginController@logout')->name('logout');
 Route::middleware('authloginadmin')->group(function(){
     Route::group(['prefix' => 'Admin'], function() {
-        Route::get('/logout', 'Admin\LoginController@logout')->name('logout');
+        
         Route::group(['prefix' => 'Dashboard'], function() {
-            Route::get('/dashboard-view', 'Admin\DashboardController@index')->name('dashboard');
+            Route::group(['middleware' => ['pagedenied:1']], function () {
+                Route::get('/dashboard-view', 'Admin\DashboardController@index')->name('dashboard');
+            });
         });
 
         Route::group(['prefix' => 'Product'], function() {
-            Route::get('/product-view', 'Admin\ProductController@index')->name('product');
-            Route::post('/product-create', 'Admin\ProductController@store')->name('productcreate');
-            Route::post('/imageproduct-edit', 'Admin\ProductController@updateimage')->name('productimage-update');
-            Route::post('/product-update', 'Admin\ProductController@update')->name('product_update');
+            Route::group(['middleware' => ['pagedenied:2']], function () {
+                Route::get('/product-view', 'Admin\ProductController@index')->name('product');
+                Route::post('/product-create', 'Admin\ProductController@store')->name('productcreate');
+                Route::post('/imageproduct-edit', 'Admin\ProductController@updateimage')->name('productimage-update');
+                Route::post('/product-update', 'Admin\ProductController@update')->name('product_update'); 
+            });
         });
 
         Route::group(['prefix' => 'Orders'], function(){
             Route::group(['prefix' => 'Customer-Orders'], function() {
-                Route::get('/order-view', 'Admin\OrderController@index')->name('Customer-Orders');
-                Route::get('/order-serach', 'Admin\OrderController@search')->name('order-search');
+                Route::group(['middleware' => ['pagedenied:5']], function () {
+                    Route::get('/order-view', 'Admin\OrderController@index')->name('Customer-Orders');
+                    Route::get('/order-serach', 'Admin\OrderController@search')->name('order-search');
+                });
             });
 
             Route::group(['prefix' => 'Approvement-Payment'], function() {
-                Route::get('/approvement-view', 'Admin\ApprovementpaymentController@index')->name('Approvement-Payment');
-                Route::post('/approvement-accept', 'Admin\ApprovementpaymentController@acceptprovement')->name('approvement-accept');
-                Route::post('approvement-decline', 'Admin\ApprovementpaymentController@declineapprovement')->name('approvement-decline');
+                Route::group(['middleware' => ['pagedenied:4']], function () {
+                    Route::get('/approvement-view', 'Admin\ApprovementpaymentController@index')->name('Approvement-Payment');
+                    Route::post('/approvement-accept', 'Admin\ApprovementpaymentController@acceptprovement')->name('approvement-accept');
+                    Route::post('approvement-decline', 'Admin\ApprovementpaymentController@declineapprovement')->name('approvement-decline');
+                });
             });
         });
 
         Route::group(['prefix' => 'Settings'], function(){
+            Route::group(['middleware' => ['pagedenied:7']], function () {
+                Route::group(['prefix' => 'General-Setting'], function () {
+                    Route::get('/generalsetting-view', 'Admin\GeneralSettingController@index')->name('General-Setting');
+                    Route::post('/generalsetting-iconweb', 'Admin\GeneralSettingController@editicon')->name('generalsetting-icon');
+                    Route::post('/generalsetting-faviconweb', 'Admin\GeneralSettingController@editfavicon')->name('generalsetting-favicon');
+                    Route::post('/generalsetting-update', 'Admin\GeneralSettingController@update')->name('generalsetting-update');
+                });
+            });
             Route::group(['prefix' => 'Payment-Setting'], function() {
-                Route::get('/paymentsetting-view', 'Admin\PaymentSettingController@index')->name('Payment-Setting');
-                Route::post('/paymentsetting-create', 'Admin\PaymentSettingController@store')->name('Payment-Setting-create');
-                Route::delete('paymentsetting-delete', 'Admin\PaymentSettingController@delete')->name('Payment-Setting-delete');
+                Route::group(['middleware' => ['pagedenied:8']], function () {
+                    Route::get('/paymentsetting-view', 'Admin\PaymentSettingController@index')->name('Payment-Setting');
+                    Route::post('/paymentsetting-create', 'Admin\PaymentSettingController@store')->name('Payment-Setting-create');
+                    Route::delete('paymentsetting-delete', 'Admin\PaymentSettingController@delete')->name('Payment-Setting-delete');
+                });
             });
 
             Route::group(['prefix' => 'Price-Group'], function() {
-                Route::get('/pricegroup-view', 'Admin\GroupHargaController@index')->name('Price-Group');
-                Route::post('/pricegroup-create', 'Admin\GroupHargaController@store')->name('Price-Group-create');
-                Route::delete('/pricegroup-delete', 'Admin\GroupHargaController@delete')->name('Price-Group-delete');
+                Route::group(['middleware' => ['pagedenied:9']], function () {
+                    Route::get('/pricegroup-view', 'Admin\GroupHargaController@index')->name('Price-Group');
+                    Route::post('/pricegroup-create', 'Admin\GroupHargaController@store')->name('Price-Group-create');
+                    Route::delete('/pricegroup-delete', 'Admin\GroupHargaController@delete')->name('Price-Group-delete');
+                });
             });
+
+            Route::group(['prefix' => 'Category'], function () {
+                Route::group(['middleware' => ['pagedenied:10']], function () {
+                    Route::get('/category-view', 'Admin\CategoryController@index')->name('Category');
+                    Route::post('/category-update', 'Admin\CategoryController@update')->name('category-update');
+                    Route::post('/category-create', 'Admin\CategoryController@store')->name('category-create');
+                });
+            });
+        });
+
+        Route::group(['prefix' => 'User-Admin'], function () {
+            Route::group(['middleware' => ['pagedenied:11']], function () {
+                Route::get('/useradmin-view', 'Admin\UserAdminController@index')->name('User-Admin');
+                Route::post('/useradmin-address', 'Admin\UserAdminController@Address')->name('detail-address');
+                Route::post('/useradmin-statusupdt', 'Admin\UserAdminController@updateStatus')->name('useradmin-statusupdt');
+            });    
         });
     });
 });
@@ -72,8 +108,9 @@ Route::group(['prefix' => 'User'], function(){
     Route::get('/login', 'User\UserLoginController@index')->name('loginuser');
 });
 
+Route::get('/', 'User\HomeController@index')->name('home-view'); 
 Route::group(['prefix' => 'Home'], function(){
-    Route::get('/', 'User\HomeController@index')->name('home-view');   
+      
     Route::get('/{id_product}', 'User\DetailProductController@index')->name('detailproduct-view');
     Route::post('/totalprice', 'User\DetailProductController@totalprice')->name('totalprice');
     Route::post('/add-cart', 'User\DetailProductController@cartstore')->name('addcart');
@@ -125,8 +162,8 @@ Route::middleware('authloginuser')->group(function(){
 
 
     
-    Route::get('/user/logout', 'User\UserLoginController@logout')->name('logoutuser-process');
+    
 });
-
+Route::get('/user/logout', 'User\UserLoginController@logout')->name('logoutuser-process');
 // Route::post('/province', )
 

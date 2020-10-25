@@ -12,8 +12,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $productmanyview = Product::orderby('view', 'desc')->limit(3)->get();
-        $productnewsale = Product::orderby('datetime', 'desc')->limit(3)->get();
+        $productmanyview = Product::orderby('view', 'desc')->where('qty', '>', 0)->limit(3)->get();
+        $productnewsale = Product::orderby('datetime', 'desc')->where('qty', '>', 0)->limit(3)->get();
         $categorystore = Category::limit('4')->get();
         return view('user.pages.home', compact('productmanyview', 'productnewsale', 'categorystore'));
     }
@@ -22,6 +22,7 @@ class HomeController extends Controller
     {
         $productname     = $request->productname;
         $productmanyview = Product::where('product_name', 'LIKE', '%'.$productname.'%')
+                           ->where('qty', '>', 0)
                            ->paginate(25);
         return view('user.pages.searchproduct', compact('productmanyview', 'productname'));
     }

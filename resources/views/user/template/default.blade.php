@@ -3,9 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
+	<meta name="description" content="">
+	<link rel="shortcut icon" href="/store_user/images/home/favicon.png" type="image/x-icon">
     <meta name="author" content="">
-    <title>Cart | E-Shopper</title>
+	<title>{{ $titleweb }}</title>
     <link href="/store_user/css/bootstrap.min.css" rel="stylesheet">
     <link href="/store_user/css/font-awesome.min.css" rel="stylesheet">
     <link href="/store_user/css/prettyPhoto.css" rel="stylesheet">
@@ -34,7 +35,7 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="{{ route('home-view')}}"><img src="/store_user/images/home/logo.png" alt="" /></a>
+							<a href="{{ route('home-view')}}"><img src="/store_user/images/home/logo.png" max-width="139px" max-height="39px" alt="" /></a>
 						</div>
 	
 					</div>

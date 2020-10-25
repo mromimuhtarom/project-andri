@@ -105,4 +105,30 @@ function apiCity($param)
   }        
 }
 
+function endislbl($value){
+  $config = DB::table('config')->where('id', '3')->first();
+  $converttocomma = str_replace(':', ',', $config->value);
+  $explode = explode(',', $converttocomma);
+  $array = [
+    $explode[0] => endis($explode[1]),
+    $explode[2] => endis($explode[3])
+  ];
+  // dd($value);
+  if(strval($value) != NULL):
+  return $array[$value];
+  else: 
+    return $array;
+  endif;
+}
+
+function roletype1($menu, $role_id){
+  $role = DB::table('menu')
+          ->join('menu_access', 'menu_access.menu_id', '=', 'menu.menu_id')
+          ->where('menu_access.role_id', $role_id)
+          ->where('menu.menu_id', $menu)
+          ->where('menu_access.type', 1)
+          ->first();
+  return $role;
+}
+
 ?>

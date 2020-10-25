@@ -11,6 +11,7 @@ use Session;
 use Cache;
 use Validator;
 use App\Models\Address;
+use App\Models\Config;
 
 class UserLoginController extends Controller
 {
@@ -26,6 +27,15 @@ class UserLoginController extends Controller
     {
         $username = $request->username;
         $password = $request->password;
+        $user    = User::where('username', $username)->first();
+        $email   = Config::where('id', 4)->first();
+        $telp    = Config::where('id', 5)->first();
+
+        if($user->status == 0): 
+            alert()->error('ErrorAlert', 'Mohon maaf akun anda sedang di nonaktifkan silahkan menghubingi ke email ini:'.$email->value.' atau no. telp:'.$telp->value);
+            return redirect()->route('home-view');
+        endif;
+
         // dd($username);
         if(Auth::attempt(['username' => $username, 'password' => $password])): 
             Session::put('user_id', Auth::user()->user_id);

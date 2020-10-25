@@ -30,6 +30,15 @@
                                 <td class="cart_description">
                                     <h4><a href="">{{ $ct->product->product_name }}</a></h4>
                                     @if($ct->variation_detail_id != 0)<p>{{$ct->variation->variation_name }} : {{ $ct->variation_detail->name_detail_variation }}</p>@endif
+                                    @if($ct->variation_detail_id != 0)
+                                        @if($ct->variation_detail->qty == 0)
+                                        <span style="color:red">Stok Barang Habis</span>
+                                        @endif
+                                    @else 
+                                        @if($ct->product->qty == 0)
+                                        <span style="color:red">Stok Barang Habis</span>
+                                        @endif
+                                    @endif
                                 </td>
                                 <td class="cart_price">
                                     <p class="priceitem{{ $ct->id }}">
@@ -56,7 +65,19 @@
 										</table>		
                                 </td>
                                 <td align="center">
-									<a class="btn btn-primary" href="#" data-toggle="modal" data-target="#exampleModal{{ $ct->id }}">Beli</i></a>
+                                    @if($ct->variation_detail_id != 0)
+                                        @if($ct->variation_detail->qty != 0)
+                                            <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#exampleModal{{ $ct->id }}">Beli</i></a>
+                                        @else
+                                            <span style="color:red">Stok Barang Habis</span>
+                                        @endif
+                                    @else 
+                                        @if($ct->product->qty != 0)
+                                            <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#exampleModal{{ $ct->id }}">Beli</i></a>
+                                        @else
+                                            <span style="color:red">Stok Barang Habis</span>
+                                        @endif
+                                    @endif
                                 </td>
 
 							</tr>

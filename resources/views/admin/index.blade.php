@@ -5,9 +5,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
+        <link rel="shortcut icon" href="/store_user/images/home/favicon.png" type="image/x-icon">
         <meta name="csrf-token" content="{{ csrf_token() }}"> 
         <meta name="author" content="" />
-        <title>Dashboard - SB Admin</title>
+        <title>{{ $titleweb }}</title>
         <link href="/css/styles.css" rel="stylesheet" />
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
@@ -67,7 +68,7 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         <div class="dropdown-item" href="#">{{ Session::get('username')}}</div>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
+                        @include('admin.menu.header_menu')
                     </div>
                 </li>
             </ul>
