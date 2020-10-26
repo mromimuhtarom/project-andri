@@ -139,7 +139,7 @@
                             $('#address-edit').val(detailaddrs);
                             if(city_id) {
                                 $.ajax({
-                                    url: '{{ route("profile-view") }}',
+                                    url: '{{ route("Profile") }}',
                                     type: 'get',
                                     data:{
                                         _token: "{{ csrf_token() }}",
@@ -368,7 +368,7 @@
             $('#username').append('<span id="username-txt" data-value="'+username+'">Nama Pengguna : '+username+'</span>');
             $('#fullname').append('<span id="fullname-txt" data-value="'+fullname+'">Nama lengkap : '+fullname+'</span>');
             $.ajax({
-                url: '{{ route("profile-view") }}',
+                url: '{{ route("Profile") }}',
                 type: 'get',
                 data:{
                     _token: "{{ csrf_token() }}"
@@ -392,7 +392,7 @@
 
             if(pv){
                 $.ajax({
-                    url: '{{ route("profile-view") }}',
+                    url: '{{ route("Profile") }}',
                     type: 'get',
                     data:{
                         _token: "{{ csrf_token() }}",
@@ -422,7 +422,7 @@
 
             if(pv){
                 $.ajax({
-                    url: '{{ route("profile-view") }}',
+                    url: '{{ route("Profile") }}',
                     type: 'get',
                     data:{
                         _token: "{{ csrf_token() }}",
@@ -452,7 +452,7 @@
 
             if(pv){
                 $.ajax({
-                    url: '{{ route("profile-view") }}',
+                    url: '{{ route("Profile") }}',
                     type: 'get',
                     data:{
                         _token: "{{ csrf_token() }}",

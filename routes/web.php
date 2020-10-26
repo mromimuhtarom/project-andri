@@ -86,7 +86,7 @@ Route::middleware('authloginuser')->group(function(){
 
 
     Route::group(['prefix' => 'Profile'], function() {
-        Route::get('/Profile-view', 'User\ProfileController@index')->name('profile-view');
+        Route::get('/Profile-view', 'User\ProfileController@index')->name('Profile');
         Route::post('/Profile-update', 'User\ProfileController@updateprofile')->name('profile-updateuser');
         Route::post('/Profile-updatepwd', 'User\ProfileController@updatepassword')->name('profile-updatepwd');
         Route::post('/Profile-createaddress', 'User\ProfileController@storeAddress')->name('profile-createaddress');

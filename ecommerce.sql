@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Okt 2020 pada 10.56
+-- Waktu pembuatan: 23 Okt 2020 pada 09.05
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.4.10
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `address` (
   `address_id` int(5) NOT NULL,
-  `accept_name` varchar(255) DEFAULT NULL,
+  `accept_name` varchar(100) DEFAULT NULL,
   `province_id` int(5) NOT NULL,
   `province_name` varchar(255) NOT NULL,
   `city_id` int(5) NOT NULL,
@@ -46,12 +46,15 @@ CREATE TABLE `address` (
 --
 
 INSERT INTO `address` (`address_id`, `accept_name`, `province_id`, `province_name`, `city_id`, `city_name`, `postal_code`, `detail_address`, `user_id`, `telp`, `status`) VALUES
-(1, 'Romi', 1, 'Bali', 17, 'Badung', '3454', 'dfgdf', 1, '082392191962', 2),
-(2, 'winna', 4, '', 0, '', '324', 'fdbfgbfg', 1, '43556666', 1),
+(1, 'Romi', 1, 'Bali', 17, 'Badung', '3454', 'dfgdf', 1, '082392191962', 1),
+(2, 'winna', 4, 'Bengkulu', 62, 'Bengkulu', '324', 'fdbfgbfg', 1, '43556666', 2),
 (3, NULL, 17, 'Kepulauan Riau', 48, 'Batam', '3455', 'vhgvh, bengkong', 2, NULL, 1),
 (4, 'Franky', 17, 'Kepulauan Riau', 48, 'Batam', 'dsc', 'sdssd, bdfss', 2, '082244556677', 1),
 (5, 'Mantap Jiwa sraya', 3, 'Banten', 402, 'Serang', '2142', 'sfsrrf,dgtgrt', 2, '082392191962', 2),
-(6, 'Mantap Jiwa sraya', 1, 'Bali', 17, 'Badung', '2342', 'dsfsdf, sfdsd', 2, '082392191962', 1);
+(6, 'Mantap Jiwa sraya', 1, 'Bali', 17, 'Badung', '2342', 'dsfsdf, sfdsd', 2, '082392191962', 1),
+(7, 'Rizky Mashudi', 17, 'Kepulauan Riau', 48, 'Batam', '23456', 'Jl. Golden Prawn Komplek YKB Blok M No. 06,Bengkong', 5, '082392191962', 2),
+(8, 'Yush Hige', 16, 'Kalimantan Utara', 257, 'Malinau', '2323423', 'dsfsdgfdsf,Bengkong', 6, '082392191962', 2),
+(9, 'sdf', 3, 'Banten', 402, 'Serang', 'sd', 'sdf,sdf', 7, '082392191962', 2);
 
 -- --------------------------------------------------------
 
@@ -236,7 +239,7 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `product_id`, `product_name`, `category_id`, `weight`, `price_group_id`, `price`, `user_id`, `picture`, `view`, `datetime`, `qty`, `description`) VALUES
-(1, 'bh001', 'Plang1', 2, 135, 1, '43000.00', 1, '1.jpg', 0, '2020-09-27 12:07:10', 30, '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> 									<p><b>Write Your Review</b></p>');
+(1, 'bh001', 'Plang1', 2, 135, 3, '43000.00', 1, '1.jpg', 0, '2020-09-27 12:07:10', 30, '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> 									<p><b>Write Your Review</b></p>');
 
 -- --------------------------------------------------------
 
@@ -330,17 +333,19 @@ CREATE TABLE `user` (
   `username` varchar(25) NOT NULL,
   `password` varchar(255) NOT NULL,
   `fullname` varchar(255) NOT NULL,
-  `role_id` int(5) NOT NULL,
-  `telp` varchar(15) NOT NULL
+  `role_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `user`
 --
 
-INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`, `telp`) VALUES
-(1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 3, '0866666666'),
-(2, 'romi', '$2y$10$nAGM1JYHB26Z1ooihRUFvuwos5bG7Up462jIZ/fK6vJHxPLV70edi', 'Muhammad Romi Muhtarom', 4, '082392191962');
+INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`) VALUES
+(1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 3),
+(2, 'romi', '$2y$10$nAGM1JYHB26Z1ooihRUFvuwos5bG7Up462jIZ/fK6vJHxPLV70edi', 'Muhammad Romi Muhtarom', 4),
+(5, 'rizkymashudi', '$2y$10$QRZ5WXh3GG/1A7wupvc39O4lezz5qX8Y36bX2w1gMGTC9BEFXzJwa', 'Rizky Mashudi', 4),
+(6, 'Yushihige45', '$2y$10$aabLhGcozwnyw31uo8p/runpyLWP4jnmHz4CLnCTvnGxlt29HmE0G', 'yus hige', 4),
+(7, 'tyu123', '$2y$10$KMtC.utW0WgEXj9Dt99g/.JElG6wRtC54z6W4MGvc649KHGSPH63a', 'ds sd', 4);
 
 -- --------------------------------------------------------
 
@@ -488,7 +493,7 @@ ALTER TABLE `variation_detail`
 -- AUTO_INCREMENT untuk tabel `address`
 --
 ALTER TABLE `address`
-  MODIFY `address_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `address_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `category`
@@ -554,7 +559,7 @@ ALTER TABLE `store_order`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `variation`
