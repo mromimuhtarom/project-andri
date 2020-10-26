@@ -10,4 +10,13 @@ function statusstoreorder($translate){
 
     return $arraytranslate[$translate];
 }
+
+function endis($translate){
+    $arraytranslate = [
+        'L_DISABLED'         => 'Tidak Aktif',
+        'L_ENABLED'          => 'Aktif',
+    ];
+
+    return $arraytranslate[$translate];
+}
 ?>

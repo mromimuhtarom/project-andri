@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 23 Okt 2020 pada 09.05
--- Versi server: 10.4.14-MariaDB
--- Versi PHP: 7.4.10
+-- Waktu pembuatan: 25 Okt 2020 pada 17.48
+-- Versi server: 10.1.38-MariaDB
+-- Versi PHP: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -73,8 +74,7 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`category_id`, `category_name`, `parent_id`) VALUES
-(1, 'Pakaian', 0),
-(2, 'Baju Pria', 1);
+(1, 'Baju Pria', 0);
 
 -- --------------------------------------------------------
 
@@ -120,7 +120,11 @@ CREATE TABLE `config` (
 
 INSERT INTO `config` (`id`, `name`, `value`) VALUES
 (1, 'order_status', '1:L_PROCESS,2:L_FAILED,3:L_SUCCESS,4:L_APPROVE_PAYMENT'),
-(2, 'delivery_service', 'jne:JNE,pos:Pos Indonesia,tiki:Tiki');
+(2, 'delivery_service', 'jne:JNE,pos:Pos Indonesia,tiki:Tiki'),
+(3, 'status', '0:L_DISABLED,1:L_ENABLED'),
+(4, 'email_owner', 'jkj@na.com'),
+(5, 'telp_owner', '082392191962'),
+(6, 'title_tab_web', 'Eshoper');
 
 -- --------------------------------------------------------
 
@@ -148,8 +152,11 @@ INSERT INTO `menu` (`menu_id`, `name`, `parent_id`, `status`, `route`, `icon`) V
 (4, 'Persetujuan Pembelian', 3, 1, 'Approvement-Payment', 'fas fa-shopping-cart'),
 (5, 'Pesanan Pelanggan', 3, 1, 'Customer-Orders', 'fas fa-history'),
 (6, 'Pengaturan', 0, 1, 'Settings', 'fas fa-cog'),
-(7, 'Pengaturan Pembayaran', 6, 1, 'Payment-Setting', 'fas fa-hammer'),
-(8, 'Pengaturan Grup Harga Barang', 6, 1, 'Price-Group', 'fas fa-tachometer-alt');
+(7, 'Pengaturan Umum', 6, 1, 'General-Setting', 'fas fa-sliders-h'),
+(8, 'Pengaturan Pembayaran', 6, 1, 'Payment-Setting', 'fas fa-hammer'),
+(9, 'Pengaturan Grup Harga Barang', 6, 1, 'Price-Group', 'fas fa-tachometer-alt'),
+(10, 'Category', 6, 1, 'Category', 'fas fa-layer-group'),
+(11, 'Pengguna Admin', 0, 1, 'User-Admin', 'fas fa-user\r\n');
 
 -- --------------------------------------------------------
 
@@ -168,8 +175,39 @@ CREATE TABLE `menu_access` (
 --
 
 INSERT INTO `menu_access` (`role_id`, `menu_id`, `type`) VALUES
-(1, 1, 2),
-(1, 2, 2);
+(1, 1, 1),
+(1, 2, 1),
+(1, 3, 1),
+(1, 4, 1),
+(1, 5, 1),
+(1, 6, 1),
+(1, 7, 0),
+(1, 8, 1),
+(1, 9, 0),
+(1, 10, 0),
+(1, 11, 1),
+(2, 1, 1),
+(2, 2, 1),
+(2, 3, 1),
+(2, 4, 1),
+(2, 5, 1),
+(2, 6, 1),
+(2, 7, 1),
+(2, 8, 1),
+(2, 9, 1),
+(2, 10, 1),
+(2, 11, 1),
+(3, 1, 1),
+(3, 2, 1),
+(3, 3, 1),
+(3, 4, 1),
+(3, 5, 1),
+(3, 6, 1),
+(3, 7, 0),
+(3, 8, 1),
+(3, 9, 0),
+(3, 10, 0),
+(3, 11, 1);
 
 -- --------------------------------------------------------
 
@@ -229,7 +267,7 @@ CREATE TABLE `product` (
   `user_id` int(5) NOT NULL,
   `picture` varchar(25) NOT NULL,
   `view` int(5) NOT NULL,
-  `datetime` timestamp NOT NULL DEFAULT current_timestamp(),
+  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `qty` int(5) NOT NULL,
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -239,7 +277,7 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `product_id`, `product_name`, `category_id`, `weight`, `price_group_id`, `price`, `user_id`, `picture`, `view`, `datetime`, `qty`, `description`) VALUES
-(1, 'bh001', 'Plang1', 2, 135, 3, '43000.00', 1, '1.jpg', 0, '2020-09-27 12:07:10', 30, '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> 									<p><b>Write Your Review</b></p>');
+(1, 'bh001', 'Plang1', 1, 135, 3, '43000.00', 1, '1.jpg', 0, '2020-09-27 12:07:10', 30, '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> 									<p><b>Write Your Review</b></p>');
 
 -- --------------------------------------------------------
 
@@ -311,7 +349,7 @@ CREATE TABLE `store_order` (
   `picture` varchar(255) NOT NULL,
   `provementpic` varchar(255) DEFAULT NULL,
   `no_resi` varchar(255) NOT NULL,
-  `datetime` timestamp NOT NULL DEFAULT current_timestamp()
+  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -333,19 +371,17 @@ CREATE TABLE `user` (
   `username` varchar(25) NOT NULL,
   `password` varchar(255) NOT NULL,
   `fullname` varchar(255) NOT NULL,
-  `role_id` int(5) NOT NULL
+  `role_id` int(5) NOT NULL,
+  `status` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `user`
 --
 
-INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`) VALUES
-(1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 3),
-(2, 'romi', '$2y$10$nAGM1JYHB26Z1ooihRUFvuwos5bG7Up462jIZ/fK6vJHxPLV70edi', 'Muhammad Romi Muhtarom', 4),
-(5, 'rizkymashudi', '$2y$10$QRZ5WXh3GG/1A7wupvc39O4lezz5qX8Y36bX2w1gMGTC9BEFXzJwa', 'Rizky Mashudi', 4),
-(6, 'Yushihige45', '$2y$10$aabLhGcozwnyw31uo8p/runpyLWP4jnmHz4CLnCTvnGxlt29HmE0G', 'yus hige', 4),
-(7, 'tyu123', '$2y$10$KMtC.utW0WgEXj9Dt99g/.JElG6wRtC54z6W4MGvc649KHGSPH63a', 'ds sd', 4);
+INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`, `status`) VALUES
+(1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 2, 1),
+(2, 'romi', '$2y$10$nAGM1JYHB26Z1ooihRUFvuwos5bG7Up462jIZ/fK6vJHxPLV70edi', 'Muhammad Romi Muhtarom', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -387,7 +423,7 @@ CREATE TABLE `variation_detail` (
 INSERT INTO `variation_detail` (`id`, `variation_id`, `name_detail_variation`, `qty`, `price`) VALUES
 (4, 18, 'sdfs', 21, '45000.00'),
 (5, 18, 'dfgdf', 9, '43543.00'),
-(6, 18, 'cvbc', 34, '45000.00'),
+(6, 18, 'cvbc', 32, '45000.00'),
 (7, 18, 'dfhdfgh', 32, '43000.00'),
 (8, 18, 'dfbghfc b', 45, '34000.00');
 
@@ -511,13 +547,13 @@ ALTER TABLE `chart`
 -- AUTO_INCREMENT untuk tabel `config`
 --
 ALTER TABLE `config`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `menu_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `payment_type`
@@ -547,7 +583,7 @@ ALTER TABLE `proof_payment`
 -- AUTO_INCREMENT untuk tabel `role`
 --
 ALTER TABLE `role`
-  MODIFY `role_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `role_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `store_order`

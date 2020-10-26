@@ -65,6 +65,10 @@ class CartController extends Controller
         $cart  = Cart::where('id', '=', $cart_id)->first();
         if(isset($cart->variation_detail)): 
             $price = $cart->variation_detail->price;
+            if($cart->variation_detail->qty == 0): 
+                alert()->error('ErrorAlert', 'Mohon Maaf produk ini sudah habis');
+                return back();
+            endif;
             $totalqtyseller = $cart->variation_detail->qty - $cart->qty;
             Variationdetail::where('id', '=', $cart->variation_detail_id)->update([
                 'qty'   => $totalqtyseller
@@ -74,6 +78,10 @@ class CartController extends Controller
                 'qty' => $totalqtysellergeneral
             ]);
         else: 
+            if($cart->product->qty == 0): 
+                alert()->error('ErrorAlert', 'Mohon Maaf produk ini sudah habis');
+                return back();
+            endif;
             $price = $cart->product->price;
             $totalqtyseller = $cart->product->qty - $cart->qty;
             Product::where('product_id', '=', $cart->product_id)->update([
