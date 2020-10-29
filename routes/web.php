@@ -31,6 +31,8 @@ Route::middleware('authloginadmin')->group(function(){
                 Route::post('/product-create', 'Admin\ProductController@store')->name('productcreate');
                 Route::post('/imageproduct-edit', 'Admin\ProductController@updateimage')->name('productimage-update');
                 Route::post('/product-update', 'Admin\ProductController@update')->name('product_update'); 
+                Route::post('/product-variationdetdel', 'Admin\ProductController@deletevariationdetail')->name('prodectvariationdet-delete');
+                Route::post('/product-variationedit', 'Admin\ProductController@updatevariation')->name('product-variation-edit');
             });
         });
 
@@ -90,7 +92,15 @@ Route::middleware('authloginadmin')->group(function(){
                 Route::get('/useradmin-view', 'Admin\UserAdminController@index')->name('User-Admin');
                 Route::post('/useradmin-address', 'Admin\UserAdminController@Address')->name('detail-address');
                 Route::post('/useradmin-statusupdt', 'Admin\UserAdminController@updateStatus')->name('useradmin-statusupdt');
+                Route::post('/useradmin-create', 'Admin\UserAdminController@store')->name('useradmin-create');
+                Route::post('/useradmin-resetpwd', 'Admin\UserAdminController@resetPwd')->name('useradmin-resetpwd');
+                Route::delete('/useradmin-delete', 'Admin\UserAdminController@delete')->name('useradmin-delete');
             });    
+        });
+
+        Route::group(['prefix' => 'register-address'], function () {
+            Route::get('/register-view', 'Admin\RegisterAddressController@index')->name('registerAddress');
+            Route::post('/register-add', 'Admin\RegisterAddressController@update')->name('registerAddress-create');
         });
     });
 });

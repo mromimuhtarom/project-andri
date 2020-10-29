@@ -11,6 +11,8 @@ use App\Models\Variationdetail;
 use App\Models\Pricegroup;
 use Validator;
 use File;
+use App\Models\Category;
+use App\Models\Cart;
 
 class ProductController extends Controller
 {
@@ -21,10 +23,13 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $user_id = Session::get('user_id');
-        $product = Product::where('user_id', '=', $user_id)->get();
+        $user_id    = Session::get('user_id');
+        $product    = Product::join('category', 'category.category_id', '=', 'product.category_id')
+                      ->where('user_id', '=', $user_id)
+                      ->get();
         $pricegroup = Pricegroup::where('user_id', '=', $user_id)->get();
-        return view('admin.pages.product', compact('product', 'pricegroup'));
+        $category   = Category::all();
+        return view('admin.pages.product', compact('product', 'pricegroup', 'category'));
     }
 
     /**
@@ -53,6 +58,7 @@ class ProductController extends Controller
         $price_general          = $request->price_general;
         $variation_name         = $request->variation_name;
         $description            = $request->description;
+        $category               = $request->category;
         $user_id                = Session::get('user_id');
         $file                   = $request->file('file');
         $ekstensi_diperbolehkan = array('png', 'jpg', 'JPEG', 'PNG');
@@ -65,7 +71,8 @@ class ProductController extends Controller
             'file'             => 'required',
             'product_code'     => 'required|unique:product,product_id',
             'product_name'     => 'required',
-            'product_weight'   => 'required|integer'
+            'product_weight'   => 'required|integer',
+            'category'         => 'required'
         ]);
         
         if ($validator->fails()) {
@@ -98,7 +105,8 @@ class ProductController extends Controller
                         'price'          => $price_general,
                         'user_id'        => $user_id,
                         'picture'        => $nama_file_unik,
-                        'description'    => $description  
+                        'description'    => $description,
+                        'category_id'    => $category  
                     ]); 
                     if($variation_name != NULL):
                         $variation = Variation::create([
@@ -278,10 +286,55 @@ class ProductController extends Controller
         $stok          = $request->variation_stok;
         $pilihan       = $request->pilihan;
         $harga         = $request->Harga;
+        $pk            = $request->pk_vardet;
+        $variation_id  = $request->variation_id;
 
-        foreach ($stok as $stk):
-            
+        Variation::where('variation_id', $variation_id)->update([
+            'variation_name'    =>  $variationname
+        ]);
+        $a = 0;
+        foreach ($stok as $key => $stk):
+            if(isset($pk[$a])):
+                $vardet = Variationdetail::where('id', $pk[$a])->where('variation_id', $variation_id)->first();
+                if($vardet): 
+                    Variationdetail::where('id', $pk[$a])->where('variation_id', $variation_id)->update([
+                        'qty'                   => $stok[$a],
+                        'name_detail_variation' => $pilihan[$a],
+                        'price'                 => $harga[$a]
+                    ]);
+                else:
+                    Variationdetail::create([
+                        'variation_id'          => $variation_id,
+                        'qty'                   => $stok[$a],
+                        'name_detail_variation' => $pilihan[$a],
+                        'price'                 => $harga[$a]
+                    ]);
+                endif;    
+            else: 
+                Variationdetail::create([
+                    'variation_id'          => $variation_id,
+                    'qty'                   => $stok[$a],
+                    'name_detail_variation' => $pilihan[$a],
+                    'price'                 => $harga[$a]
+                ]);
+            endif;
+            $a++;
         endforeach;
+
+        alert()->success('Edit Variasi telah berhasil');
+        return back();
+    }
+
+    public function deletevariationdetail(Request $request) {
+        $variation_detail_id = $request->pk;
+        $variation_id        = $request->variation_id;
+
+        if($request->ajax()): 
+            Variationdetail::where('id', $variation_detail_id)->where('variation_id', $variation_id)->delete();
+            Cart::where('variation_detail_id', $variation_detail_id)->delete();
+        else: 
+            return response()->json('Mohon Maaf ada problem', 400);
+        endif;
     }
 
     /**
@@ -290,8 +343,29 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $pk = $request->pk; 
+
+        $validator = Validator::make($request->all(),[
+            'pk' => 'required'
+        ]);
+
+        if($validator->fails()): 
+            alert()->error('ErrorAlert', $validator->errors()->first());
+            return back();
+        endif;
+        $variation = Variation::where('product_id', $pk)->first();
+
+        if(!$variation): 
+            alert()->error('ErrorAlert', 'Mohon maaf Product id untuk variasi id tidak ada');
+            return back();
+        endif;
+        Product::where('product_id', $pk)->delete();
+        Variation::where('product_id', $pk)->delete();
+        Variationdetail::where('variation_id', $variation->variation_id)->delete();
+        Cart::where('product_id', $pk)->delete();
+        alert()->success('Hapus Produk telah Berhasil');
+        return back();
     }
 }

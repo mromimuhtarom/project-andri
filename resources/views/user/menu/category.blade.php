@@ -14,9 +14,11 @@
         <div id="{{ str_replace(' ', '', $ct->category_name) }}" class="panel-collapse collapse">
             <div class="panel-body">
                 <ul>
-                    @foreach ($ct->children as $ct1)
-                        <li><a href="{{ route('categorystore-view', str_replace(' ', '_', $ct1->category_name)) }}">{{ $ct1->category_name }}</a></li>
-                    @endforeach
+                    @if (!$ct->children->empty())
+                        @foreach ($ct->children as $ct1)
+                            <li><a href="{{ route('categorystore-view', str_replace(' ', '_', $ct1->category_name)) }}">{{ $ct1->category_name }}</a></li>
+                        @endforeach
+                    @endif
                 </ul>
             </div>
         </div>
@@ -24,7 +26,7 @@
     @else   
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4 class="panel-title"><a href="{{ route('categorystore-view', str_replace(' ', '_', $ct1->category_name)) }}">{{ $ct->category_name }}</a></h4>
+            <h4 class="panel-title"><a href="{{ route('categorystore-view', str_replace(' ', '_', $ct->category_name)) }}">{{ $ct->category_name }}</a></h4>
         </div>
     </div>
     @endif        

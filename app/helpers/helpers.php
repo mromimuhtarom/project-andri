@@ -109,14 +109,20 @@ function endislbl($value){
   $config = DB::table('config')->where('id', '3')->first();
   $converttocomma = str_replace(':', ',', $config->value);
   $explode = explode(',', $converttocomma);
-  $array = [
-    $explode[0] => endis($explode[1]),
-    $explode[2] => endis($explode[3])
-  ];
+
   // dd($value);
   if(strval($value) != NULL):
+    $array = [
+              $explode[0] => endis($explode[1]),
+              $explode[2] => endis($explode[3]),
+              $explode[4] => endis($explode[5])
+            ];
   return $array[$value];
   else: 
+    $array = [
+              $explode[0] => endis($explode[1]),
+              $explode[2] => endis($explode[3])
+             ];
     return $array;
   endif;
 }
@@ -129,6 +135,17 @@ function roletype1($menu, $role_id){
           ->where('menu_access.type', 1)
           ->first();
   return $role;
+}
+
+function generateID($digits = 4){
+  $i = 0;
+  $pin = "";
+  while($i < $digits){
+
+      $pin .= mt_rand(0, 9);
+      $i++;
+  }
+  return $pin;
 }
 
 ?>
