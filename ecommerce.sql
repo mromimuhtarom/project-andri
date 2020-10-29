@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 25 Okt 2020 pada 17.48
+-- Waktu pembuatan: 30 Okt 2020 pada 00.06
 -- Versi server: 10.1.38-MariaDB
 -- Versi PHP: 7.3.2
 
@@ -55,7 +55,8 @@ INSERT INTO `address` (`address_id`, `accept_name`, `province_id`, `province_nam
 (6, 'Mantap Jiwa sraya', 1, 'Bali', 17, 'Badung', '2342', 'dsfsdf, sfdsd', 2, '082392191962', 1),
 (7, 'Rizky Mashudi', 17, 'Kepulauan Riau', 48, 'Batam', '23456', 'Jl. Golden Prawn Komplek YKB Blok M No. 06,Bengkong', 5, '082392191962', 2),
 (8, 'Yush Hige', 16, 'Kalimantan Utara', 257, 'Malinau', '2323423', 'dsfsdgfdsf,Bengkong', 6, '082392191962', 2),
-(9, 'sdf', 3, 'Banten', 402, 'Serang', 'sd', 'sdf,sdf', 7, '082392191962', 2);
+(9, 'sdf', 3, 'Banten', 402, 'Serang', 'sd', 'sdf,sdf', 7, '082392191962', 2),
+(10, 'Franky', 17, 'Kepulauan Riau', 48, 'Batam', '34563', 'dfg,bengkong', 8, '08111111111111', 2);
 
 -- --------------------------------------------------------
 
@@ -121,7 +122,7 @@ CREATE TABLE `config` (
 INSERT INTO `config` (`id`, `name`, `value`) VALUES
 (1, 'order_status', '1:L_PROCESS,2:L_FAILED,3:L_SUCCESS,4:L_APPROVE_PAYMENT'),
 (2, 'delivery_service', 'jne:JNE,pos:Pos Indonesia,tiki:Tiki'),
-(3, 'status', '0:L_DISABLED,1:L_ENABLED'),
+(3, 'status', '0:L_DISABLED,1:L_ENABLED,2:L_REQUEST'),
 (4, 'email_owner', 'jkj@na.com'),
 (5, 'telp_owner', '082392191962'),
 (6, 'title_tab_web', 'Eshoper');
@@ -183,9 +184,9 @@ INSERT INTO `menu_access` (`role_id`, `menu_id`, `type`) VALUES
 (1, 6, 1),
 (1, 7, 0),
 (1, 8, 1),
-(1, 9, 0),
+(1, 9, 1),
 (1, 10, 0),
-(1, 11, 1),
+(1, 11, 0),
 (2, 1, 1),
 (2, 2, 1),
 (2, 3, 1),
@@ -205,9 +206,9 @@ INSERT INTO `menu_access` (`role_id`, `menu_id`, `type`) VALUES
 (3, 6, 1),
 (3, 7, 0),
 (3, 8, 1),
-(3, 9, 0),
+(3, 9, 1),
 (3, 10, 0),
-(3, 11, 1);
+(3, 11, 0);
 
 -- --------------------------------------------------------
 
@@ -277,7 +278,8 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `product_id`, `product_name`, `category_id`, `weight`, `price_group_id`, `price`, `user_id`, `picture`, `view`, `datetime`, `qty`, `description`) VALUES
-(1, 'bh001', 'Plang1', 1, 135, 3, '43000.00', 1, '1.jpg', 0, '2020-09-27 12:07:10', 30, '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> 									<p><b>Write Your Review</b></p>');
+(1, 'bh001', 'Plang1', 1, 135, 3, '43000.00', 1, '1.jpg', 0, '2020-09-27 12:07:10', 30, '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> 									<p><b>Write Your Review</b></p>'),
+(3, 'bh002', 'Permen', 1, 50, 2, '50000.00', 1, 'bh002.jpg', 0, '2020-10-29 16:26:00', 0, '<p>Permen ini adalah sebuah permen sayru yang sangat mantap</p>\r\n\r\n<p>pkokonya <span style=\"color:#f39c12\">enak</span></p>');
 
 -- --------------------------------------------------------
 
@@ -381,7 +383,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`user_id`, `username`, `password`, `fullname`, `role_id`, `status`) VALUES
 (1, 'test', '$2y$10$qPXrNjGZy9teYyCLXHCspuy37m2sMbhVpBxB3L0u.GrFSFwwT1QQm', 'testting', 2, 1),
-(2, 'romi', '$2y$10$nAGM1JYHB26Z1ooihRUFvuwos5bG7Up462jIZ/fK6vJHxPLV70edi', 'Muhammad Romi Muhtarom', 4, 1);
+(2, 'romi', '$2y$10$nAGM1JYHB26Z1ooihRUFvuwos5bG7Up462jIZ/fK6vJHxPLV70edi', 'Muhammad Romi Muhtarom', 4, 1),
+(8, 'morin', '$2y$10$HQo8mMhry.MsASMzFtw.c.6Xkh8TZNLNAttbhhQAe1UCbLQ0nDWY.', 'Morin Higyo', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -400,7 +403,7 @@ CREATE TABLE `variation` (
 --
 
 INSERT INTO `variation` (`variation_id`, `product_id`, `variation_name`) VALUES
-(18, 'bh001', 'sdfs');
+(18, 'bh001', 'ukuran permen');
 
 -- --------------------------------------------------------
 
@@ -425,7 +428,9 @@ INSERT INTO `variation_detail` (`id`, `variation_id`, `name_detail_variation`, `
 (5, 18, 'dfgdf', 9, '43543.00'),
 (6, 18, 'cvbc', 32, '45000.00'),
 (7, 18, 'dfhdfgh', 32, '43000.00'),
-(8, 18, 'dfbghfc b', 45, '34000.00');
+(9, 18, 'dfgdf', 9, '43543.00'),
+(10, 18, 'cvbc', 32, '45000.00'),
+(11, 18, 'dfhdfgh', 32, '43000.00');
 
 --
 -- Indexes for dumped tables
@@ -529,7 +534,7 @@ ALTER TABLE `variation_detail`
 -- AUTO_INCREMENT untuk tabel `address`
 --
 ALTER TABLE `address`
-  MODIFY `address_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `address_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `category`
@@ -571,7 +576,7 @@ ALTER TABLE `price_group`
 -- AUTO_INCREMENT untuk tabel `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `proof_payment`
@@ -595,19 +600,19 @@ ALTER TABLE `store_order`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `variation`
 --
 ALTER TABLE `variation`
-  MODIFY `variation_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `variation_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT untuk tabel `variation_detail`
 --
 ALTER TABLE `variation_detail`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

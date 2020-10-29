@@ -33,6 +33,7 @@ Route::middleware('authloginadmin')->group(function(){
                 Route::post('/product-update', 'Admin\ProductController@update')->name('product_update'); 
                 Route::post('/product-variationdetdel', 'Admin\ProductController@deletevariationdetail')->name('prodectvariationdet-delete');
                 Route::post('/product-variationedit', 'Admin\ProductController@updatevariation')->name('product-variation-edit');
+                Route::delete('/product-delete', 'Admin\ProductController@destroy')->name('product-delete');
             });
         });
 

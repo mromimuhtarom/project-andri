@@ -288,10 +288,51 @@ class ProductController extends Controller
         $harga         = $request->Harga;
         $pk            = $request->pk_vardet;
         $variation_id  = $request->variation_id;
+        $data          = $request->all();
+        $product_id    = $request->product_id;
+        $data['Nama Variasi'] = $variationname;
 
-        Variation::where('variation_id', $variation_id)->update([
-            'variation_name'    =>  $variationname
+
+        $validator = Validator::make($data, [
+            'Nama Variasi' => 'required|max:255',
         ]);
+
+        if($validator->fails()): 
+            alert()->error('ErrorAlert', $validator->errors()->first());
+            return back();
+        endif;
+        $b = 0;
+        if(!isset($pilihan)):
+            alert()->error('ErrorAlert', 'Mohon maaf Nama pilihan,harga dan stok kosong harap diisi jika pingin ubah');
+            return back(); 
+        endif;
+        foreach ($pilihan as $key => $value) :
+            $data['stok'.$b]         = $stok[$b];
+            $data['Harga'.$b]        = $harga[$b];
+            $data['Nama Pilihan'.$b] = $pilihan[$b]; 
+            $validator = Validator::make($data, [
+                'stok'.$b         => 'required|numeric|min:1|max:99999',
+                'Harga'.$b        => 'required|numeric|min:1|max:99999999999999',
+                'Nama Pilihan'.$b => 'required|max:255'
+            ]);
+            if($validator->fails()): 
+                alert()->error('ErrorAlert', $validator->errors()->first());
+                return back();
+            endif;
+            $b++;
+        endforeach;
+
+        if($variation_id):
+            Variation::where('variation_id', $variation_id)->update([
+                'variation_name'    =>  $variationname
+            ]);
+        else: 
+            $variation = Variation::create([
+                'variation_name'    =>  $variationname,
+                'product_id'        =>  $product_id
+            ]);
+            $variation_id = $variation->id;
+        endif;
         $a = 0;
         foreach ($stok as $key => $stk):
             if(isset($pk[$a])):
