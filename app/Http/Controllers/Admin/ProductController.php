@@ -72,7 +72,8 @@ class ProductController extends Controller
             'product_code'     => 'required|unique:product,product_id',
             'product_name'     => 'required',
             'product_weight'   => 'required|integer',
-            'category'         => 'required'
+            'category'         => 'required',
+            'stock_general'    => 'required'
         ]);
         
         if ($validator->fails()) {

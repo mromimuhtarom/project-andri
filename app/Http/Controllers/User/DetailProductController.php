@@ -16,6 +16,11 @@ class DetailProductController extends Controller
     public function index($product_id, Request $request)
     {
         $product = Product::where('product_id', '=', $product_id)->first();
+        $totalview = $product->view + 1;
+        Product::where('product_id', $product_id)->update([
+            'view'  =>  $totalview
+        ]);
+        
         return view('user.pages.detail_product', compact('product'));
     }
 
@@ -57,41 +62,79 @@ class DetailProductController extends Controller
         $variationdetail = Variationdetail::where('id', '=', $variationid)
                            ->first();
 
-        $validator = Validator::make($request->all(),[
-            'qty'             => 'required|integer',
-            'variation'       => 'required',
-        ]);
+        if(isset($variationid)):
+            $validator = Validator::make($request->all(),[
+                'qty'             => 'required|integer',
+                'variation'       => 'required',
+            ]);
+            
+            if ($validator->fails()): 
+                alert()->error('ErrorAlert',$validator->errors()->first());
+                return back();
+            endif; 
+        else:
+            $validator = Validator::make($request->all(),[
+                'qty'             => 'required|integer'
+            ]);
+            
+            if ($validator->fails()) {
+                alert()->error('ErrorAlert',$validator->errors()->first());
+                return back();
+            } 
+        endif;
         
-        if ($validator->fails()) {
-            alert()->error('ErrorAlert',$validator->errors()->first());
-            return back();
-        } 
-        
-        $cart = Cart::where('product_id', '=', $product_id)
+        if($variationdetail):
+            $cart = Cart::where('product_id', '=', $product_id)
+                    ->where('user_id', '=', $user_id)
+                    ->where('variation_id', '=', $variationdetail->variation_id)
+                    ->where('variation_detail_id', '=', $variationid)
+                    ->first();
+            if($cart): 
+                $totalqty = $cart->qty + $qty;
+                Cart::where('product_id', '=', $product_id)
                 ->where('user_id', '=', $user_id)
                 ->where('variation_id', '=', $variationdetail->variation_id)
                 ->where('variation_detail_id', '=', $variationid)
-                ->first();
+                ->update([
+                    'qty'  => $totalqty
+                ]);
+            else: 
+                Cart::create([
+                    'product_id'          => $product_id,
+                    'variation_id'        => $variationdetail->variation_id,
+                    'variation_detail_id' => $variationid,
+                    'qty'                 => $qty,
+                    'user_id'             => $user_id,
+                    'address_id'          => $address->address_id
+                ]);
+            endif;
+        else:
+            $cart = Cart::where('product_id', '=', $product_id)
+                    ->where('user_id', '=', $user_id)
+                    ->first();
 
-        if($cart): 
-            $totalqty = $cart->qty + $qty;
-            Cart::where('product_id', '=', $product_id)
-            ->where('user_id', '=', $user_id)
-            ->where('variation_id', '=', $variationdetail->variation_id)
-            ->where('variation_detail_id', '=', $variationid)
-            ->update([
-                'qty'  => $totalqty
-            ]);
-        else: 
-            Cart::create([
-                'product_id'          => $product_id,
-                'variation_id'        => $variationdetail->variation_id,
-                'variation_detail_id' => $variationid,
-                'qty'                 => $qty,
-                'user_id'             => $user_id,
-                'address_id'          => $address->address_id
-            ]);
+            if($cart): 
+                $totalqty = $cart->qty + $qty;
+                Cart::where('product_id', '=', $product_id)
+                ->where('user_id', '=', $user_id)
+                ->where('variation_id', '=', 0)
+                ->where('variation_detail_id', '=', 0)
+                ->update([
+                    'qty'  => $totalqty
+                ]);
+            else: 
+                Cart::create([
+                    'product_id'          => $product_id,
+                    'variation_id'        => 0,
+                    'variation_detail_id' => 0,
+                    'qty'                 => $qty,
+                    'user_id'             => $user_id,
+                    'address_id'          => $address->address_id
+                ]);
+            endif;
         endif;
+
+
 
         alert()->success('Item Telah Di Tambahkan');
         return redirect()->route('cart-view');

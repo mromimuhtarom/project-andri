@@ -60,6 +60,7 @@
 											<button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-fefault cart">Tambahkan</button>
 										@endif --}}
 										<br>
+										@if(isset($product->variation))
 										<label>{{$product->variation->variation_name }}</label>
 										<select name="variation" class="variation form-control" id="" required>
 											<option value="">Pilih {{$product->variation->variation_name }}</option>
@@ -69,7 +70,8 @@
 													<option value="{{ $vd->id }}" data-variationname="{{ $vd->name_detail_variation }}">{{ $vd->name_detail_variation }} || Qty: {{ number_format($vd->qty) }} || Harga: {{ number_format($vd->price, 2) }}</option>
 												@endforeach
 											@endif
-										</select><br>
+										</select><br>										
+										@endif
 										<button type="submit" class="btn btn-fefault cart">
 											<i class="fa fa-shopping-cart"></i>
 											Tambahkan
@@ -363,7 +365,7 @@
 			</div>
 		</div>
 	</section>
-		@if($product->variation->variation_detail)
+		@if(isset($product->variation->variation_detail))
 			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 				<div class="modal-content">

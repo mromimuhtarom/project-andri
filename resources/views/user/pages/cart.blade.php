@@ -276,9 +276,10 @@
 			var total{{$ct->id}} = a{{$ct->id}} * b{{$ct->id}};
             var delivery{{$ct->id}} = $('#delivery{{ $ct->id }}').val();
             if(delivery{{$ct->id}}){
+                console.log(total{{$ct->id}});
                 $('.pricetotal{{ $ct->id }}').html(total{{$ct->id}});
             } else {
-                $('.pricetotal{{ $ct->id }}').html('0');
+                $('.pricetotal{{ $ct->id }}').html(total{{$ct->id}});
             }
 			
 			@endforeach
@@ -293,7 +294,8 @@
 				var priceclass = "pricetotal"+id;
 				var price      = $('.'+priceclass).attr('data-price');
 				$('.'+priceclass).remove();
-				var total      = parseInt(price) * parseInt(totalqty);
+                var total      = parseInt(price) * parseInt(totalqty);
+                
                 $('#'+qtyclass).val(totalqty);
                 var delivery = $('#delivery'+id).val();
                     $.ajax({
@@ -320,7 +322,7 @@
                 if(delivery) {
                     $('#totalprice'+id).append('<td class="pricetotal'+id+'" data-price="'+price+'">'+total+'</td>');
                 } else {
-                    $('#totalprice'+id).append('<td class="pricetotal'+id+'" data-price="'+price+'">0</td>');
+                    $('#totalprice'+id).append('<td class="pricetotal'+id+'" data-price="'+price+'">'+total+'</td>');
                 }
             });
             
@@ -372,7 +374,7 @@
                     if(delivery){
                         $('#totalprice'+id).append('<td class="pricetotal'+id+'" data-price="'+price+'">'+total+'</td>');
                     } else {
-                        $('#totalprice'+id).append('<td class="pricetotal'+id+'" data-price="'+price+'">0</td>');
+                        $('#totalprice'+id).append('<td class="pricetotal'+id+'" data-price="'+price+'">'+total+'</td>');
                     }
                     $('#'+qtyclass).val(totalqty);
 					$.ajax({

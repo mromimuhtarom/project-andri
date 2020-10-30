@@ -304,7 +304,7 @@
                             *
                             <input type="number" class="form-control" name="product_weight" id="" placeholder="Berat Barang"><br>
                             *
-                            <input type="number" class="form-control" name="stock_general" id="" placeholder="Total keseluruhan Stok Barang"><br>
+                            <input type="number" class="form-control" name="stock_general" id="" placeholder="Total keseluruhan Stok Barang" required><br>
                             *
                             <select name="category" class="form-control" required>
                                 <option value="">Pilih Kategori</option>
