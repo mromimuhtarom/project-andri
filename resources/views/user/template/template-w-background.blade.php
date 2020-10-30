@@ -70,7 +70,7 @@
 									@if (Session::get('login'))
 									<li><a href="{{ route('Profile') }}" style="background:none !important" class="{{ Request::is('Profile/*') ? 'active' : null}}"><i class="fa fa-user"></i>Profile</a></li>
 									<li><a href="{{ route('cart-view') }}" style="background:none !important" class="{{ Request::is('Cart/*') ? 'active' : null}}"><i class="fa fa-shopping-cart"></i> Keranjang</a></li>
-									<li><a href="{{ route('logoutuser-process') }}" class="active" style="background:none !important"><i class="fa fa-lock"></i> Keluar</a></li>
+									<li><a href="{{ route('logoutuser-process') }}" style="background:none !important"><i class="fa fa-lock"></i> Keluar</a></li>
 									@else 
 									<li><a href="{{ route('registeruser') }}" style="background:none !important" class="{{ Request::is('User/register-view') ? 'active' : null}}"><i class="fa fa-user"></i> Daftar</a></li>
 									<li><a href="{{ route('loginuser')}}" style="background:none !important" class="{{ Request::is('User/login') ? 'active' : null}}"><i class="fa fa-lock"></i> Login</a></li>
