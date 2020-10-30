@@ -131,4 +131,15 @@ function roletype1($menu, $role_id){
   return $role;
 }
 
+function generateID($digits = 4){
+  $i = 0;
+  $pin = "";
+  while($i < $digits){
+
+      $pin .= mt_rand(0, 9);
+      $i++;
+  }
+  return $pin;
+}
+
 ?>

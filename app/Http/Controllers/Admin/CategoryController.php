@@ -53,4 +53,29 @@ class CategoryController extends Controller
             $name => $value
         ]);
     }
+
+    public function delete(Request $request) {
+        $pk = $request->pk;
+
+        $validator = Validator::make($request->all,[
+                        'pk'    =>  'required'
+                     ]);
+
+        if($validator->fails()): 
+            alert()->error('ErrorAlert', $validator->errors()->first());
+            return back();
+        endif;
+
+        $product = Product::where('category_id', $pk)->first();
+
+        if($product): 
+            alert()->error('ErrorAlert', 'Mohon maaf category ini dipakai banyak reseller ataupun distributor');
+            return back();
+        endif;
+
+        Category::where('category_id', $pk)->delete();
+
+        alert()->success('Hapus data telah berhasil');
+        return back();
+    }
 }

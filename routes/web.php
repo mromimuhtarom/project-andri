@@ -81,6 +81,7 @@ Route::middleware('authloginadmin')->group(function(){
                     Route::get('/category-view', 'Admin\CategoryController@index')->name('Category');
                     Route::post('/category-update', 'Admin\CategoryController@update')->name('category-update');
                     Route::post('/category-create', 'Admin\CategoryController@store')->name('category-create');
+                    Route::delete('/category-delete', 'Admin\CategoryController@delete')->name('category-delete');
                 });
             });
         });

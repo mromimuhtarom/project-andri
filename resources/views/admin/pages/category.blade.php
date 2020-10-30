@@ -29,7 +29,7 @@
                         <tr>
                             <td>{{ $ct->category_id }}</td>
                             <td><a href="#" class="usertext" data-name="category_name" data-pk="{{ $ct->category_id }}" data-type="text" data-url="{{ route('category-update') }}">{{ $ct->category_name }}</a></td>
-                            <td><a href="#" data-toggle="modal" data-target="#deletecategory"><i class="fas fa-times" style="color:red"></i></a></td>
+                            <td><a href="#" class="delete-category" data-pk="{{ $ct->category_id }}" data-toggle="modal" data-target="#deletecategory"><i class="fas fa-times" style="color:red"></i></a></td>
                         </tr>     
                     @endforeach
                 </tbody>
@@ -73,10 +73,11 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="POST" action="{{ route('category-create') }}">
+                    <form method="POST" action="{{ route('category-delete') }}">
+                        {{ method_field('delete')}}
                         @csrf
                         <div class="modal-body">
-                            <input type="hidden" name="pk" value="">
+                            <input type="hidden" class="pk-delete" name="pk" value="">
                             Apakah anda yakin ingin menghapusnya
                         </div>
                         <div class="modal-footer">
@@ -94,6 +95,11 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+
+        $('.delete-category').on('click', function(){
+            var pk = $(this).attr('data-pk');
+            $('.pk-delete').val(pk);
         });
         $('#dataTable').DataTable({
             "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {

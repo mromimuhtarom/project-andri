@@ -24,7 +24,7 @@
     @else   
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4 class="panel-title"><a href="{{ route('categorystore-view', str_replace(' ', '_', $ct1->category_name)) }}">{{ $ct->category_name }}</a></h4>
+            <h4 class="panel-title"><a href="{{ route('categorystore-view', str_replace(' ', '_', $ct->category_name)) }}">{{ $ct->category_name }}</a></h4>
         </div>
     </div>
     @endif        

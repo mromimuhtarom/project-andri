@@ -30,6 +30,32 @@ class UserAdminController extends Controller
         return view('admin.pages.useradmin', compact('user', 'username'));
     }
 
+    public function store(Request $request){
+        $username = $request->username;
+        $role     = $request->role;
+        $password = $request->password;
+        $data     = $request->all();
+        $bcrypt   = bcrypt($password);
+        $data['Nama Pengguna']  = $username;
+        $data['Kata Sandi']     = $password;
+        $data['Peran']          = $role;
+
+        $validator = Validator::make($data,[
+            'Nama Pengguna' =>  'required|regex:/^\S*$/u|regex:/[a-z]/|unique:user,username|max:25',
+            'Kata Sandi'    =>  'required|max:6',
+            'Peran'         =>  'required'
+        ]);
+
+        User::create([
+            'username' => $username,
+            'password' => $bcrypt,
+            'role_id'  => $role
+        ]);
+
+        alert()->success('Admin')
+        return back();
+    }
+
     public function Address(Request $request) {
         $user_id = $request->user_id;
         $user = User::join('role', 'role.role_id', '=', 'user.role_id')
