@@ -68,6 +68,9 @@ class CartController extends Controller
             if($cart->variation_detail->qty == 0): 
                 alert()->error('ErrorAlert', 'Mohon Maaf produk ini sudah habis');
                 return back();
+            elseif(!$cart->variation_detail):
+                alert()->error('ErrorAlert', 'Mohon maaf produk ini barusan dihapus sama pihak penjual silahkan membeli produk lainnya');
+                return back();
             endif;
             $totalqtyseller = $cart->variation_detail->qty - $cart->qty;
             Variationdetail::where('id', '=', $cart->variation_detail_id)->update([
@@ -78,7 +81,11 @@ class CartController extends Controller
                 'qty' => $totalqtysellergeneral
             ]);
         else: 
-            if($cart->product->qty == 0): 
+
+            if(!$cart->product): 
+                alert()->error('ErrorAlert', 'Mohon maaf produk ini barusan dihapus sama pihak penjual silahkan membeli produk lainnya');
+                return back();
+            elseif($cart->product->qty == 0): 
                 alert()->error('ErrorAlert', 'Mohon Maaf produk ini sudah habis');
                 return back();
             endif;

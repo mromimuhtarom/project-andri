@@ -62,7 +62,7 @@ class OrderController extends Controller
                      DB::raw('(store_order.price_product * store_order.qty) + store_order.ongkir as totalpriceall')
                  )
                  ->where('seller_user_id', '=', $user_id)
-                 ->whereIn('status', array(1,2,3))
+                 ->whereIn('store_order.status', array(1,2,3))
                  ->orderBy($namecolumn, $sorting)
                  ->paginate(5);
         $order->appends($request->all());

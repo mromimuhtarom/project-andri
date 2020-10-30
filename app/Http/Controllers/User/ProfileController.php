@@ -117,7 +117,7 @@ class ProfileController extends Controller
 
     public function updatepassword(Request $request)
     {
-        $new     = $request->newpaddword;
+        $new     = $request->newpassword;
         $confirm = $request->confirmpassword;
         $user_id = Session::get('user_id');
         $encryptpwd = bcrypt($new);
@@ -130,6 +130,9 @@ class ProfileController extends Controller
         User::where('user_id', '=', $user_id)->update([
             'password'  => $encryptpwd
         ]);
+
+        alert()->success('Kata Sandi berhasil di ubah');
+        return back();
     }
 
     public function updateAddress(Request $request)

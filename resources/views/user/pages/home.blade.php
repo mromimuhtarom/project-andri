@@ -70,7 +70,7 @@
                                     <img src="/image_user/product/{{ $pc->picture }}" alt="" />
                                     <h2>Rp. {{ number_format($pc->price, 2) }}</h2>
                                     <p>{{ $pc->product_name }}</p>      
-                                     <a href="{{ route('detailproduct-view', $pns->product_id)}}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Detail Produk</a>    
+                                     <a href="{{ route('detailproduct-view', $pc->product_id)}}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Detail Produk</a>    
                                 </div>
                             </div>
                         </div>

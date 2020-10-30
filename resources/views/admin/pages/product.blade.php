@@ -50,7 +50,9 @@
                             <th>Group Harga</th>
                             <th>Stok</th>
                             <th>Harga</th>
+                            <th>Kategory</th>
                             <th>Deskripsi</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,20 +68,26 @@
                             <td><a href="#" class="usertext" data-name="product_name" data-pk="{{ $pd->product_id }}" data-type="text" data-url="{{ route('product_update') }}">{{ $pd->product_name }}</a></td>
                             <td>{{ $pd->product_id }}</td>
                             <td><a href="#" class="usertext" data-name="weight" data-pk="{{ $pd->product_id }}" data-type="number" data-url="{{ route('product_update') }}">{{ $pd->weight }}</a></td>
-                            <td><a href="#" class="pricegroup" data-name="name" data-pkproduct="{{ $pd->product_id }}" data-variationid="{{ $pd->variation->variation_id }}" data-pk="{{ $pd->price_group_id }}" data-type="select" data-url="{{ route('product_update') }}" data-value="{{ $pd->price_group_id }}">{{ $pd->pricegroup->name }}</a></td>
+                            <td><a href="#" class="pricegroup" data-name="name" data-pkproduct="{{ $pd->product_id }}" data-pk="{{ $pd->price_group_id }}" data-type="select" data-url="{{ route('product_update') }}" data-value="{{ $pd->price_group_id }}">{{ $pd->pricegroup->name }}</a></td>
                             <td>
                                 <a href="#" data-toggle="modal" data-target="#modaleditpilihan{{ $pd->product_id }}">
+                                    @if(isset($pd->variation->variation_detail))
                                     @foreach ($pd->variation->variation_detail as $vr)
                                         {{ $vr->name_detail_variation}}: {{ $vr->qty }},
                                     @endforeach
+                                    @else 
+                                    Empty
+                                    @endif
                                 </a>
                             </td>
-                            <td><a href="#" class="usertext" data-name="price" data-pk="{{ $pd->product_id }}" data-type="number" data-url="{{ route('product_update') }}">{{ $vr->price }}</a></td>
+                            <td><a href="#" class="usertext" data-name="price" data-pk="{{ $pd->product_id }}" data-type="number" data-url="{{ route('product_update') }}">{{ $pd->price }}</a></td>
+                            <td><a href="#" class="catgory" data-name="category_id" data-pk="{{ $pd->product_id }}" data-type="select" data-url="{{ route('product_update') }}" data-value="{{ $pd->category_id }}">{{ $pd->category_name }}</a></td>
                             <td>
                                 <a href="#" data-toggle="modal" data-target="#modaleditdesc{{ $pd->product_id }}">
                                     {!! cutText(html_entity_decode($pd->description), 40, 1) !!}
                                 </a>
                             </td>
+                            <td><a href="#" class="delete-product" data-pk="{{ $pd->product_id }}" data-toggle="modal" data-target="#deleteProduct"><i style="color:red" class="fas fa-times"></i></a></td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -100,7 +108,7 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="{{ route('productcreate') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('product-variation-edit') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
 
@@ -111,7 +119,9 @@
                                     </tr>
                                     <tr>
                                         <td colspan="4">
-                                            <input type="text" class="form-control" name="variation_name" placeholder="Nama Variasi" id="variation_name" value="{{ $pd->variation->variation_name }}">
+                                            <input type="hidden" name="variation_id" value="@if(isset($pd->variation->variation_id)){{ $pd->variation->variation_id }}@endif">
+                                            <input type="hidden" name="product_id" value="{{ $pd->product_id }}">
+                                            <input type="text" class="form-control" name="variation_name" placeholder="Nama Variasi" id="variation_name" value="@if(isset($pd->variation->variation_name)){{ $pd->variation->variation_name }}@endif" required>
                                         </td>
                                     </tr>
                                 </thead>
@@ -122,14 +132,17 @@
                                         <td>Harga</td>
                                         <td><a href="#" class="btn btn-secondary edit{{ $pd->product_id }}" id="Add{{ $pd->product_id }}">Tambah</a></td>
                                     </tr>
+                                    @if (isset($pd->variation->variation_detail))
                                     @foreach($pd->variation->variation_detail as $vr)
                                     <tr class="mainproductvarian{{ $vr->id }}">
+                                        <input type="hidden" name="pk_vardet[]" value="{{ $vr->id }}">
                                         <td><input class="form-control stok_pilihanedit{{ $pd->product_id }}" type="text" name="variation_stok[]" value="{{ $vr->qty }}" id="" placeholder="Stok" required></td>
                                         <td><input class="form-control nama_pilihanedit{{ $pd->product_id }}" type="text" name="pilihan[]" id="" value="{{ $vr->name_detail_variation }}" placeholder="Nama pilihan" required></td>
                                         <td><input class="form-control harga_pilihanedit{{ $pd->product_id }}" type="text" name="Harga[]" id="" value="{{ $vr->price }}" placeholder="Harga" required></td>
-                                        <td><a href="#" class="btn btn-danger remove{{ $pd->product_id }}" id="mainproductvarian{{ $vr->id }}" >Hapus</a></td>
+                                        <td><a href="#" data-pk="{{ $vr->id }}" data-variationid="{{ $vr->variation_id }}" class="btn btn-danger remove{{ $pd->product_id }}" id="mainproductvarian{{ $vr->id }}" >Hapus</a></td>
                                     </tr>
-                                    @endforeach
+                                    @endforeach                             
+                                    @endif
                                 </tbody>
                             </table><br>
                             <script>
@@ -137,19 +150,42 @@
                                     var i = 0;
     
                                     $("#Add{{ $pd->product_id }}").on("click", function() {  
-                                        $("#textboxEdit{{ $pd->product_id }}").append('<tr class="productvariant'+i+'"><td><input class="form-control stok_pilihanedit{{ $pd->product_id }}" type="text" name="variation_stok[]" value="{{ $vr->qty }}" id="" placeholder="Stok"></td><td><input class="form-control nama_pilihanedit{{ $pd->product_id }}" type="text" name="pilihan[]" id="" value="{{ $vr->name_detail_variation }}" placeholder="Nama pilihan"></td><td><input class="form-control harga_pilihanedit{{ $pd->product_id }}" type="text" name="Harga[]" id="" value="{{ $vr->price }}" placeholder="Harga"></td><td><a href="#" class="btn btn-danger remove{{ $pd->product_id }}" >Hapus</a></td></tr>');  
+                                        $("#textboxEdit{{ $pd->product_id }}").append('<tr class="productvariant'+i+'"><td><input class="form-control stok_pilihanedit{{ $pd->product_id }}" type="text" name="variation_stok[]" value="" id="" placeholder="Stok"></td><td><input class="form-control nama_pilihanedit{{ $pd->product_id }}" type="text" name="pilihan[]" id="" value="" placeholder="Nama pilihan"></td><td><input class="form-control harga_pilihanedit{{ $pd->product_id }}" type="text" name="Harga[]" id="" value="" placeholder="Harga"></td><td><a href="#" class="btn btn-danger remove{{ $pd->product_id }}" id="productvariant'+i+'">Hapus</a></td></tr>');  
                                         i++;
                                     });
                                     $("#textboxEdit{{ $pd->product_id }}").on("click", ".remove{{ $pd->product_id }}", function() {
-                                        var idrmvplh = $(this).attr('id');
+                                        var idrmvplh    = $(this).attr('id');
+                                        var pk          = $(this).attr('data-pk');
+                                        var variationid = $(this).attr('data-variationid');
                                         $('.'+idrmvplh).remove();
+                                        if(pk && variationid){
+                                            $.ajax({
+                                                url: '{{ route("prodectvariationdet-delete") }}',
+                                                type: 'post',
+                                                data:{
+                                                    _token      : "{{ csrf_token() }}",
+                                                    pk          : pk,
+                                                    variation_id: variationid
+                                                },
+                                                success: function(response){
+                                                    var obj = JSON.parse(response);
+                                                    $('#username').val(obj.data.username);
+                                                    $('#fullname').val(obj.data.fullname);
+                                                    $('#nohp').val(obj.data.telp);
+                                                    $('#province').val(obj.data.province_id);
+                                                    $('#city').val(obj.data.city_id);
+                                                    $('#detail_address').val(obj.data.detail_address);              
+                                                    
+                                                }
+                                            });
+                                        }
                                     })    
                                 }); 
                             </script>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Ubah</button>
                     </div>
                 </form>
             </div>
@@ -190,14 +226,45 @@
                         </script>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Ubah</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
     @endforeach
+
+
+
+    {{-- Modal Delete Product --}}
+    <div class="modal fade" id="deleteProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hapus Produk</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ route('product-delete') }}">
+                    {{ method_field('delete')}}
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="pk" class="pk-deleteproduct">
+                        Apakah anda yakin ingin menghapus produk ini ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Hapus Produk</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
 
     {{-- Modal Create --}}
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -237,7 +304,14 @@
                             *
                             <input type="number" class="form-control" name="product_weight" id="" placeholder="Berat Barang"><br>
                             *
-                            <input type="number" class="form-control" name="stock_general" id="" placeholder="Stok Barang"><br>
+                            <input type="number" class="form-control" name="stock_general" id="" placeholder="Total keseluruhan Stok Barang"><br>
+                            *
+                            <select name="category" class="form-control" required>
+                                <option value="">Pilih Kategori</option>
+                                @foreach ($category as $ct)
+                                    <option value="{{ $ct->category_id }}">{{ $ct->category_name }}</option>
+                                @endforeach
+                            </select><br>
                             <select class="form-control" name="price_group" id="test">
                                 <option value="">Pilih Group Harga</option>
                                 @foreach ($pricegroup as $pg)
@@ -321,8 +395,8 @@
                             </script>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Tambah Produk</button>
                     </div>
                 </form>
             </div>
@@ -335,6 +409,10 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
+            });
+            $('.delete-product').on('click', function(){
+                var pk = $(this).attr('data-pk');
+                $('.pk-deleteproduct').val(pk);
             });
             $('#dataTable').DataTable({
                 "bLengthChange": false,
@@ -354,6 +432,21 @@
                             {value: '', text: 'Pilih Group Harga'},
                             @foreach ($pricegroup as $vr)
                             {value: {{ $vr->price_group_id }}, text: '{{ $vr->name }} ({{ $vr->price }})'},
+                            @endforeach
+                        ],
+                        validate: function(value) {
+                        if($.trim(value) == '') {
+                            return 'This field is required';
+                        }
+                        }
+                    });
+
+                    $('.catgory').editable({
+                        mode:'inline',
+                        source: [
+                            {value: '', text: 'Pilih Kategory'},
+                            @foreach ($category as $ct)
+                            {value: {{ $ct->category_id }}, text: '{{ $ct->category_name }}'},
                             @endforeach
                         ],
                         validate: function(value) {

@@ -7,13 +7,14 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Address;
 use Validator;
+use Session;
 
 class UserAdminController extends Controller
 {
     public function index(Request $request) {
         $username = $request->username;
         $tbuser = User::join('role', 'role.role_id', '=', 'user.role_id')
-                ->whereIn('user.role_id', array(1,2,3));
+                ->whereIn('user.role_id', array(1,3,4));
 
         if($username != NULL): 
             if(is_numeric($username) != TRUE):
@@ -30,29 +31,71 @@ class UserAdminController extends Controller
         return view('admin.pages.useradmin', compact('user', 'username'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request) {
         $username = $request->username;
+        $pwd      = $request->password;
         $role     = $request->role;
-        $password = $request->password;
         $data     = $request->all();
-        $bcrypt   = bcrypt($password);
-        $data['Nama Pengguna']  = $username;
-        $data['Kata Sandi']     = $password;
-        $data['Peran']          = $role;
+        $bcrypt   = bcrypt($pwd);
+        $data['Nama Pengguna'] = $username;
+        $data['Kata Sandi']    = $pwd;
+        $data['Peran']         = $role;
 
         $validator = Validator::make($data,[
-            'Nama Pengguna' =>  'required|regex:/^\S*$/u|regex:/[a-z]/|unique:user,username|max:25',
-            'Kata Sandi'    =>  'required|max:6',
-            'Peran'         =>  'required'
+            'Nama Pengguna' => 'required|regex:/^\S*$/u|regex:/[a-z]/|unique:user,username|max:25',
+            'Kata Sandi'    => 'required|max:8',
+            'Peran'         => 'required'
         ]);
+
+        if($validator->fails()): 
+            alert()->error('ErrorAlert', $validator->errors()->first());
+            return back();
+        endif;
 
         User::create([
-            'username' => $username,
-            'password' => $bcrypt,
-            'role_id'  => $role
+            'username'  =>  $username,
+            'password'  =>  $bcrypt,
+            'role_id'   =>  $role,
+            'status'    =>  2
         ]);
 
-        alert()->success('Admin')
+        alert()->success('Akun Admin telah ditambahkan');
+        return back();
+    }
+
+    public function resetPwd(Request $request){
+        $thispwd = $request->thispass;
+        $pwd     = $request->newpwd;
+        $data    = $request->all();
+        $pk      = $request->pk;
+        $user_id = Session::get('user_id');
+        $data['Kata Sandi yang sedang login']   = $thispwd;
+        $data['Kata Sandi baru untuk akun ini'] = $pwd;
+
+        $validator = Validator::make($data,[
+            'pk'                             => 'required',
+            'Kata Sandi yang sedang login'   => 'required',
+            'Kata Sandi baru untuk akun ini' => 'required|max:6'
+        ]);
+
+        if($validator->fails()):
+            alert()->error('ErrorAlert', $validator->errors()->first());
+            return back();
+        endif;
+
+        $user = User::where('user_id', $user_id)->first();
+
+        if(!password_verify($thispwd, $user->password)):
+            alert()->error('ErrorAlert', 'Kata sandi anda tidak cocok silahkan coba lagi');
+            return back();
+        endif;
+
+        $bcrypt = bcrypt($pwd);
+        User::where('user_id', $pk)->update([
+            'password'  => $bcrypt
+        ]);
+
+        alert()->success('Kata Sandi berhasil di ubah');
         return back();
     }
 
@@ -93,6 +136,24 @@ class UserAdminController extends Controller
         ]);
 
         alert()->success('Ubah Status Berhasil');
+        return back();
+    }
+
+    public function delete(Request $request) {
+        $pk = $request->pk;
+        
+        $validator = Validator::make($request->all(),[
+            'pk' => required
+        ]);
+
+        if($validator->fails()): 
+            alert()->error('ErrorAlert', $validator->errors()->first());
+            return back();
+        endif;
+
+        User::where('user_id', $pk)->delete();
+
+        alert()->success('Hapus data telah berhasil');
         return back();
     }
 }

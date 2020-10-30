@@ -56,7 +56,7 @@ class ApprovementpaymentController extends Controller
                      DB::raw('(store_order.price_product * store_order.qty) + store_order.ongkir as totalpriceall')
                  )
                  ->where('seller_user_id', '=', $user_id)
-                 ->where('status', 4)
+                 ->where('store_order.status', 4)
                  ->orderBy($namecolumn, $sorting)
                  ->paginate(5);
         return view('admin.pages.approvementpayment', compact('approve', 'user_id', 'sorting'));

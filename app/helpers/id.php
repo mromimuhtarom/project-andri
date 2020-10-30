@@ -15,6 +15,7 @@ function endis($translate){
     $arraytranslate = [
         'L_DISABLED'         => 'Tidak Aktif',
         'L_ENABLED'          => 'Aktif',
+        'L_REQUEST'          => 'Menunggu'
     ];
 
     return $arraytranslate[$translate];
